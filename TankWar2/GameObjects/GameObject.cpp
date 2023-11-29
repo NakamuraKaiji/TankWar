@@ -6,19 +6,19 @@ using namespace DirectX;
 
 GameObject::GameObject(
 	int id, 
-	int x, int y, 
+	DirectX::SimpleMath::Vector3 position,
+	DirectX::SimpleMath::Quaternion rotate,
 	float radius, 
 	float friction, 
 	float weight
 )
 	: m_id(id)
-	, m_x(x), m_y(y)
 	, m_radius(radius)
 	, m_friction(friction)
 	, m_weight(weight)
+	, m_position(position)
+	, m_rotate(rotate)
 {
-	// 位置を設定
-	m_position = SimpleMath::Vector3(static_cast<float>(m_x), 0.0f, static_cast<float>(m_y));
 }
 
 // 更新
@@ -58,14 +58,4 @@ void GameObject::LimitSpeed(float speed)
 		m_velocity.Normalize();
 		m_velocity *= speed;
 	}
-}
-
-void GameObject::Shot(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion bodyRotate, DirectX::SimpleMath::Quaternion turretRotate)
-{
-	// 位置を設定
- 	m_bulletPosition = position + SimpleMath::Vector3::Transform(
-		SimpleMath::Vector3(0.0f, 0.0f, 1.5f), SimpleMath::Matrix::CreateFromQuaternion(bodyRotate * turretRotate));
-
-	// 回転角を設定
-	m_bulletRotate = bodyRotate * turretRotate;
 }

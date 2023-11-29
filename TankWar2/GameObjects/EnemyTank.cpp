@@ -7,11 +7,10 @@ using namespace DirectX;
 
 
 // コンストラクタ
-EnemyTank::EnemyTank(int x, int y)
-	: GameObject(static_cast<int>(ObjectID::Enemy), x, y, ENEMY_RADIUS, ENEMY_FRICTION, PLAYER_WEIGHT)
+EnemyTank::EnemyTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
+	: GameObject(static_cast<int>(ObjectID::Enemy), position, rotate, ENEMY_RADIUS, ENEMY_FRICTION, PLAYER_WEIGHT)
 	, m_bodyModel{}
 	, m_turretModel{}
-	, m_tankPos{}
 	, m_bodyRotate{}
 	, m_turretRotate{}
 	, m_coolTime(0.0f)
@@ -20,6 +19,7 @@ EnemyTank::EnemyTank(int x, int y)
 	, m_maxSpeed(1.0f)
 	, m_maxForce(1.0f)
 	, m_wanderOrientation(0.0f)
+	, m_target(nullptr)
 {
 }
 
@@ -42,9 +42,6 @@ void EnemyTank::Initialize()
 	m_parts[BODY]->SetChild(m_parts[TURRET].get());
 
 	m_wanderOrientation = 0.0f;
-
-	m_tankPos = SimpleMath::Vector3(0.0f, 0.0f, 5.0f);
-
 }
 
 // 更新
@@ -60,7 +57,7 @@ bool EnemyTank::Update(float elapsedTime)
 	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f, elapsedTime);
 
 	float radius = 7.0f;
-	if (m_tankPos.Length() > radius)
+	if (GetPosition().Length() > radius)
 	{
 		steeringforce += Seek(SimpleMath::Vector3::Zero);
 	}
@@ -80,13 +77,14 @@ bool EnemyTank::Update(float elapsedTime)
 	m_velocity = Truncate(m_velocity, m_maxSpeed);
 
 	// 座標の更新
-	m_tankPos += m_velocity * elapsedTime;
+	//m_tankPos += m_velocity * elapsedTime;
+	SetPosition(GetPosition() + (m_velocity * elapsedTime));
 
 	// 進行方向を向く
 	TurnHeading(m_velocity);
 
 	// 敵からプレイヤーに向かうベクトルを計算する
-	SimpleMath::Vector3 toTarget = /*GetTarget()->GetPosition()*/ - m_tankPos;
+	SimpleMath::Vector3 toTarget = /*GetTarget()->GetPosition()*/ - GetPosition();
 
 	// 回転角を計算する
 	m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, atan2(toTarget.x, toTarget.z));
@@ -132,7 +130,8 @@ void EnemyTank::Render()
 	// 砲身の回転
 	m_parts[TURRET]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(m_turretRotate));
 	// 戦車の移動
-	SimpleMath::Matrix mat = SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate) * SimpleMath::Matrix::CreateTranslation(m_tankPos);
+	SimpleMath::Matrix mat = SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate) 
+						   * SimpleMath::Matrix::CreateTranslation(GetPosition());
 	m_parts[BODY]->SetTransformMatrix(mat);
 
 	// 戦車の描画
@@ -156,8 +155,8 @@ void EnemyTank::OnHit_Bullet(GameObject* object)
 }
 
 
-// 終了
-void EnemyTank::Finalize()
+// リセット
+void EnemyTank::Reset()
 {
 }
 
@@ -175,7 +174,7 @@ void EnemyTank::TurnHeading(const DirectX::SimpleMath::Vector3& direction)
 DirectX::SimpleMath::Vector3 EnemyTank::Seek(const DirectX::SimpleMath::Vector3& targetPos)
 {
 	// 目標位置への方向ベクトルの算出
-	SimpleMath::Vector3 toTarget = targetPos - m_tankPos;
+	SimpleMath::Vector3 toTarget = targetPos - GetPosition();
 
 	// 期待速度の算出
 	toTarget.Normalize();
@@ -202,7 +201,7 @@ DirectX::SimpleMath::Vector3 EnemyTank::Wander(float* wanderOriantation, float w
 	SimpleMath::Vector3 toTarget = targetOriantation * wanderRadius;
 
 	// 徘徊行動用の中心の算出
-	SimpleMath::Vector3 wanderCenter = m_tankPos + SimpleMath::Vector3::Transform(SimpleMath::Vector3::Forward, m_bodyRotate);
+	SimpleMath::Vector3 wanderCenter = GetPosition() + SimpleMath::Vector3::Transform(SimpleMath::Vector3::Forward, m_bodyRotate);
 
 	// ターゲットの位置の算出(ワールド座標)
 	SimpleMath::Vector3 targetPosition = wanderCenter + toTarget;

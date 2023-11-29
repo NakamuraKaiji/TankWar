@@ -15,7 +15,7 @@ void Stage::Initialize()
 {
 }
 
-// ステージ上のオブジェクトを全て削除する関数
+// ステージ上のオブジェクトを全て削除
 void Stage::DeleteStageObjects()
 {
 	// プレイヤーを削除する
@@ -27,16 +27,21 @@ void Stage::DeleteStageObjects()
 
 }
 
+// ステージを設定
 void Stage::SetStageData()
 {
 	// プレイヤーを生成
-	m_playerTask = GetTaskManager()->AddTask<PlayerTank>(0, 0);
+	m_playerTask = GetTaskManager()->AddTask<PlayerTank>(SimpleMath::Vector3::Zero, SimpleMath::Quaternion::Identity);
 
 	// 敵を生成
-	m_enemyTask = GetTaskManager()->AddTask<EnemyTank>(0, 0);
+	m_enemyTask = GetTaskManager()->AddTask<EnemyTank>(SimpleMath::Vector3(0.0f, 0.0f, 5.0f), SimpleMath::Quaternion::Identity);
+
+	// 敵にプレイヤーを渡す
+	m_enemyTask->SetTarget(m_playerTask);
 }
 
-void Stage::Finalize()
+// ステージデータのリセット
+void Stage::Reset()
 {
 }
 

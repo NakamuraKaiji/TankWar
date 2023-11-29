@@ -27,7 +27,7 @@ private:
 
 private:
 
-	// ステージ上のオブジェクトを全て削除する関数
+	// ステージ上のオブジェクトを全て削除
 	void DeleteStageObjects();
 
 
@@ -39,19 +39,19 @@ public:
 	// 初期化
 	void Initialize() override;
 
-	// ステージを設定する関数
+	// ステージを設定
 	void SetStageData();
 
-	// 終了
-	void Finalize();
+	// リセット
+	void Reset();
 
 	// プレイヤーを取得
 	PlayerTank* GetPlayer() { return m_playerTask; }
 
-	// 全ての敵を停止する関数
+	// 全ての敵を停止
 	void StopAllEnemy(bool isStop);
 
-	// 全ての敵が死んでいるかチェックする関数
+	// 全ての敵が死んでいるかチェック
 	bool IsDeadAllEnemy();
 
 };

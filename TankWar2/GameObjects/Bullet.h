@@ -11,24 +11,11 @@
 #include "CollisionManager.h"
 #include "GameParameter.h"
 
-class Bullet : GameObject
+class Bullet : public GameObject
 {
 public:
-	// 発射フラグの取得
-	bool GetUsed() { return m_used; }
-
-	// 発射フラグの設定
-	void SetUsed(bool used) { m_used = used; }
-
-	// 位置を取得
-	DirectX::SimpleMath::Vector3 GetBulletPos() { return m_position; }
-
-	// 位置を設定
-	void SetBulletPos(DirectX::SimpleMath::Vector3 position) { m_position = position; }
-
-public:
 	// コンストラクタ
-	Bullet(int x, int y,
+	Bullet(
 		DirectX::SimpleMath::Vector3 position, 
 		DirectX::SimpleMath::Quaternion rotate, 
 		float scale
@@ -43,13 +30,11 @@ public:
 	// 描画
 	void Render() override;
 
-	// 終了
-	void Finalize();
+	// リセット
+	void Reset();
 
 	// 衝突したら呼ばれる関数
 	void OnHit(GameObject* object) override;
-
-	void used();
 
 private:
 	// グラフィックス
@@ -68,15 +53,8 @@ private:
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 
-	// 角度
-	DirectX::SimpleMath::Quaternion m_rotate;
-
 	// 大きさ
 	float m_scale;
-
-	// 砲弾が発射されているかどうかを示す
-	bool m_used;
-
 };
 
 #endif // !BULLET_DEFIEND

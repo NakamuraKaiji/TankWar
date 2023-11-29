@@ -6,17 +6,14 @@
 using namespace DirectX;
 
 // コンストラクタ
-Bullet::Bullet(int x, int y, 
+Bullet::Bullet( 
 	DirectX::SimpleMath::Vector3 position,
 	DirectX::SimpleMath::Quaternion rotate,
 	float scale
 )
-	: GameObject(static_cast<int>(ObjectID::Bullet), x, y, BULLET_RADIUS, BULLET_FRICTION, BULLET_WEIGHT)
+	: GameObject(static_cast<int>(ObjectID::Bullet), position, rotate, BULLET_RADIUS, BULLET_FRICTION, BULLET_WEIGHT)
 	, m_context{}
-	, m_position(position)
-	, m_rotate(rotate)
 	, m_scale(scale)
-	, m_used(false)
 {
 }
 
@@ -35,14 +32,16 @@ bool Bullet::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	// 基底クラスの更新関数を呼び出して移動する
+	GameObject::Update(elapsedTime);
+
 	// 回転
-	SimpleMath::Matrix rotation = SimpleMath::Matrix::CreateFromQuaternion(GetTurretRotate());
+	SimpleMath::Matrix rotation = SimpleMath::Matrix::CreateFromQuaternion(GetRotate());
 	// 速度を計算
 	SimpleMath::Vector3 velocity = SimpleMath::Vector3::TransformNormal(BULLET_SPEED, rotation);
 	// 移動
-	m_position += velocity;
-
-	SetBulletPosition(m_position);
+	//m_position += velocity;
+	SetPosition(GetPosition() + velocity);
 
 	// 衝突判定用オブジェクト
 	pCollisionManager.AddObject(this);
@@ -57,7 +56,7 @@ void Bullet::Render()
 	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
 
 	world *= SimpleMath::Matrix::CreateScale(m_scale);
-	world *= SimpleMath::Matrix::CreateFromQuaternion(GetTurretRotate());
+	world *= SimpleMath::Matrix::CreateFromQuaternion(GetRotate());
  	world *= SimpleMath::Matrix::CreateTranslation(GetPosition().x, GetPosition().y, GetPosition().z);
 
 	// プリミティブ描画を開始
@@ -68,8 +67,8 @@ void Bullet::Render()
 	m_graphics->DrawPrimitiveEnd();
 }
 
-// 終了
-void Bullet::Finalize()
+// リセット
+void Bullet::Reset()
 {
 }
 

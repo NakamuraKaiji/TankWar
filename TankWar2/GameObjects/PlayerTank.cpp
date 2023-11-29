@@ -1,16 +1,16 @@
 #include "pch.h"
 #include "PlayerTank.h"
 #include "Utilities/Resources.h"
+#include "Bullet.h"
 
 using namespace DirectX;
 
 
 // コンストラクタ
-PlayerTank::PlayerTank(int x, int y)
-	: GameObject(static_cast<int>(ObjectID::Player), x, y, PLAYER_RADIUS, PLAYER_FRICTION, PLAYER_WEIGHT)
+PlayerTank::PlayerTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
+	: GameObject(static_cast<int>(ObjectID::Player), position, rotate, PLAYER_RADIUS, PLAYER_FRICTION, PLAYER_WEIGHT)
 	, m_bodyModel{}
 	, m_turretModel{}
-	, m_position{}
 	, m_bodyRotate{}
 	, m_turretRotate{}
 {
@@ -62,11 +62,11 @@ void PlayerTank::Render()
 	proj = m_graphics->GetProjectionMatrix();
 
 	// 戦車の回転
-	m_parts[BODY]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(GetBodyRotate()));
+	m_parts[BODY]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate));
 	// 砲身の回転
-	m_parts[TURRET]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(GetTurretRotate()));
+	m_parts[TURRET]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(m_turretRotate));
 	// 戦車の移動
-	SimpleMath::Matrix mat = SimpleMath::Matrix::CreateFromQuaternion(GetBodyRotate()) * 
+	SimpleMath::Matrix mat = SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate) * 
 		SimpleMath::Matrix::CreateTranslation(GetPosition());
 	m_parts[BODY]->SetTransformMatrix(mat);
 
@@ -91,12 +91,12 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 	// Wキーで前進
 	if (kb.W)
 	{
-		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, GetBodyRotate()), -force);
+		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), -force);
 	}
 	// Sキーで後進
 	if (kb.S)
 	{
-		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, GetBodyRotate()), force);
+		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), force);
 	}
 	// Dキーで右回転
 	if (kb.D)
@@ -131,13 +131,13 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 		);
 	}
 
-	SetBodyRotate(m_bodyRotate);
-	SetTurretRotate(m_turretRotate);
-
 	// Spaceで発射
 	if (tracker->pressed.Space)
 	{
- 		Shot(GetPosition(), GetBodyRotate(), GetTurretRotate());
+		// 弾を発射する
+		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(GetPosition(), m_bodyRotate * m_turretRotate, 0.5f);
+		// 親を変更する
+		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
 	}
 
 }
@@ -150,7 +150,7 @@ void PlayerTank::OnHit_Bullet(GameObject* object)
 {
 }
 
-// 終了
-void PlayerTank::Finalize()
+// リセット
+void PlayerTank::Reset()
 {
 }

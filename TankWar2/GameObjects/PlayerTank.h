@@ -26,8 +26,22 @@ private:
 
 public:
 
+	// 車体回転を設定する関数
+	void SetBodyRotate(DirectX::SimpleMath::Quaternion rotate) { m_bodyRotate = rotate; }
+
+	// 車体回転を取得する関数
+	DirectX::SimpleMath::Quaternion GetBodyRotate() { return m_bodyRotate; }
+
+	// 砲身回転を設定する関数
+	void SetTurretRotate(DirectX::SimpleMath::Quaternion rotate) { m_turretRotate = rotate; }
+
+	// 砲身回転を取得する関数
+	DirectX::SimpleMath::Quaternion GetTurretRotate() { return m_turretRotate; }
+
+public:
+
 	// コンストラクタ
-	PlayerTank(int x, int y);
+	PlayerTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate);
 
 	// 初期化
 	void Initialize();
@@ -44,8 +58,8 @@ public:
 	// 移動関数
 	void Move(DirectX::Keyboard::KeyboardStateTracker* tracker);
 
-	//	終了
-	void Finalize();
+	//	リセット
+	void Reset();
 private:
 
 	// グラフィックス
@@ -63,10 +77,6 @@ private:
 	std::unique_ptr<Imase::ModelPart> m_parts[PARTS_CNT];
 
 private:	
-
-	// 位置
-	DirectX::SimpleMath::Vector3 m_position;
-
 	// 車体の回転
 	DirectX::SimpleMath::Quaternion m_bodyRotate;
 

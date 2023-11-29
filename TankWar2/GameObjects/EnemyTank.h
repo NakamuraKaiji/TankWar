@@ -15,6 +15,11 @@
 
 class EnemyTank : public GameObject
 {
+public:
+
+	// ターゲットを設定
+	void SetTarget(GameObject* target) { m_target = target; }
+
 private:
 
 	// 衝突中関数
@@ -26,7 +31,7 @@ private:
 public:
 
 	// コンストラクタ
-	EnemyTank(int x, int y);
+	EnemyTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate);
 
 	// 初期化
 	void Initialize();
@@ -40,8 +45,8 @@ public:
 	// 衝突したら呼ばれる関数
 	void OnHit(GameObject* object) override;
 
-	//	終了
-	void Finalize();
+	//	リセット
+	void Reset();
 
 	// 指定の方向を向く
 	void TurnHeading(const DirectX::SimpleMath::Vector3& direction);
@@ -63,6 +68,9 @@ private:
 	// 衝突判定用オブジェクト
 	CollisionManager pCollisionManager;
 
+	// ターゲット
+	GameObject* m_target;
+
 	// 戦車の各パーツへのポインタ
 	std::shared_ptr<DirectX::Model> m_bodyModel;
 	std::shared_ptr<DirectX::Model> m_turretModel;
@@ -72,8 +80,6 @@ private:
 	std::unique_ptr<Imase::ModelPart> m_parts[PARTS_CNT];
 
 private:
-	// 車体の位置
-	DirectX::SimpleMath::Vector3 m_tankPos;
 	// 車体の角度
 	DirectX::SimpleMath::Quaternion m_bodyRotate;
 	// 砲身の角度
@@ -89,7 +95,6 @@ private:
 	float m_maxForce;   
 	// 徘徊行動で使用する方向
 	float m_wanderOrientation;   
-
 
 	// 砲弾の発射間隔
 	float m_coolTime;
