@@ -7,12 +7,14 @@ using namespace DirectX;
 
 
 // コンストラクタ
-PlayerTank::PlayerTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
+PlayerTank::PlayerTank(const GameResources& gameResources, DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
 	: GameObject(static_cast<int>(ObjectID::Player), position, rotate, PLAYER_RADIUS, PLAYER_FRICTION, PLAYER_WEIGHT)
+	, m_gameResources(gameResources)
 	, m_bodyModel{}
 	, m_turretModel{}
 	, m_bodyRotate{}
 	, m_turretRotate{}
+	, m_playerState(PlayerState::Normal)
 {
 }
 
@@ -38,6 +40,16 @@ void PlayerTank::Initialize()
 // 更新
 bool PlayerTank::Update(float elapsedTime)
 {
+	// 状態によって処理を決める
+	switch (m_playerState)
+	{
+	case PlayerState::Hit:
+		Hit();
+		break;
+	default:
+		break;
+	}
+
 	// 基底クラスの更新関数を呼び出して移動する
 	GameObject::Update(elapsedTime);
 
@@ -45,7 +57,7 @@ bool PlayerTank::Update(float elapsedTime)
 	 LimitSpeed(PLAYER_MAX_SPEED);
 
 	// 衝突判定マネージャーに登録
-	pCollisionManager.AddObject(this);
+	 m_gameResources.pCollisionManager->AddObject(this);
 
 	return true;
 }
@@ -76,12 +88,17 @@ void PlayerTank::Render()
 
 }
 
-void PlayerTank::OnHit(GameObject* object)
+// リセット
+void PlayerTank::Reset()
 {
 }
 
+// 移動関数
 void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 {
+	// 通常時のみ移動する
+	if (m_playerState != PlayerState::Normal) return;
+
 	// キー入力を取得
 	auto kb = Keyboard::Get().GetState();
 
@@ -131,26 +148,54 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 		);
 	}
 
-	// Spaceで発射
+	// ↑で発射
 	if (tracker->pressed.Space)
 	{
 		// 弾を発射する
-		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(GetPosition(), m_bodyRotate * m_turretRotate, 0.5f);
+		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
 		// 親を変更する
 		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
 	}
 
 }
 
+// 衝突中関数
 void PlayerTank::Hit()
 {
+	// 摩擦により停止したら
+	if (GetVelocity() == SimpleMath::Vector3::Zero)
+	{
+		m_playerState = PlayerState::Normal;
+	}
 }
 
+// 衝突時に呼び出される関数
+void PlayerTank::OnHit(GameObject* object)
+{
+	// 衝突した相手によって処理を変える
+	switch (static_cast<ObjectID>(object->GetID()))
+	{
+	case ObjectID::Bullet:			// 砲弾
+		OnHit_Bullet(object);
+		break;
+	case ObjectID::Enemy:			// 敵
+		OnHit_Player(object);
+	default:
+		break;
+	}
+}
+
+// 砲弾との衝突関数
 void PlayerTank::OnHit_Bullet(GameObject* object)
 {
+	SetVelocity(SimpleMath::Vector3::Zero);
+
+	m_playerState = PlayerState::Hit;
 }
 
-// リセット
-void PlayerTank::Reset()
+// 敵との当たり判定
+void PlayerTank::OnHit_Player(GameObject* object)
 {
+	SetVelocity(SimpleMath::Vector3::Zero);
 }
+

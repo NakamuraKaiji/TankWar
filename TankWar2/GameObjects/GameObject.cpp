@@ -59,3 +59,16 @@ void GameObject::LimitSpeed(float speed)
 		m_velocity *= speed;
 	}
 }
+
+// Õ“ËŽž‚Ì—Í‚ðŽæ“¾‚·‚é
+float GameObject::GetHitForce()
+{
+	float force = HIT_FORCE_MIN;
+
+	// ˜A‘±ƒqƒbƒgŽž‚Ì‘¬“x‚Ì‰e‹¿‚ª‘å‚«‚·‚¬‚é‚Ì‚Å‘¬“x‚ð—}‚¦‚é
+	float v = m_velocity.Length();
+	if (v > 0.1f) v = 0.1f;
+	force += m_weight * v;
+
+	return force;
+}

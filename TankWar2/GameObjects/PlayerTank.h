@@ -13,9 +13,19 @@
 #include "GameParameter.h"
 #include "ImaseLib/ModelPart.h"
 #include "CollisionManager.h"
+#include "GameResources.h"
 
 class PlayerTank : public GameObject
 {
+public:
+
+	// プレイヤーの状態
+	enum class PlayerState
+	{
+		Normal,		// 通常
+		Hit,        // 衝突
+	};
+
 private:
 
 	// 衝突中関数
@@ -23,6 +33,9 @@ private:
 
 	// 砲弾との衝突関数
 	void OnHit_Bullet(GameObject* object);
+
+	// 敵との当たり判定
+	void OnHit_Player(GameObject* object);
 
 public:
 
@@ -38,10 +51,13 @@ public:
 	// 砲身回転を取得する関数
 	DirectX::SimpleMath::Quaternion GetTurretRotate() { return m_turretRotate; }
 
+	// プレイヤーの状態を取得する関数
+	PlayerState GetState() { return m_playerState; }
+
 public:
 
 	// コンストラクタ
-	PlayerTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate);
+	PlayerTank(const GameResources& gameResources, DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate);
 
 	// 初期化
 	void Initialize();
@@ -65,9 +81,6 @@ private:
 	// グラフィックス
 	Graphics* m_graphics = Graphics::GetInstance();
 
-	// 衝突判定用オブジェクト
-	CollisionManager pCollisionManager;
-
 	// 戦車の各パーツへのポインタ
 	std::shared_ptr<DirectX::Model> m_bodyModel;
 	std::shared_ptr<DirectX::Model> m_turretModel;
@@ -75,6 +88,12 @@ private:
 
 	// 戦車各パーツへのポインタ
 	std::unique_ptr<Imase::ModelPart> m_parts[PARTS_CNT];
+
+	// プレイヤーの状態
+	PlayerState m_playerState;
+
+	// Collisionで作成したリソース
+	GameResources m_gameResources;
 
 private:	
 	// 車体の回転

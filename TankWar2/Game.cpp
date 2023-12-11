@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
+#include "Scenes/TitleScene.h"
 #include "Scenes/PlayScene.h"
 
 extern void ExitGame() noexcept;
@@ -90,9 +91,9 @@ void Game::Render()
     // シーンの描画
     m_sceneManager->Render();
     // fpsの表示
-    std::wostringstream oss;
-    oss << "fps:" << m_timer.GetFramesPerSecond();
-    m_debugFont->AddString(oss.str().c_str(), SimpleMath::Vector2(0.0f, 0.0f));
+    //std::wostringstream oss;
+    //oss << "fps:" << m_timer.GetFramesPerSecond();
+    //m_debugFont->AddString(oss.str().c_str(), SimpleMath::Vector2(0.0f, 0.0f));
 
     // デバッグ用文字列の描画
     m_debugFont->Render(m_states.get());

@@ -1,27 +1,25 @@
 //*********************************************************************
-//			概要	：プレイシーンクラス
+//			概要	：タイトルシーンクラス
 // 
-//			制作日	：10月3日
+//			制作日	：11月29日
 // 
 //			製作者	：Kaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef PLAYER_SCENE_DEFINED
-#define PLAYER_SCENE_DEFINED
+#ifndef TITLE_SCENE_DEFINED
+#define TITLE_SCENE_DEFINED
 #include "ImaseLib/SceneManager.h"
 #include "UserResources.h"
-#include "ImaseLib/TaskManager.h"
 #include "ImaseLib/GridFloor.h"
 #include "GameObjects/PlayerCamera.h"
-#include "GameObjects/Stage.h"
-#include "GameObjects/CollisionManager.h"
+#include "GameObjects/GameParameter.h"
 
-class PlayScene :public Imase::Scene<UserResources>
+class TitleScene : public Imase::Scene<UserResources>
 {
 public:
 
-	// コンストラクタ
-	PlayScene();
+	// コストラクタ
+	TitleScene();
 
 	// 初期化
 	void Initialize() override;
@@ -32,7 +30,7 @@ public:
 	// 描画
 	void Render() override;
 
-	// 終了処理
+	// 終了
 	void Finalize() override;
 
 	// デバイスに依存するリソースを作成する関数
@@ -45,27 +43,32 @@ public:
 	void OnDeviceLost() override;
 
 private:
-
 	// グリッドの床へのポインタ
 	std::unique_ptr<Imase::GridFloor> m_gridFloor;
 
-	// グラフィックスへのポインタ
-	Graphics* m_graphics = Graphics::GetInstance();
+	// タイトルテクスチャハンドル
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleSRV;
 
-	// プレイヤーカメラ
-	PlayerCamera m_playerCamera;
+	// PushSpaceテクスチャハンドル
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pushSRV;
+
+	// グラフィックス
+	Graphics* m_graphics = Graphics::GetInstance();
 
 	// スカイドームモデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_skydomeModel;
 
-	// タスクマネージャー
-	Imase::TaskManager m_taskManager;
+	// 車体モデルへのポインタ
+	std::shared_ptr<DirectX::Model> m_tankBodyModel;
 
-	// ステージ
-	Stage* m_stage;
+	// 砲身モデルへのポインタ
+	std::shared_ptr<DirectX::Model> m_tankTurretModel;
 
-	// 衝突判定用オブジェクト
-	CollisionManager m_collisionManager;
+	// 砲弾モデルへのポインタ
+	std::shared_ptr<DirectX::Model> m_bulletModel;
+
+	// カメラ
+	PlayerCamera m_playerCamera;
 
 private:
 
@@ -75,6 +78,21 @@ private:
 	// 射影行列
 	DirectX::SimpleMath::Matrix m_proj;
 
+	// 角度
+	DirectX::SimpleMath::Quaternion m_rotate;
+
+	// カウント
+	int m_count;
+
+	// 砲弾の位置
+	DirectX::SimpleMath::Vector3 m_bulletPos;
+
+	// 砲弾の角度
+	float m_angle;
+
+	// 砲弾回収
+	float m_bulletRecovery;
+
 };
 
-#endif // !PLAYER_SCENE_DEFINED
+#endif // !TITLE_SCENE_DEFINED

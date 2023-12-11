@@ -11,6 +11,7 @@
 #include "ImaseLib/TaskManager.h"
 #include "PlayerTank.h"
 #include "EnemyTank.h"
+#include "GameObjects/GameResources.h"
 
 class Stage : public Imase::Task
 {
@@ -25,6 +26,9 @@ private:
 	// 敵タスクのポインタ
 	EnemyTank* m_enemyTask;
 
+	// GameSceneで作成したリソース群
+	GameResources m_gameResources;
+
 private:
 
 	// ステージ上のオブジェクトを全て削除
@@ -34,7 +38,7 @@ private:
 public:
 
 	// コンストラクタ
-	Stage();
+	Stage(const GameResources& gameResources);
 
 	// 初期化
 	void Initialize() override;

@@ -23,9 +23,6 @@
     <Filter Include="FBX">
       <UniqueIdentifier>{059307cc-1079-47b2-acf0-fd8c8a09d2a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{bb8aa8b4-e13b-46c2-b024-797292ba65c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyLib">
       <UniqueIdentifier>{16d06c52-ea84-4135-8f3e-88777ebf8763}</UniqueIdentifier>
     </Filter>
@@ -103,10 +100,13 @@
     <ClInclude Include="GameObjects\CollisionManager.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\GameResources.h">
+    <ClInclude Include="GameObjects\Stage.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Stage.h">
+    <ClInclude Include="Scenes\TitleScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameResources.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Stage.cpp">
       <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\TitleScene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

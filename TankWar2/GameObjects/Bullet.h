@@ -10,15 +10,15 @@
 #define BULLET_DEFIEND
 #include "CollisionManager.h"
 #include "GameParameter.h"
+#include "GameResources.h"
 
 class Bullet : public GameObject
 {
 public:
 	// コンストラクタ
-	Bullet(
+	Bullet(const GameResources& gameResources,
 		DirectX::SimpleMath::Vector3 position, 
-		DirectX::SimpleMath::Quaternion rotate, 
-		float scale
+		DirectX::SimpleMath::Quaternion rotate
 	);
 
 	// 初期化
@@ -40,21 +40,18 @@ private:
 	// グラフィックス
 	Graphics* m_graphics = Graphics::GetInstance(); 
 
-	// 衝突判定用オブジェクト
-	CollisionManager pCollisionManager;
-
 	// DeviceContextクラスのインスタンス
 	ID3D11DeviceContext* m_context;
 
 	// 砲弾モデル
 	std::shared_ptr<DirectX::Model> m_bulletModel;
 
+	// Collisionで作成したリソース
+	GameResources m_gameResources;
+
 private:
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
-
-	// 大きさ
-	float m_scale;
 };
 
 #endif // !BULLET_DEFIEND

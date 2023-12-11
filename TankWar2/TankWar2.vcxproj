@@ -186,11 +186,11 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObjects\Bullet.h" />
     <ClInclude Include="GameObjects\Camera.h" />
+    <ClInclude Include="GameObjects\GameResources.h" />
     <ClInclude Include="GameObjects\CollisionManager.h" />
     <ClInclude Include="GameObjects\EnemyTank.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\GameParameter.h" />
-    <ClInclude Include="GameObjects\GameResources.h" />
     <ClInclude Include="GameObjects\PlayerCamera.h" />
     <ClInclude Include="GameObjects\Stage.h" />
     <ClInclude Include="GameObjects\PlayerTank.h" />
@@ -205,6 +205,7 @@
     <ClInclude Include="MyLib\Collision.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scenes\PlayScene.h" />
+    <ClInclude Include="Scenes\TitleScene.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="UserResources.h" />
     <ClInclude Include="Utilities\Graphics.h" />
@@ -237,6 +238,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scenes\PlayScene.cpp" />
+    <ClCompile Include="Scenes\TitleScene.cpp" />
     <ClCompile Include="Utilities\Graphics.cpp" />
     <ClCompile Include="Utilities\Resources.cpp" />
   </ItemGroup>

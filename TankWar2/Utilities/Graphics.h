@@ -78,13 +78,7 @@ public:
 	void DrawQuad(const DirectX::FXMVECTOR& point1, const DirectX::FXMVECTOR& point2, const DirectX::FXMVECTOR& point3, const DirectX::FXMVECTOR& point4, const DirectX::HXMVECTOR& color);
 	// モデルを描画
 	void DrawModel(const DirectX::Model* model, const DirectX::SimpleMath::Matrix& world, const bool& depthBuffer = true);
-	//// アニメーションモデルを描画
-	//void DrawModel(
-	//	const DirectX::Model* model,
-	//	const DX::AnimationSDKMESH* animationSDKMESH,
-	//	const DirectX::ModelBone::TransformArray* transformArray,
-	//	const DirectX::SimpleMath::Matrix& world
-	//);
+	// アニメーションモデルを描画
 private:
 	// コンストラクタ
 	Graphics();

@@ -7,19 +7,19 @@ using namespace DirectX;
 
 
 // コンストラクタ
-EnemyTank::EnemyTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
+EnemyTank::EnemyTank(const GameResources& gameResources, DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
 	: GameObject(static_cast<int>(ObjectID::Enemy), position, rotate, ENEMY_RADIUS, ENEMY_FRICTION, PLAYER_WEIGHT)
+	, m_gameResources(gameResources)
 	, m_bodyModel{}
 	, m_turretModel{}
 	, m_bodyRotate{}
 	, m_turretRotate{}
-	, m_coolTime(0.0f)
+	, m_interval(0.0f)
 	, m_velocity{}
 	, m_mass(1.0f)
-	, m_maxSpeed(1.0f)
-	, m_maxForce(1.0f)
 	, m_wanderOrientation(0.0f)
 	, m_target(nullptr)
+	, m_enemyState(EnemyState::Normal)
 {
 }
 
@@ -47,58 +47,17 @@ void EnemyTank::Initialize()
 // 更新
 bool EnemyTank::Update(float elapsedTime)
 {
-	// 操舵力の定義
-	SimpleMath::Vector3 steeringforce = SimpleMath::Vector3::Zero;
-
-	// 探索行動
-	//steeringforce += Seek(m_playerPos);
-
-	// 徘徊行動
-	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f, elapsedTime);
-
-	float radius = 7.0f;
-	if (GetPosition().Length() > radius)
+	// 状態によって処理を分岐させる
+	switch (m_enemyState)
 	{
-		steeringforce += Seek(SimpleMath::Vector3::Zero);
-	}
-
-	// 物体に与えられた力[m/s2]
-	SimpleMath::Vector3 force = steeringforce / elapsedTime;
-
-	// 並進運動の実行
-	// 力の調整
-	force = Truncate(force, m_maxForce);
-
-	// 加速度の算出(加速度 = 力 / 質量)
-	SimpleMath::Vector3 acceleration = force / m_mass;
-
-	// 速度の更新および調整
-	m_velocity += acceleration * elapsedTime;
-	m_velocity = Truncate(m_velocity, m_maxSpeed);
-
-	// 座標の更新
-	//m_tankPos += m_velocity * elapsedTime;
-	SetPosition(GetPosition() + (m_velocity * elapsedTime));
-
-	// 進行方向を向く
-	TurnHeading(m_velocity);
-
-	// 敵からプレイヤーに向かうベクトルを計算する
-	SimpleMath::Vector3 toTarget = /*GetTarget()->GetPosition()*/ - GetPosition();
-
-	// 回転角を計算する
-	m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, atan2(toTarget.x, toTarget.z));
-	
-	// 砲弾の発射間隔
-	m_coolTime += elapsedTime;
-	// スペースキーで発射
-	if (m_coolTime >= 2.0f)
-	{
-		//PlayScene::Shot(m_tankPos + SimpleMath::Vector3::Transform(
-		//	SimpleMath::Vector3(0.0f, 0.0f, 1.5f), SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate * m_turretRotate)),
-		//	m_bodyRotate * m_turretRotate
-		//);
-		m_coolTime = 0.0f;
+	case EnemyState::Normal:
+		Normal(elapsedTime);
+		break;
+	case EnemyState::Hit:
+		Hit();
+		break;
+	default:
+		break;
 	}
 
 	// 基底クラスの更新関数を呼び出して移動する
@@ -107,9 +66,8 @@ bool EnemyTank::Update(float elapsedTime)
 	// 速さを制限する
 	LimitSpeed(ENEMY_MAX_SPEED);
 
-
 	// 衝突判定マネージャーに登録
-	pCollisionManager.AddObject(this);
+	m_gameResources.pCollisionManager->AddObject(this);
 
 	return true;
 }
@@ -142,22 +100,86 @@ void EnemyTank::Render()
 
 }
 
+// 衝突したら呼ばれる関数
 void EnemyTank::OnHit(GameObject* object)
 {
+	// 停止させる
+	SetVelocity(SimpleMath::Vector3::Zero);
+	// 移動させる
+	SimpleMath::Vector3 dir = GetPosition() - object->GetPosition();
+	dir.y = 0.0f;
+	dir.Normalize();
+	AddForce(dir, object->GetHitForce());
+	// 衝突状態へ
+	m_enemyState = EnemyState::Hit;
 }
-
-void EnemyTank::Hit()
-{
-}
-
-void EnemyTank::OnHit_Bullet(GameObject* object)
-{
-}
-
 
 // リセット
 void EnemyTank::Reset()
 {
+}
+
+// 通常時の関数
+void EnemyTank::Normal(float elapsedTime)
+{
+	// 操舵力の定義
+	SimpleMath::Vector3 steeringforce = SimpleMath::Vector3::Zero;
+	// 探索行動
+	//steeringforce += Seek(m_playerPos);
+
+	// 徘徊行動
+	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f, elapsedTime);
+
+	SimpleMath::Vector3 toTarget = GetPosition() - m_target->GetPosition();
+
+	float radius = 7.0f;
+	if (toTarget.Length() > radius)
+	{
+		steeringforce += Seek(m_target->GetPosition());
+	}
+
+	// 物体に与えられた力[m/s2]
+	SimpleMath::Vector3 force = steeringforce / elapsedTime;
+
+	// 並進運動の実行
+	// 力の調整
+	force = Truncate(force, ENEMY_MOVE_FORCE);
+
+	// 加速度の算出(加速度 = 力 / 質量)
+	SimpleMath::Vector3 acceleration = force / m_mass;
+
+	// 速度の更新および調整
+	m_velocity += acceleration * elapsedTime;
+	m_velocity = Truncate(m_velocity, ENEMY_MAX_SPEED);
+
+	// 座標の更新
+	SetPosition(GetPosition() + (m_velocity * elapsedTime));
+
+	AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), ENEMY_MOVE_FORCE);
+
+	// 進行方向を向く
+	TurnHeading(m_velocity);
+
+	// 回転角を計算する
+	m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, atan2(toTarget.z, toTarget.x));
+
+	// 砲弾の発射間隔
+	m_interval += elapsedTime;
+	// 2秒間隔で発射
+	if (m_interval >= 2.0f)
+	{
+		m_interval = 0.0f;
+	}
+}
+
+// 衝突中関数
+void EnemyTank::Hit()
+{
+	// 摩擦により停止したら
+	if (GetVelocity() == SimpleMath::Vector3::Zero)
+	{
+		m_enemyState = EnemyState::Normal;
+	}
 }
 
 // 指定の方向に向く
@@ -178,7 +200,7 @@ DirectX::SimpleMath::Vector3 EnemyTank::Seek(const DirectX::SimpleMath::Vector3&
 
 	// 期待速度の算出
 	toTarget.Normalize();
-	SimpleMath::Vector3 desiredVelocity = toTarget * m_maxSpeed;
+	SimpleMath::Vector3 desiredVelocity = toTarget * ENEMY_MAX_SPEED;
 
 	// 操舵力の算出
 	SimpleMath::Vector3 steeringForce = desiredVelocity - m_velocity;

@@ -4,9 +4,10 @@
 using namespace DirectX;
 
 // コンストラクタ
-Stage::Stage()
+Stage::Stage(const GameResources& gameResources)
 	: m_playerTask{}
 	, m_enemyTask{}
+	, m_gameResources(gameResources)
 {
 }
 
@@ -31,10 +32,10 @@ void Stage::DeleteStageObjects()
 void Stage::SetStageData()
 {
 	// プレイヤーを生成
-	m_playerTask = GetTaskManager()->AddTask<PlayerTank>(SimpleMath::Vector3::Zero, SimpleMath::Quaternion::Identity);
+	m_playerTask = GetTaskManager()->AddTask<PlayerTank>(m_gameResources, SimpleMath::Vector3::Zero, SimpleMath::Quaternion::Identity);
 
 	// 敵を生成
-	m_enemyTask = GetTaskManager()->AddTask<EnemyTank>(SimpleMath::Vector3(0.0f, 0.0f, 5.0f), SimpleMath::Quaternion::Identity);
+	m_enemyTask = GetTaskManager()->AddTask<EnemyTank>(m_gameResources, SimpleMath::Vector3(0.0f, 0.0f, 5.0f), SimpleMath::Quaternion::Identity);
 
 	// 敵にプレイヤーを渡す
 	m_enemyTask->SetTarget(m_playerTask);

@@ -12,15 +12,29 @@
 #include "GameParameter.h"
 #include "ImaseLib/ModelPart.h"
 #include "CollisionManager.h"
+#include "GameResources.h"
 
 class EnemyTank : public GameObject
 {
+public:
+	// 敵の状態
+	enum class EnemyState
+	{
+		Normal,			// 通常
+		Hit,			// 吹き飛ばされ状態
+	};
+
 public:
 
 	// ターゲットを設定
 	void SetTarget(GameObject* target) { m_target = target; }
 
+	// 状態を取得する関数
+	EnemyState GetState() { return m_enemyState; }
 private:
+
+	// 通常時の関数
+	void Normal(float elapsedTime);
 
 	// 衝突中関数
 	void Hit();
@@ -31,7 +45,7 @@ private:
 public:
 
 	// コンストラクタ
-	EnemyTank(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate);
+	EnemyTank(const GameResources& gameResources, DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate);
 
 	// 初期化
 	void Initialize();
@@ -65,9 +79,6 @@ private:
 	// グラフィックス
 	Graphics* m_graphics = Graphics::GetInstance();
 
-	// 衝突判定用オブジェクト
-	CollisionManager pCollisionManager;
-
 	// ターゲット
 	GameObject* m_target;
 
@@ -76,8 +87,13 @@ private:
 	std::shared_ptr<DirectX::Model> m_turretModel;
 	enum { ROOT, BODY, TURRET, PARTS_CNT };
 	// 戦車各パーツへのポインタ
-
 	std::unique_ptr<Imase::ModelPart> m_parts[PARTS_CNT];
+
+	// 敵の状態
+	EnemyState m_enemyState;
+
+	// Collisionで作成したリソース
+	GameResources m_gameResources;
 
 private:
 	// 車体の角度
@@ -89,16 +105,11 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// 質量[kg]
 	float m_mass;    
-	// 最大移動速度(速さ)[m/s]
-	float m_maxSpeed;   
-	// 最大力[m/s2]
-	float m_maxForce;   
 	// 徘徊行動で使用する方向
 	float m_wanderOrientation;   
 
 	// 砲弾の発射間隔
-	float m_coolTime;
-
+	float m_interval;
 };
 
 #endif // !ENEMY_TANK_DEFINED

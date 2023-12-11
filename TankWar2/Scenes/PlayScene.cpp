@@ -8,6 +8,7 @@
 #include "pch.h"
 #include "PlayScene.h"
 #include "Utilities/Resources.h"
+#include "GameObjects/GameResources.h"
 
 using namespace DirectX;
 
@@ -17,11 +18,6 @@ PlayScene::PlayScene()
 	, m_proj{}
 	, m_skydomeModel{}
 	, m_stage{}
-{
-}
-
-// デストラクタ
-PlayScene::~PlayScene()
 {
 }
 
@@ -54,13 +50,14 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	// カメラの更新
 	m_playerCamera.Update(timer.GetElapsedSeconds());
 
+	m_collisionManager.Update();
 }
 
 // 描画
 void PlayScene::Render()
 {
 	auto debugFont = GetUserResources()->GetDebugFont();
-	debugFont->AddString(L"PlayScene", SimpleMath::Vector2(0.0f, debugFont->GetFontHeight()));
+	//debugFont->AddString(L"PlayScene", SimpleMath::Vector2(0.0f, debugFont->GetFontHeight()));
 
 	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = GetUserResources()->GetCommonStates();
@@ -75,7 +72,9 @@ void PlayScene::Render()
 	m_graphics->SetViewMatrix(m_view);
 
 	// スカイドームの描画
-	m_skydomeModel->Draw(context, *states, SimpleMath::Matrix::Identity, m_view, m_proj);
+	SimpleMath::Matrix skyWorld;
+	skyWorld = SimpleMath::Matrix::CreateTranslation(m_stage->GetPlayer()->GetPosition());
+	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
 	// グリッドの床を描画
 	m_gridFloor->Render(context, m_view = m_graphics->GetViewMatrix(), m_proj);
@@ -112,7 +111,8 @@ void PlayScene::CreateDeviceDependentResources()
 	m_skydomeModel = Resources::GetInstance()->GetSkydome();
 
 	// ステージを作成 
-	m_stage = m_taskManager.AddTask<Stage>();
+	GameResources gameResources = {&m_collisionManager};
+	m_stage = m_taskManager.AddTask<Stage>(gameResources);
 	
 	// ステージデータの設定
 	m_stage->SetStageData();

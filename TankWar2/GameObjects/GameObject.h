@@ -94,4 +94,7 @@ public:
 	// ‘¬‚³‚ğ§ŒÀ‚·‚éŠÖ”
 	void LimitSpeed(float speed);
 
+	// Õ“Ë‚Ì—Í‚ğæ“¾‚·‚é
+	float GetHitForce();
+
 };

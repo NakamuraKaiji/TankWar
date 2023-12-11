@@ -6,14 +6,13 @@
 using namespace DirectX;
 
 // コンストラクタ
-Bullet::Bullet( 
+Bullet::Bullet(const GameResources& gameResources,
 	DirectX::SimpleMath::Vector3 position,
-	DirectX::SimpleMath::Quaternion rotate,
-	float scale
+	DirectX::SimpleMath::Quaternion rotate
 )
 	: GameObject(static_cast<int>(ObjectID::Bullet), position, rotate, BULLET_RADIUS, BULLET_FRICTION, BULLET_WEIGHT)
+	, m_gameResources(gameResources)
 	, m_context{}
-	, m_scale(scale)
 {
 }
 
@@ -40,11 +39,18 @@ bool Bullet::Update(float elapsedTime)
 	// 速度を計算
 	SimpleMath::Vector3 velocity = SimpleMath::Vector3::TransformNormal(BULLET_SPEED, rotation);
 	// 移動
-	//m_position += velocity;
 	SetPosition(GetPosition() + velocity);
 
+	if (GetPosition().x <= GetPosition().x - BULLET_COLLECT ||
+		GetPosition().x >= GetPosition().x + BULLET_COLLECT ||
+		GetPosition().z <= GetPosition().z - BULLET_COLLECT ||
+		GetPosition().z >= GetPosition().z + BULLET_COLLECT)
+	{
+		this->Kill();
+	}
+
 	// 衝突判定用オブジェクト
-	pCollisionManager.AddObject(this);
+	m_gameResources.pCollisionManager->AddObject(this);
 
 	return true;
 }
@@ -55,7 +61,6 @@ void Bullet::Render()
 	// ワールド行列を初期化
 	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
 
-	world *= SimpleMath::Matrix::CreateScale(m_scale);
 	world *= SimpleMath::Matrix::CreateFromQuaternion(GetRotate());
  	world *= SimpleMath::Matrix::CreateTranslation(GetPosition().x, GetPosition().y, GetPosition().z);
 
@@ -75,5 +80,10 @@ void Bullet::Reset()
 // 衝突したら呼ばれる関数
 void Bullet::OnHit(GameObject* object)
 {
+	// 当たった相手が敵だったら消す
+	if (object->GetID() == static_cast<int>(ObjectID::Enemy))
+	{
+		this->Kill();
+	}
 }
 
