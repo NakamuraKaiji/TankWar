@@ -22,6 +22,7 @@ public:
 	{
 		Normal,			// ’Êí
 		Hit,			// ‚«”ò‚Î‚³‚êó‘Ô
+		Stop,           // ’â~
 	};
 
 public:

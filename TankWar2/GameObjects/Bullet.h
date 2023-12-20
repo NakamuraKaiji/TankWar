@@ -49,9 +49,6 @@ private:
 	// Collisionで作成したリソース
 	GameResources m_gameResources;
 
-private:
-	// 位置
-	DirectX::SimpleMath::Vector3 m_position;
 };
 
 #endif // !BULLET_DEFIEND

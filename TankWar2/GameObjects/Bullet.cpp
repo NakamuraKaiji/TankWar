@@ -23,7 +23,9 @@ void Bullet::Initialize()
 	m_context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	// –C’eƒ‚ƒfƒ‹‚ğæ“¾
 	m_bulletModel = Resources::GetInstance()->GetBullet();
-	
+
+	// •`‰æ‡‚Ìİ’è
+	SetOt(static_cast<int>(OT_Priority::OT_Object));
 }
 
 // XV

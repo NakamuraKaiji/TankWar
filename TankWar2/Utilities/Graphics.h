@@ -26,7 +26,7 @@ public:
 	// デバイスリソースを設定
 	void SetDeviceResources(DX::DeviceResources* pDR) { m_deviceResources = (pDR); }
 	// PrimitiveBatchクラスのインスタンスを取得
-	DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* GetPrimitiveBatch() const { return m_primitiveBatch.get(); }
+	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* GetPrimitiveBatch() const { return m_primitiveBatch.get(); }
 	// InputLayoutクラスのインスタンスを取得
 	ID3D11InputLayout* GetInputLayout() const { return m_inputLayout.Get(); }
 	// BasicEffectクラスのインスタンス取得
@@ -61,24 +61,9 @@ public:
 	void DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
 	// プリミティブ描画を終了
 	void DrawPrimitiveEnd();
-	// 線分を描画(XZ平面)
-	void DrawLine(const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& vector, const DirectX::FXMVECTOR& color);
-	// 線分を描画
-	void DrawLine(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& vector, const DirectX::FXMVECTOR& color);
-	// ベクトルを描画(XZ平面)
-	void DrawVector(const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& vector, const DirectX::FXMVECTOR& color);
-	void DrawVector(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& vector, const DirectX::FXMVECTOR& color);
-
-	// 円を描画(XZ平面)
-	void DrawCircle(const DirectX::SimpleMath::Vector2& center, const float& radius, const DirectX::FXMVECTOR& m_color = DirectX::Colors::White, const int& split = 32);
-	// 円を描画
-	void DrawCircle(const DirectX::SimpleMath::Vector3& center, const float& radius, const DirectX::FXMVECTOR& m_color = DirectX::Colors::White, const int& split = 32);
-	// 矩形を描画
-	void DrawQuad(const DirectX::VertexPositionColor& vector1, const DirectX::VertexPositionColor& vector2, const DirectX::VertexPositionColor& vector3, const DirectX::VertexPositionColor& vector4);
-	void DrawQuad(const DirectX::FXMVECTOR& point1, const DirectX::FXMVECTOR& point2, const DirectX::FXMVECTOR& point3, const DirectX::FXMVECTOR& point4, const DirectX::HXMVECTOR& color);
 	// モデルを描画
 	void DrawModel(const DirectX::Model* model, const DirectX::SimpleMath::Matrix& world, const bool& depthBuffer = true);
-	// アニメーションモデルを描画
+
 private:
 	// コンストラクタ
 	Graphics();
@@ -102,7 +87,7 @@ private:
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	// プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_primitiveBatch;
 	// エフェクトファクトリー
 	std::unique_ptr<DirectX::EffectFactory> m_effectFactory;
 	// ラスタライザーステート

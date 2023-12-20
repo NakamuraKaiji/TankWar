@@ -2,6 +2,7 @@
 #include "PlayerTank.h"
 #include "Utilities/Resources.h"
 #include "Bullet.h"
+#include "SmokeEffect.h"
 
 using namespace DirectX;
 
@@ -35,6 +36,9 @@ void PlayerTank::Initialize()
 	m_parts[ROOT]->SetChild(m_parts[BODY].get());
 	// 車体から砲身の親子関係
 	m_parts[BODY]->SetChild(m_parts[TURRET].get());
+
+	// 描画順の設定
+	SetOt(static_cast<int>(OT_Priority::OT_Object));
 }
 
 // 更新
@@ -105,10 +109,22 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 	// 向いている方向に力を加えて移動する
 	float force = PLAYER_MOVE_FORCE;
 
+	// 煙の速度ベクトル
+	SimpleMath::Vector3 velocity = SMOKE_EFFECT_SPEED;
+
 	// Wキーで前進
 	if (kb.W)
 	{
 		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), -force);
+		static int num = 0;
+		num++;
+		// 煙のエフェクトを発生させる
+		if (num > 30)
+		{
+			SimpleMath::Vector3 position = SimpleMath::Vector3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z);
+			GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
+			num = 0;
+		}
 	}
 	// Sキーで後進
 	if (kb.S)

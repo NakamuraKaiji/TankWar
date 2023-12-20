@@ -42,6 +42,9 @@ void EnemyTank::Initialize()
 	m_parts[BODY]->SetChild(m_parts[TURRET].get());
 
 	m_wanderOrientation = 0.0f;
+
+	// •`‰æ‡‚Ìİ’è
+	SetOt(static_cast<int>(OT_Priority::OT_Object));
 }
 
 // XV

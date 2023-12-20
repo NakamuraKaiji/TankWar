@@ -26,6 +26,12 @@
     <Filter Include="MyLib">
       <UniqueIdentifier>{16d06c52-ea84-4135-8f3e-88777ebf8763}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\InfoWindow">
+      <UniqueIdentifier>{46a76abd-4ac6-4100-b438-1f0809244ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{5978a949-29ce-4c9c-9af8-074ec6cc096f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -109,6 +115,9 @@
     <ClInclude Include="GameObjects\GameResources.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\SmokeEffect.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -177,6 +186,9 @@
     <ClCompile Include="Scenes\TitleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\SmokeEffect.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -216,5 +228,10 @@
     <MeshContentTask Include="Resources\fbx\Bullet.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resources\Textures\smoke_effect.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>
