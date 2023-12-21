@@ -96,8 +96,6 @@ void EnemyTank::Render()
 	m_parts[BODY]->SetTransformMatrix(mat);
 
 	// íŽÔ‚Ì•`‰æ
-	//SimpleMath::Matrix world;
-	//world *= SimpleMath::Matrix::CreateScale(0.01f, 0.01f, 0.01f);
 	m_parts[ROOT]->UpdateMatrix();
 	m_parts[ROOT]->Draw(context, *states, view, proj);
 

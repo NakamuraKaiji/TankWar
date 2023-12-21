@@ -6,8 +6,6 @@
 //			»ìÒ	FKaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef TANK_DEFINED
-#define TANK_DEFINED
 #include "ImaseLib/TaskManager.h"
 #include "GameObject.h"
 #include "GameParameter.h"
@@ -102,5 +100,3 @@ private:
 	// –Cg‚Ì‰ñ“]
 	DirectX::SimpleMath::Quaternion m_turretRotate;
 };
-
-#endif // !TANK_DEFINED

@@ -28,6 +28,10 @@ enum class OT_Priority
 // 衝突した時に絶対に加わる最小の力
 static constexpr float HIT_FORCE_MIN = 0.2f;
 
+// プレイヤーの残機
+static constexpr int PLAYER_CNT = 3;
+
+
 
 // ---- エフェクト関連 ----- //
 

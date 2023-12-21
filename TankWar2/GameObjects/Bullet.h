@@ -6,8 +6,6 @@
 //			êªçÏé“	ÅFKaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef BULLET_DEFIEND
-#define BULLET_DEFIEND
 #include "CollisionManager.h"
 #include "GameParameter.h"
 #include "GameResources.h"
@@ -50,7 +48,4 @@ private:
 	GameResources m_gameResources;
 
 };
-
-#endif // !BULLET_DEFIEND
-
 

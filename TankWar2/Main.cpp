@@ -14,9 +14,9 @@ using namespace DirectX;
 
 #pragma warning(disable : 4061)
 
-#define WS_MY_WINDOW (WS_OVERLAPPED     | \
-                      WS_CAPTION        | \
-                      WS_SYSMENU        | \
+#define WS_MY_WINDOW (WS_OVERLAPPED | \
+                      WS_CAPTION    | \
+                      WS_SYSMENU    | \
                       WS_MINIMIZEBOX)
 
 
@@ -52,17 +52,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     static bool s_fullscreen = false;
 
-    // 画面モード選択
-    //if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面モード設定", MB_YESNO) == IDYES)
-    //{
-    //    s_fullscreen = true;
-    //}
-    //else
-    //{
-    //    s_fullscreen = false;
-    //}
-
-
     // キーボードの作成
     std::unique_ptr<Keyboard> keyboard;
     keyboard = std::make_unique<Keyboard>();
@@ -70,8 +59,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     // マウスの作成
     std::unique_ptr<Mouse> mouse;
     mouse = std::make_unique<Mouse>();
-
-
 
     g_game = std::make_unique<Game>();
 
@@ -97,13 +84,17 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         RECT rc = { 0, 0, static_cast<LONG>(w), static_cast<LONG>(h) };
 
-        AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-
-        HWND hwnd = CreateWindowExW(0, L"TankWar2WindowClass", g_szAppName, WS_OVERLAPPEDWINDOW,
+        // ウィンドウサイズを固定
+        AdjustWindowRect(&rc, WS_MY_WINDOW, FALSE);
+        HWND hwnd = CreateWindowExW(0, L"TankWar2WindowClass", g_szAppName, WS_MY_WINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
-        // TODO: Change to CreateWindowExW(WS_EX_TOPMOST, L"TankWar2WindowClass", g_szAppName, WS_POPUP,
-        // to default to fullscreen.
+
+        // 拡大を許可したい場合は上のプログラムをコメントにし、下のプログラムのコメントを外す
+        //AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+        //HWND hwnd = CreateWindowExW(0, L"TankWar2WindowClass", g_szAppName, WS_OVERLAPPEDWINDOW,
+        //    CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
+        //    nullptr);
 
         if (!hwnd)
             return 1;
@@ -117,9 +108,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
     }
-
-    // フルスクリーンに設定する
-    if (s_fullscreen) g_game->SetFullscreenState(s_fullscreen);
 
     // Main message loop
     MSG msg = {};
@@ -136,9 +124,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         }
     }
 
-    // ウィンドウモードに戻す
-    if (s_fullscreen) g_game->SetFullscreenState(FALSE);
-
     g_game.reset();
 
     CoUninitialize();
@@ -152,7 +137,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static bool s_in_sizemove = false;
     static bool s_in_suspend = false;
     static bool s_minimized = false;
-    static bool s_fullscreen = false;
     // TODO: Set s_fullscreen to true if defaulting to fullscreen.
 
     auto game = reinterpret_cast<Game*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -186,29 +170,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
 
-    //case WM_SIZE:
-    //    if (wParam == SIZE_MINIMIZED)
-    //    {
-    //        if (!s_minimized)
-    //        {
-    //            s_minimized = true;
-    //            if (!s_in_suspend && game)
-    //                game->OnSuspending();
-    //            s_in_suspend = true;
-    //        }
-    //    }
-    //    else if (s_minimized)
-    //    {
-    //        s_minimized = false;
-    //        if (s_in_suspend && game)
-    //            game->OnResuming();
-    //        s_in_suspend = false;
-    //    }
-    //    else if (!s_in_sizemove && game)
-    //    {
-    //        game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
-    //    }
-    //    break;
+    case WM_SIZE:
+        if (wParam == SIZE_MINIMIZED)
+        {
+            if (!s_minimized)
+            {
+                s_minimized = true;
+                if (!s_in_suspend && game)
+                    game->OnSuspending();
+                s_in_suspend = true;
+            }
+        }
+        else if (s_minimized)
+        {
+            s_minimized = false;
+            if (s_in_suspend && game)
+                game->OnResuming();
+            s_in_suspend = false;
+        }
+        else if (!s_in_sizemove && game)
+        {
+            game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
+        }
+        break;
 
     case WM_ENTERSIZEMOVE:
         s_in_sizemove = true;

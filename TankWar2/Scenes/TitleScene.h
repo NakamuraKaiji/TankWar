@@ -6,8 +6,6 @@
 //			êªçÏé“	ÅFKaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef TITLE_SCENE_DEFINED
-#define TITLE_SCENE_DEFINED
 #include "ImaseLib/SceneManager.h"
 #include "UserResources.h"
 #include "ImaseLib/GridFloor.h"
@@ -94,5 +92,3 @@ private:
 	float m_bulletRecovery;
 
 };
-
-#endif // !TITLE_SCENE_DEFINED

@@ -35,8 +35,8 @@ void Game::Initialize(HWND window, int width, int height)
     m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
 
-    m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 60);
+    //m_timer.SetFixedTimeStep(true);
+    //m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
     // 初期起動シーン
     m_sceneManager->SetScene<PlayScene>();
@@ -191,14 +191,6 @@ void Game::GetDefaultSize(int& width, int& height) const noexcept
     height = 720;
 }
 
-//  画面モードを設定する関数（TRUE : フルスクリーン）
-void Game::SetFullscreenState(BOOL value)
-{
-    m_fullscreen = value;
-    m_deviceResources->GetSwapChain()->SetFullscreenState(m_fullscreen, nullptr);
-    if (value) m_deviceResources->CreateWindowSizeDependentResources();
-}
-
 #pragma endregion
 
 #pragma region Direct3D Resources
@@ -235,7 +227,7 @@ void Game::CreateWindowSizeDependentResources()
 {
     // TODO: Initialize windows-size dependent objects here.
 
-        // シーンのウィンドウのサイズが変更された時に呼ばれる処理
+    // シーンのウィンドウのサイズが変更された時に呼ばれる処理
     m_sceneManager->CreateWindowSizeDependentResources();
 }
 

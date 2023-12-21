@@ -195,6 +195,8 @@
     <ClInclude Include="GameObjects\SmokeEffect.h" />
     <ClInclude Include="GameObjects\Stage.h" />
     <ClInclude Include="GameObjects\PlayerTank.h" />
+    <ClInclude Include="GameObjects\UI\Life.h" />
+    <ClInclude Include="GameObjects\UI\UI.h" />
     <ClInclude Include="ImaseLib\DebugCamera.h" />
     <ClInclude Include="ImaseLib\DebugFont.h" />
     <ClInclude Include="ImaseLib\DisplayCollision.h" />
@@ -225,6 +227,8 @@
     <ClCompile Include="GameObjects\SmokeEffect.cpp" />
     <ClCompile Include="GameObjects\Stage.cpp" />
     <ClCompile Include="GameObjects\PlayerTank.cpp" />
+    <ClCompile Include="GameObjects\UI\Life.cpp" />
+    <ClCompile Include="GameObjects\UI\UI.cpp" />
     <ClCompile Include="ImaseLib\DebugCamera.cpp" />
     <ClCompile Include="ImaseLib\DebugFont.cpp" />
     <ClCompile Include="ImaseLib\DisplayCollision.cpp" />
@@ -249,6 +253,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico" />
+    <ImageContentTask Include="Resources\Textures\Life.png">
+      <Compress Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BC3_UNORM</Compress>
+      <GeneratePremultipliedAlpha Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</GeneratePremultipliedAlpha>
+      <GenerateMips Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</GenerateMips>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\smoke_effect.png">
       <Compress Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BC3_UNORM</Compress>
       <GeneratePremultipliedAlpha Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</GeneratePremultipliedAlpha>

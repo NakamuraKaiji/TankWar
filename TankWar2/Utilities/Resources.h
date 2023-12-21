@@ -25,6 +25,11 @@ public:
 	// 砲弾を取得する
 	std::shared_ptr<DirectX::Model> GetBullet() { return m_bullet; }
 
+	// 煙のテクスチャを取得する
+	ID3D11ShaderResourceView* GetSmoke() { return m_smokeTexture.Get(); }
+	// 残機のテクスチャの取得する
+	ID3D11ShaderResourceView* GetLife() { return m_life.Get(); }
+
 public:
 	// Resoucesクラスのインスタンスを取得する
 	static Resources* const GetInstance();
@@ -38,6 +43,7 @@ private:
 		, m_enemyTankTurret{}
 		, m_skydome{}
 		, m_bullet{}
+		, m_smokeTexture{}
 	{}
 	// 代入は許容しない
 	void operator=(const Resources& object) = delete;
@@ -64,6 +70,11 @@ private:
 	std::shared_ptr<DirectX::Model> m_skydome;
 	// 砲弾モデル
 	std::shared_ptr<DirectX::Model> m_bullet;
+
+	// 煙のテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_smokeTexture;
+	// 残機のテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_life;
 
 };
 

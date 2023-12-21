@@ -6,8 +6,6 @@
 //			製作者	：Kaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef PLAYER_SCENE_DEFINED
-#define PLAYER_SCENE_DEFINED
 #include "ImaseLib/SceneManager.h"
 #include "UserResources.h"
 #include "ImaseLib/TaskManager.h"
@@ -15,6 +13,7 @@
 #include "GameObjects/PlayerCamera.h"
 #include "GameObjects/Stage.h"
 #include "GameObjects/CollisionManager.h"
+#include "GameObjects/UI/UI.h"
 
 class PlayScene :public Imase::Scene<UserResources>
 {
@@ -67,6 +66,9 @@ private:
 	// 衝突判定用オブジェクト
 	CollisionManager m_collisionManager;
 
+	// UI
+	UI* m_UI;;
+
 private:
 
 	// ビュー行列
@@ -75,6 +77,7 @@ private:
 	// 射影行列
 	DirectX::SimpleMath::Matrix m_proj;
 
-};
+	// 残機数
+	int m_life;
 
-#endif // !PLAYER_SCENE_DEFINED
+};

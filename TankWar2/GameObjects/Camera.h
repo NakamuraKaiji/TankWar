@@ -6,8 +6,6 @@
 //			§ìÒ	FKaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef CAMERA_DEFINED
-#define CAMERA_DEFINED
 
 class Camera
 {
@@ -46,5 +44,3 @@ public:
 	// ’‹“_‚Ö‚Ì‹——£‚Ì·•ª‚É‘Î‚·‚éŠ„‡‚ğİ’è‚·‚éŠÖ”
 	void SetCameraTargetMoveRate(float rate) { m_targetMoveRate = rate; }
 };
-
-#endif // !CAMERA_DEFINED

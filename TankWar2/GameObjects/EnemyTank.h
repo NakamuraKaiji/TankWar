@@ -6,8 +6,6 @@
 //			êªçÏé“	ÅFKaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef ENEMY_TANK_DEFINED
-#define ENEMY_TANK_DEFIEND
 #include "GameObject.h"
 #include "GameParameter.h"
 #include "ImaseLib/ModelPart.h"
@@ -112,6 +110,3 @@ private:
 	// ñCíeÇÃî≠éÀä‘äu
 	float m_interval;
 };
-
-#endif // !ENEMY_TANK_DEFINED
-

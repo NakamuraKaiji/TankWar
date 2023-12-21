@@ -6,8 +6,6 @@
 //			制作者	：Kaiji Nakamura
 //*********************************************************************
 #pragma once
-#ifndef PLAYER_CAMERA_DEFINED
-#define PLAYER_CAMERA_DEFINED
 #include "Camera.h"
 
 // プレイヤーカメラ
@@ -51,5 +49,3 @@ public:
 		m_type = type;
 	}
 };
-
-#endif // !PLAYER_CAMERA_DEFINED

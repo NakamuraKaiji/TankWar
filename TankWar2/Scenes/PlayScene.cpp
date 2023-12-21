@@ -18,6 +18,8 @@ PlayScene::PlayScene()
 	, m_proj{}
 	, m_skydomeModel{}
 	, m_stage{}
+	, m_UI{}
+	, m_life{}
 {
 }
 
@@ -26,6 +28,10 @@ void PlayScene::Initialize()
 {
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
+
+	// 残機数を設定
+	m_life = PLAYER_CNT;
+	m_UI->GetLife()->SetLife(m_life);
 }
 
 // 更新
@@ -46,11 +52,17 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	m_playerCamera.SetType(PlayerCamera::Type::TYPE_A);
 	m_playerCamera.SetPlayer(m_stage->GetPlayer()->GetPosition(), m_stage->GetPlayer()->GetBodyRotate() * m_stage->GetPlayer()->GetTurretRotate());
 
-	//m_playerCamera.SetPlayer(m_tank->GetPosition(), m_tank->GetBodyRotate() * m_tank->GetTurretRotate());
 	// カメラの更新
 	m_playerCamera.Update(timer.GetElapsedSeconds());
-
+	
+	// 衝突判定の更新
 	m_collisionManager.Update();
+
+	if (kbTracker->pressed.Z)
+	{
+		m_life--;
+		m_UI->GetLife()->SetLife(m_life);
+	}
 }
 
 // 描画
@@ -77,10 +89,15 @@ void PlayScene::Render()
 	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
 	// グリッドの床を描画
-	m_gridFloor->Render(context, m_view = m_graphics->GetViewMatrix(), m_proj);
+	m_gridFloor->Render(context, m_view = m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+
+	if (m_graphics->GetSpriteBatch()) m_graphics->GetSpriteBatch()->Begin();
 
 	// タスクの描画
 	m_taskManager.Render();
+
+	if (m_graphics->GetSpriteBatch()) m_graphics->GetSpriteBatch()->End();
+
 }
 
 // 終了
@@ -112,11 +129,15 @@ void PlayScene::CreateDeviceDependentResources()
 
 	// ステージを作成 
 	GameResources gameResources = {&m_collisionManager};
+	if (m_stage) m_stage->Kill();
 	m_stage = m_taskManager.AddTask<Stage>(gameResources);
 	
 	// ステージデータの設定
 	m_stage->SetStageData();
 
+	// UIの作成
+	if (m_UI) m_UI->Kill();
+	m_UI = m_taskManager.AddTask<UI>();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

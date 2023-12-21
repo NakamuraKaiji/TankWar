@@ -26,11 +26,11 @@
     <Filter Include="MyLib">
       <UniqueIdentifier>{16d06c52-ea84-4135-8f3e-88777ebf8763}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObjects\InfoWindow">
-      <UniqueIdentifier>{46a76abd-4ac6-4100-b438-1f0809244ca2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Textures">
       <UniqueIdentifier>{5978a949-29ce-4c9c-9af8-074ec6cc096f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\UI">
+      <UniqueIdentifier>{0ae6f25c-78f0-4aea-b801-0dbfed2a9c81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +118,12 @@
     <ClInclude Include="GameObjects\SmokeEffect.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\UI\Life.h">
+      <Filter>GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\UI\UI.h">
+      <Filter>GameObjects\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -189,6 +195,12 @@
     <ClCompile Include="GameObjects\SmokeEffect.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\UI\Life.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\UI\UI.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -231,6 +243,9 @@
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Resources\Textures\smoke_effect.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Life.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
   </ItemGroup>

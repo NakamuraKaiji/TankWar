@@ -77,6 +77,9 @@ void PlayerTank::Render()
 	view = m_graphics->GetViewMatrix();
 	proj = m_graphics->GetProjectionMatrix();
 
+	//view = SimpleMath::Matrix::CreateLookAt(SimpleMath::Vector3(5, 5, 0), SimpleMath::Vector3(0, 0, 0), SimpleMath::Vector3::UnitY);
+	//proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(XMConvertToRadians(45.0f), 1280 / 720.0f, 0.1, 100.0f);
+
 	// íÔ‚Ì‰ñ“]
 	m_parts[BODY]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate));
 	// –Cg‚Ì‰ñ“]
@@ -89,7 +92,6 @@ void PlayerTank::Render()
 	// íÔ‚Ì•`‰æ
 	m_parts[ROOT]->UpdateMatrix();
 	m_parts[ROOT]->Draw(context, *states, view, proj);
-
 }
 
 // ƒŠƒZƒbƒg

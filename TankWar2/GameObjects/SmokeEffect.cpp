@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SmokeEffect.h"
 #include "GameParameter.h"
+#include "Utilities/Resources.h"
 
 using namespace DirectX;
 
@@ -13,13 +14,8 @@ SmokeEffect::SmokeEffect(DirectX::SimpleMath::Vector3 position,
 	, m_timer(SMOKE_EFFECT_DISPLAY_TIME)
 	, m_alpha(0.0f)
 {
-	// テクスチャ読み込み
-	DX::ThrowIfFailed(
-		CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
-			L"Resources/Textures/smoke_effect.dds", 
-			nullptr, 
-			m_smokeTexture.ReleaseAndGetAddressOf())
-	);
+	// テクスチャを取得
+	m_smokeTexture = Resources::GetInstance()->GetSmoke();
 
 	// 描画順の設定
 	SetOt(static_cast<int>(OT_Priority::OT_Top));

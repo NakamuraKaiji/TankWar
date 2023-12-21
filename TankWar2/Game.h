@@ -48,10 +48,6 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const noexcept;
 
-public:
-    // 画面モードを設定する関数（TRUE：フルスクリーン）
-    void SetFullscreenState(BOOL value);
-
 
 private:
 
