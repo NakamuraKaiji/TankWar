@@ -13,7 +13,7 @@
 #include "GameObjects/PlayerCamera.h"
 #include "GameObjects/Stage.h"
 #include "GameObjects/CollisionManager.h"
-#include "GameObjects/UI/UI.h"
+#include "GameObjects/UI/UserInterface.h"
 
 class PlayScene :public Imase::Scene<UserResources>
 {
@@ -67,7 +67,7 @@ private:
 	CollisionManager m_collisionManager;
 
 	// UI
-	UI* m_UI;;
+	UserInterface* m_userInterface;;
 
 private:
 

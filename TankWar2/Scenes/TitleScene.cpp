@@ -101,7 +101,7 @@ void TitleScene::Render()
 	// テクスチャの描画
 	m_graphics->GetSpriteBatch()->Begin();
 	m_graphics->GetSpriteBatch()->Draw(m_titleSRV.Get(), SimpleMath::Vector2(173.0f, 25.0f));
-	if (m_count >= 60)
+	if (m_count <= 60)
 	{
 		m_graphics->GetSpriteBatch()->Draw(m_pushSRV.Get(), SimpleMath::Vector2(0.0, 550.0f));
 	}

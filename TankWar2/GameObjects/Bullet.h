@@ -47,5 +47,7 @@ private:
 	// Collision‚Åì¬‚µ‚½ƒŠƒ\[ƒX
 	GameResources m_gameResources;
 
+	float m_num;
+
 };
 

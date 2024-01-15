@@ -173,6 +173,8 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
 		// e‚ð•ÏX‚·‚é
 		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
+
+		SetVelocity(SimpleMath::Vector3::Zero);
 	}
 
 }

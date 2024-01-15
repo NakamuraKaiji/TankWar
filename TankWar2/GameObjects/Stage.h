@@ -52,6 +52,9 @@ public:
 	// ƒvƒŒƒCƒ„[‚ğæ“¾
 	PlayerTank* GetPlayer() { return m_playerTask; }
 
+	// “G‚ğæ“¾
+	EnemyTank* GetEnemy() { return m_enemyTask; }
+
 	// ‘S‚Ä‚Ì“G‚ğ’â~
 	void StopAllEnemy(bool isStop);
 

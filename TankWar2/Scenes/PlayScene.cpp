@@ -9,6 +9,7 @@
 #include "PlayScene.h"
 #include "Utilities/Resources.h"
 #include "GameObjects/GameResources.h"
+#include "ResultScene.h"
 
 using namespace DirectX;
 
@@ -18,7 +19,7 @@ PlayScene::PlayScene()
 	, m_proj{}
 	, m_skydomeModel{}
 	, m_stage{}
-	, m_UI{}
+	, m_userInterface{}
 	, m_life{}
 {
 }
@@ -31,7 +32,7 @@ void PlayScene::Initialize()
 
 	// 残機数を設定
 	m_life = PLAYER_CNT;
-	m_UI->GetLife()->SetLife(m_life);
+	m_userInterface->GetLife()->SetLife(m_life);
 }
 
 // 更新
@@ -48,6 +49,10 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	// プレイヤーの移動処理
 	m_stage->GetPlayer()->Move(kbTracker);
 
+	// 敵の位置情報を渡す
+	m_userInterface->GetEnemyHP()->SetPosition(m_stage->GetEnemy()->GetPosition());
+	m_userInterface->GetEnemyHP()->CreateBillboard(m_playerCamera.GetTargetPosition(), m_playerCamera.GetEyePosition(), SimpleMath::Vector3::Up);
+
 	// カメラの設定
 	m_playerCamera.SetType(PlayerCamera::Type::TYPE_A);
 	m_playerCamera.SetPlayer(m_stage->GetPlayer()->GetPosition(), m_stage->GetPlayer()->GetBodyRotate() * m_stage->GetPlayer()->GetTurretRotate());
@@ -58,10 +63,27 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	// 衝突判定の更新
 	m_collisionManager.Update();
 
+	// 当たったら残機を減らす
+	if (m_stage->GetPlayer()->GetState() == PlayerTank::PlayerState::Hit)
+	{
+		m_life--;
+		m_userInterface->GetLife()->SetLife(m_life);
+		if (m_life == 0)
+		{
+			// リザルトシーンに切り替え
+			ChangeScene<ResultScene>();
+		}
+	}
+	// デバッグ用
 	if (kbTracker->pressed.Z)
 	{
 		m_life--;
-		m_UI->GetLife()->SetLife(m_life);
+		m_userInterface->GetLife()->SetLife(m_life);
+		if (m_life == 0)
+		{
+			// リザルトシーンに切り替え
+			ChangeScene<ResultScene>();
+		}
 	}
 }
 
@@ -82,6 +104,9 @@ void PlayScene::Render()
 
 	// ビュー行列を設定
 	m_graphics->SetViewMatrix(m_view);
+
+	// インプットレイアウトを登録
+	m_graphics->GetDeviceResources()->GetD3DDeviceContext()->IASetInputLayout(m_graphics->GetInputLayout());
 
 	// スカイドームの描画
 	SimpleMath::Matrix skyWorld;
@@ -136,8 +161,8 @@ void PlayScene::CreateDeviceDependentResources()
 	m_stage->SetStageData();
 
 	// UIの作成
-	if (m_UI) m_UI->Kill();
-	m_UI = m_taskManager.AddTask<UI>();
+	if (m_userInterface) m_userInterface->Kill();
+	m_userInterface = m_taskManager.AddTask<UserInterface>();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

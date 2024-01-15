@@ -13,6 +13,7 @@ Bullet::Bullet(const GameResources& gameResources,
 	: GameObject(static_cast<int>(ObjectID::Bullet), position, rotate, BULLET_RADIUS, BULLET_FRICTION, BULLET_WEIGHT)
 	, m_gameResources(gameResources)
 	, m_context{}
+	, m_num(0.0f)
 {
 }
 
@@ -31,8 +32,6 @@ void Bullet::Initialize()
 // 更新
 bool Bullet::Update(float elapsedTime)
 {
-	UNREFERENCED_PARAMETER(elapsedTime);
-
 	// 基底クラスの更新関数を呼び出して移動する
 	GameObject::Update(elapsedTime);
 
@@ -52,7 +51,11 @@ bool Bullet::Update(float elapsedTime)
 	}
 
 	// 衝突判定用オブジェクト
-	m_gameResources.pCollisionManager->AddObject(this);
+	m_num += elapsedTime;
+	if (m_num > 0.2f)
+	{
+		m_gameResources.pCollisionManager->AddObject(this);
+	}
 
 	return true;
 }
@@ -64,11 +67,13 @@ void Bullet::Render()
 	SimpleMath::Matrix world = SimpleMath::Matrix::Identity;
 
 	world *= SimpleMath::Matrix::CreateFromQuaternion(GetRotate());
- 	world *= SimpleMath::Matrix::CreateTranslation(GetPosition().x, GetPosition().y, GetPosition().z);
+ 	world *= SimpleMath::Matrix::CreateTranslation(GetPosition());
+	//SimpleMath::Vector3 dis = SimpleMath::Vector3(0.0f, 0.0, 0.0f);
+	//world *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3::Transform(dis, GetRotate()));
 
 	// プリミティブ描画を開始
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-	// 「タンク」を描画
+	// 砲弾を描画
 	m_graphics->DrawModel(m_bulletModel.get(), world);
 	// プリミティブ描画を終了
 	m_graphics->DrawPrimitiveEnd();
@@ -82,10 +87,10 @@ void Bullet::Reset()
 // 衝突したら呼ばれる関数
 void Bullet::OnHit(GameObject* object)
 {
-	// 当たった相手が敵だったら消す
-	if (object->GetID() == static_cast<int>(ObjectID::Enemy))
-	{
+	//// 当たった相手が敵だったら消す
+	//if (object->GetID() == static_cast<int>(ObjectID::Enemy))
+	//{
 		this->Kill();
-	}
+	//}
 }
 

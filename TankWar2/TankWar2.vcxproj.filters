@@ -32,6 +32,9 @@
     <Filter Include="GameObjects\UI">
       <UniqueIdentifier>{0ae6f25c-78f0-4aea-b801-0dbfed2a9c81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{049a7491-c9a4-4e6a-9a1e-7c443b0a8fb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -121,8 +124,17 @@
     <ClInclude Include="GameObjects\UI\Life.h">
       <Filter>GameObjects\UI</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\UI\UI.h">
+    <ClInclude Include="GameObjects\UI\UserInterface.h">
       <Filter>GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ResultScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\UI\EnemyHP.h">
+      <Filter>GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\BinaryFile.h">
+      <Filter>MyLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,8 +210,17 @@
     <ClCompile Include="GameObjects\UI\Life.cpp">
       <Filter>GameObjects\UI</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\UI\UI.cpp">
+    <ClCompile Include="GameObjects\UI\UserInterface.cpp">
       <Filter>GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ResultScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\UI\EnemyHP.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLib\BinaryFile.cpp">
+      <Filter>MyLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\HP.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Resources\fbx\Skydome.fbx">
@@ -248,5 +272,16 @@
     <ImageContentTask Include="Resources\Textures\Life.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\HP_GS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\HP_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\HP_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

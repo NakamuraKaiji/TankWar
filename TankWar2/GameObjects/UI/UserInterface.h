@@ -8,13 +8,14 @@
 #pragma once
 #include "ImaseLib/TaskManager.h"
 #include "Life.h"
+#include "EnemyHP.h"
 
-class UI : public Imase::Task
+class UserInterface : public Imase::Task
 {
 public:
 
 	// コンストラクタ
-	UI();
+	UserInterface();
 
 	// 初期化
 	void Initialize() override;
@@ -23,6 +24,9 @@ public:
 
 	// 残機数にアクセスする関数
 	Life* GetLife() { return m_life; }
+
+	// 敵のHPにアクセスする関数
+	EnemyHP* GetEnemyHP() { return m_enemyHP; }
 
 public:
 
@@ -40,4 +44,7 @@ private:
 
 	// 残機
 	Life* m_life;
+
+	// 敵のHP
+	EnemyHP* m_enemyHP;
 };

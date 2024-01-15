@@ -195,8 +195,9 @@
     <ClInclude Include="GameObjects\SmokeEffect.h" />
     <ClInclude Include="GameObjects\Stage.h" />
     <ClInclude Include="GameObjects\PlayerTank.h" />
+    <ClInclude Include="GameObjects\UI\EnemyHP.h" />
     <ClInclude Include="GameObjects\UI\Life.h" />
-    <ClInclude Include="GameObjects\UI\UI.h" />
+    <ClInclude Include="GameObjects\UI\UserInterface.h" />
     <ClInclude Include="ImaseLib\DebugCamera.h" />
     <ClInclude Include="ImaseLib\DebugFont.h" />
     <ClInclude Include="ImaseLib\DisplayCollision.h" />
@@ -205,9 +206,11 @@
     <ClInclude Include="ImaseLib\ModelPart.h" />
     <ClInclude Include="ImaseLib\SceneManager.h" />
     <ClInclude Include="ImaseLib\TaskManager.h" />
+    <ClInclude Include="MyLib\BinaryFile.h" />
     <ClInclude Include="MyLib\Collision.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scenes\PlayScene.h" />
+    <ClInclude Include="Scenes\ResultScene.h" />
     <ClInclude Include="Scenes\TitleScene.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="UserResources.h" />
@@ -227,8 +230,9 @@
     <ClCompile Include="GameObjects\SmokeEffect.cpp" />
     <ClCompile Include="GameObjects\Stage.cpp" />
     <ClCompile Include="GameObjects\PlayerTank.cpp" />
+    <ClCompile Include="GameObjects\UI\EnemyHP.cpp" />
     <ClCompile Include="GameObjects\UI\Life.cpp" />
-    <ClCompile Include="GameObjects\UI\UI.cpp" />
+    <ClCompile Include="GameObjects\UI\UserInterface.cpp" />
     <ClCompile Include="ImaseLib\DebugCamera.cpp" />
     <ClCompile Include="ImaseLib\DebugFont.cpp" />
     <ClCompile Include="ImaseLib\DisplayCollision.cpp" />
@@ -236,6 +240,7 @@
     <ClCompile Include="ImaseLib\ModelCollision.cpp" />
     <ClCompile Include="ImaseLib\TaskManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MyLib\BinaryFile.cpp" />
     <ClCompile Include="MyLib\Collision.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -244,6 +249,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scenes\PlayScene.cpp" />
+    <ClCompile Include="Scenes\ResultScene.cpp" />
     <ClCompile Include="Scenes\TitleScene.cpp" />
     <ClCompile Include="Utilities\Graphics.cpp" />
     <ClCompile Include="Utilities\Resources.cpp" />
@@ -271,6 +277,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\HP.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Resources\fbx\Bullet.fbx">
@@ -294,6 +301,30 @@
     <MeshContentTask Include="Resources\fbx\TankTurret.fbx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\HP_GS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\HP_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\HP_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

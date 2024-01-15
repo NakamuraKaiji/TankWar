@@ -56,7 +56,7 @@ static constexpr float PLAYER_WEIGHT = 0.8f;
 static constexpr float PLAYER_FRICTION = 0.1f;
 
 // プレイヤーの最大移動速度
-static constexpr float PLAYER_MAX_SPEED = 0.06f;
+static constexpr float PLAYER_MAX_SPEED = 0.04f;
 
 // プレイヤーの車体の回転速度
 static constexpr float PLAYER_BODY_ROTATE = 1.0f;

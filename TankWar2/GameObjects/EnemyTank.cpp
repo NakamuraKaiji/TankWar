@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "EnemyTank.h"
 #include "Utilities/Resources.h"
+#include "Bullet.h"
 #include <random>
 
 using namespace DirectX;
-
 
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 EnemyTank::EnemyTank(const GameResources& gameResources, DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Quaternion rotate)
@@ -126,17 +126,17 @@ void EnemyTank::Normal(float elapsedTime)
 	// ‘€‘Ç—Í‚Ì’è‹`
 	SimpleMath::Vector3 steeringforce = SimpleMath::Vector3::Zero;
 	// ’Tõs“®
-	//steeringforce += Seek(m_playerPos);
+	//steeringforce += Seek(m_target->GetPosition());
 
 	// œpœjs“®
 	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f, elapsedTime);
 
 	SimpleMath::Vector3 toTarget = GetPosition() - m_target->GetPosition();
 
-	float radius = 7.0f;
+	float radius = 5.0f;
 	if (toTarget.Length() > radius)
 	{
-		steeringforce += Seek(m_target->GetPosition());
+		steeringforce -= Seek(m_target->GetPosition());
 	}
 
 	// •¨‘Ì‚É—^‚¦‚ç‚ê‚½—Í[m/s2]
@@ -153,22 +153,29 @@ void EnemyTank::Normal(float elapsedTime)
 	m_velocity += acceleration * elapsedTime;
 	m_velocity = Truncate(m_velocity, ENEMY_MAX_SPEED);
 
-	// À•W‚ÌXV
-	SetPosition(GetPosition() + (m_velocity * elapsedTime));
+	AddForce(SimpleMath::Vector3::Transform(-OBJECT_FORWARD, m_bodyRotate), ENEMY_MOVE_FORCE);
 
-	AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), ENEMY_MOVE_FORCE);
+	// À•W‚ÌXV
+	SetPosition(GetPosition() - (m_velocity * elapsedTime));
 
 	// is•ûŒü‚ðŒü‚­
 	TurnHeading(m_velocity);
 
 	// ‰ñ“]Šp‚ðŒvŽZ‚·‚é
-	m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, atan2(toTarget.z, toTarget.x));
+	//m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, atan2(toTarget.z, toTarget.x));
 
 	// –C’e‚Ì”­ŽËŠÔŠu
 	m_interval += elapsedTime;
 	// 2•bŠÔŠu‚Å”­ŽË
 	if (m_interval >= 2.0f)
 	{
+		// ’e‚ð”­ŽË‚·‚é
+		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
+		// e‚ð•ÏX‚·‚é
+		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
+
+		SetVelocity(SimpleMath::Vector3::Zero);
+
 		m_interval = 0.0f;
 	}
 }
@@ -186,7 +193,7 @@ void EnemyTank::Hit()
 // Žw’è‚Ì•ûŒü‚ÉŒü‚­
 void EnemyTank::TurnHeading(const DirectX::SimpleMath::Vector3& direction)
 {
-	if (direction.Length() > 0.0001f)
+	if (direction.Length() > 0.001f)
 	{
 		SimpleMath::Quaternion rotation = SimpleMath::Quaternion::FromToRotation(SimpleMath::Vector3::Forward, direction);
 		m_bodyRotate = rotation;
