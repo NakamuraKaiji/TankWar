@@ -273,6 +273,9 @@
     <MeshContentTask Include="Resources\fbx\LoseTank.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Ground.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Resources\Textures\smoke_effect.png">

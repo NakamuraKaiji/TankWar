@@ -13,6 +13,7 @@ TitleScene::TitleScene()
 	, m_tankBodyModel{}
 	, m_tankTurretModel{}
 	, m_bulletModel{}
+	, m_groundModel{}
 	, m_rotate{}
 	, m_bulletPos{}
 	, m_angle(-45.0f)
@@ -88,8 +89,10 @@ void TitleScene::Render()
 		m_playerCamera.GetTargetPosition(),
 		SimpleMath::Vector3::UnitY);
 
-	// グリッドの床を描画
-	m_gridFloor->Render(context, m_view, m_proj);
+	// 地面を描画
+	SimpleMath::Matrix groundWorld;
+	groundWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(0.0f, -0.5f, 0.0f));
+	m_groundModel->Draw(context, *states, groundWorld, m_view, m_proj);
 
 	// スカイドームの描画
 	SimpleMath::Matrix skyWorld;
@@ -123,7 +126,6 @@ void TitleScene::Render()
 // 終了
 void TitleScene::Finalize()
 {
-	m_gridFloor.reset();
 	m_titleSRV.Reset();
 	m_pushSRV.Reset();
 }
@@ -142,9 +144,6 @@ void TitleScene::CreateDeviceDependentResources()
 
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
-
-	// グリッド床を生成
-	m_gridFloor = std::make_unique<Imase::GridFloor>(device, context, states);
 
 	// タイトルテクスチャの読み込み
 	DX::ThrowIfFailed(
@@ -188,6 +187,8 @@ void TitleScene::CreateDeviceDependentResources()
 	m_tankTurretModel = Resources::GetInstance()->GetTankTurret();
 	// 砲弾モデルの作成
 	m_bulletModel     = Resources::GetInstance()->GetBullet();
+	// 地面モデルの作成
+	m_groundModel = Resources::GetInstance()->GetGround();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

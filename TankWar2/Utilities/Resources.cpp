@@ -28,12 +28,12 @@ void Resources::LoadResource()
 	m_skydome         = Model::CreateFromCMO(m_device, L"Resources/cmo/Skydome.cmo", *m_graphics->GetFX());
 	m_bullet		  = Model::CreateFromCMO(m_device, L"Resources/cmo/Bullet.cmo", *m_graphics->GetFX());
 	m_loseTank		  = Model::CreateFromCMO(m_device, L"Resources/cmo/LoseTank.cmo", *m_graphics->GetFX());
+	m_ground          = Model::CreateFromCMO(m_device, L"Resources/cmo/Ground.cmo", *m_graphics->GetFX());
 
 	// テクスチャ
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
-			L"Resources/dds/smoke_effect.dds",	nullptr, m_smokeTexture.ReleaseAndGetAddressOf())
+		L"Resources/dds/smoke_effect.dds",	nullptr, m_smokeTexture.ReleaseAndGetAddressOf())
 	);
-
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources/dds/Life.dds", nullptr, m_life.ReleaseAndGetAddressOf())
 	);

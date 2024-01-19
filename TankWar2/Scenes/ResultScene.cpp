@@ -16,6 +16,7 @@ ResultScene::ResultScene()
 	, m_tankBodyModel{}
 	, m_tankTurretModel{}
 	, m_loseTankModel{}
+	, m_groundModel{}
 	, m_tankPosition{}
 	, m_smokeTime(0.0f)
 	, m_vectoryFlag(false)
@@ -93,8 +94,10 @@ void ResultScene::Render()
 	// タスクの描画
 	m_taskManager.Render();
 
-	// グリッドの床を描画
-	m_gridFloor->Render(context, m_view, m_proj);
+	// 地面を描画
+	SimpleMath::Matrix groundWorld;
+	groundWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(0.0f, -0.5f, 0.0f));
+	m_groundModel->Draw(context, *states, groundWorld, m_view, m_proj);
 
 	// スカイドームの描画
 	SimpleMath::Matrix skyWorld;
@@ -117,7 +120,6 @@ void ResultScene::Render()
 		m_loseTankModel->Draw(context, *states, world, m_view, m_proj);
 	}
 
-
 	// テクスチャの描画
 	m_graphics->GetSpriteBatch()->Begin();
 	if (m_count <= 60)
@@ -132,7 +134,6 @@ void ResultScene::Render()
 void ResultScene::Finalize()
 {
 	m_pushSRV.Reset();
-	m_gridFloor.reset();
 }
 
 // デバイスに依存するリソースを作成する関数
@@ -149,11 +150,6 @@ void ResultScene::CreateDeviceDependentResources()
 
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
-
-
-	// グリッド床を生成
-	m_gridFloor = std::make_unique<Imase::GridFloor>(device, context, states);
-
 
 	// PushEnterテクスチャの読み込み
 	DX::ThrowIfFailed(
@@ -184,11 +180,13 @@ void ResultScene::CreateDeviceDependentResources()
 	);
 
 	// 車体モデルの作成
-	m_tankBodyModel = Resources::GetInstance()->GetTankBody();
+	m_tankBodyModel   = Resources::GetInstance()->GetTankBody();
 	// 砲身モデルの作成
 	m_tankTurretModel = Resources::GetInstance()->GetTankTurret();
 	// 負けた体勢モデルの作成
-	m_loseTankModel = Resources::GetInstance()->GetLoseTank();
+	m_loseTankModel   = Resources::GetInstance()->GetLoseTank();
+	// 地面モデルの作成
+	m_groundModel     = Resources::GetInstance()->GetGround();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

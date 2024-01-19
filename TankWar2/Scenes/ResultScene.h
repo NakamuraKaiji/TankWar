@@ -9,7 +9,6 @@
 #include "ImaseLib/SceneManager.h"
 #include "UserResources.h"
 #include "ImaseLib/TaskManager.h"
-#include "ImaseLib/GridFloor.h"
 #include "GameObjects/PlayerCamera.h"
 #include "GameObjects/GameParameter.h"
 
@@ -54,9 +53,6 @@ private:
 	// タスクマネージャー
 	Imase::TaskManager m_taskManager;
 
-	// グリッドの床へのポインタ
-	std::unique_ptr<Imase::GridFloor> m_gridFloor;
-
 	// スカイドームモデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_skydomeModel;
 
@@ -68,6 +64,9 @@ private:
 
 	// 負けた体勢の戦車モデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_loseTankModel;
+
+	// 地面モデルへのポインタ
+	std::shared_ptr<DirectX::Model> m_groundModel;
 
 private:
 

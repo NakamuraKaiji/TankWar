@@ -148,14 +148,17 @@ void PlayScene::Render()
 	// インプットレイアウトを登録
 	m_graphics->GetDeviceResources()->GetD3DDeviceContext()->IASetInputLayout(m_graphics->GetInputLayout());
 
+	// 地面を描画
+	SimpleMath::Matrix groundWorld;
+	groundWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(0.0f, -0.5f, 0.0f));
+	m_groundModel->Draw(context, *states, groundWorld, m_view, m_proj);
+
 	// スカイドームの描画
 	SimpleMath::Matrix skyWorld;
 	skyWorld *= SimpleMath::Matrix::CreateRotationY(m_skydomeRotate);
 	skyWorld *= SimpleMath::Matrix::CreateTranslation(m_stage->GetPlayer()->GetPosition());
 	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
-	// グリッドの床を描画
-	m_gridFloor->Render(context, m_view = m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
 	if (m_graphics->GetSpriteBatch()) m_graphics->GetSpriteBatch()->Begin();
 
@@ -169,8 +172,6 @@ void PlayScene::Render()
 // 終了
 void PlayScene::Finalize()
 {
-	// グリッドを終了
-	m_gridFloor.reset();
 }
 
 // デバイスに依存するリソースを作成する関数
@@ -187,9 +188,8 @@ void PlayScene::CreateDeviceDependentResources()
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
 
-	// グリッドの床を作成
-	m_gridFloor = std::make_unique<Imase::GridFloor>(device, context, states);
-
+	// 地面モデルの作成
+	m_groundModel = Resources::GetInstance()->GetGround();
 	// スカイドームを作成
 	m_skydomeModel = Resources::GetInstance()->GetSkydome();
 

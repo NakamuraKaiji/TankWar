@@ -26,6 +26,8 @@ public:
 	std::shared_ptr<DirectX::Model> GetBullet() { return m_bullet; }
 	// 負けた戦車モデルを取得する
 	std::shared_ptr<DirectX::Model> GetLoseTank() { return m_loseTank; }
+	// 地面モデルを取得する
+	std::shared_ptr<DirectX::Model> GetGround() { return m_ground; }
 
 	// 煙のテクスチャを取得する
 	ID3D11ShaderResourceView* GetSmoke() { return m_smokeTexture.Get(); }
@@ -47,6 +49,7 @@ private:
 		, m_bullet{}
 		, m_smokeTexture{}
 		, m_loseTank{}
+		, m_ground{}
 	{}
 	// 代入は許容しない
 	void operator=(const Resources& object) = delete;
@@ -75,6 +78,8 @@ private:
 	std::shared_ptr<DirectX::Model> m_bullet;
 	// 負けた体勢の戦車モデル
 	std::shared_ptr<DirectX::Model> m_loseTank;
+	// 地面モデル
+	std::shared_ptr<DirectX::Model> m_ground;
 
 	// 煙のテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_smokeTexture;

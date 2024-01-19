@@ -8,7 +8,6 @@
 #pragma once
 #include "ImaseLib/SceneManager.h"
 #include "UserResources.h"
-#include "ImaseLib/GridFloor.h"
 #include "GameObjects/PlayerCamera.h"
 #include "GameObjects/GameParameter.h"
 
@@ -41,8 +40,6 @@ public:
 	void OnDeviceLost() override;
 
 private:
-	// グリッドの床へのポインタ
-	std::unique_ptr<Imase::GridFloor> m_gridFloor;
 
 	// タイトルテクスチャハンドル
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleSRV;
@@ -64,6 +61,9 @@ private:
 
 	// 砲弾モデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_bulletModel;
+
+	// 地面モデルへのポインタ
+	std::shared_ptr<DirectX::Model> m_groundModel;
 
 	// カメラ
 	PlayerCamera m_playerCamera;
