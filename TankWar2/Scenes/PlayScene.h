@@ -80,4 +80,7 @@ private:
 	// c‹@”
 	int m_life;
 
+	// “G‚ÌHP
+	float m_ratio;
+
 };

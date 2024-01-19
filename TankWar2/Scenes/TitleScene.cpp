@@ -40,10 +40,16 @@ void TitleScene::Update(const DX::StepTimer& timer)
 	auto keyState = GetUserResources()->GetKeyboardStateTracker();
 
 	// カメラ更新
-	m_playerCamera.Update(timer.GetElapsedSeconds());
+	m_playerCamera.Update((float)timer.GetElapsedSeconds());
 
 	// シーン切り替え
-	if (keyState->pressed.Enter) ChangeScene<PlayScene>();
+	auto transitionMask = GetUserResources()->GetTransitionMask();
+	if (keyState->pressed.Enter)
+	{
+		transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::COPY);
+		ChangeScene<PlayScene>();
+		transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
+	}
 
 	// PushEnterの点滅
 	m_count++;
@@ -137,7 +143,7 @@ void TitleScene::CreateDeviceDependentResources()
 	// タイトルテクスチャの読み込み
 	DX::ThrowIfFailed(
 		DirectX::CreateDDSTextureFromFile(device,
-			L"Resources/Textures/TankWar.dds",
+			L"Resources/dds/TankWar.dds",
 			nullptr,
 			m_titleSRV.ReleaseAndGetAddressOf())
 	);
@@ -145,7 +151,7 @@ void TitleScene::CreateDeviceDependentResources()
 	// PushEnterテクスチャの読み込み
 	DX::ThrowIfFailed(
 		DirectX::CreateDDSTextureFromFile(device,
-			L"Resources/Textures/PushEnter.dds",
+			L"Resources/dds/PushEnter.dds",
 			nullptr,
 			m_pushSRV.ReleaseAndGetAddressOf())
 	);

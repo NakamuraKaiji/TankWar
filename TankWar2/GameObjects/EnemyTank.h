@@ -109,4 +109,7 @@ private:
 
 	// –C’e‚Ì”­ŽËŠÔŠu
 	float m_interval;
+
+	// ŽžŠÔ
+	float m_time;
 };

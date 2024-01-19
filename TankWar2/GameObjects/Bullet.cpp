@@ -52,7 +52,7 @@ bool Bullet::Update(float elapsedTime)
 
 	// 衝突判定用オブジェクト
 	m_num += elapsedTime;
-	if (m_num > 0.2f)
+	if (m_num > 0.3f)
 	{
 		m_gameResources.pCollisionManager->AddObject(this);
 	}

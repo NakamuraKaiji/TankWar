@@ -20,6 +20,7 @@ EnemyTank::EnemyTank(const GameResources& gameResources, DirectX::SimpleMath::Ve
 	, m_wanderOrientation(0.0f)
 	, m_target(nullptr)
 	, m_enemyState(EnemyState::Normal)
+	, m_time(0.0f)
 {
 }
 
@@ -62,6 +63,8 @@ bool EnemyTank::Update(float elapsedTime)
 	default:
 		break;
 	}
+
+	m_time += elapsedTime;
 
 	// Šî’êƒNƒ‰ƒX‚ÌXVŠÖ”‚ðŒÄ‚Ño‚µ‚ÄˆÚ“®‚·‚é
 	GameObject::Update(elapsedTime);
@@ -111,8 +114,13 @@ void EnemyTank::OnHit(GameObject* object)
 	dir.y = 0.0f;
 	dir.Normalize();
 	AddForce(dir, object->GetHitForce());
-	// Õ“Ëó‘Ô‚Ö
-	m_enemyState = EnemyState::Hit;
+	// –³“GŽžŠÔ‚ð‰ß‚¬‚½‚çÕ“Ëó‘Ô‚Ö
+	if (m_time > INVINCIBILITY_TIME)
+	{
+		m_enemyState = EnemyState::Hit;
+		// ŽžŠÔ‚ðƒŠƒZƒbƒg
+		m_time = 0.0f;
+	}
 }
 
 // ƒŠƒZƒbƒg
@@ -131,7 +139,8 @@ void EnemyTank::Normal(float elapsedTime)
 	// œpœjs“®
 	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f, elapsedTime);
 
-	SimpleMath::Vector3 toTarget = GetPosition() - m_target->GetPosition();
+	SimpleMath::Vector3 toTarget = m_target->GetPosition() - GetPosition();
+	//SimpleMath::Vector3 toTarget = SimpleMath::Vector3::Zero - GetPosition();
 
 	float radius = 5.0f;
 	if (toTarget.Length() > radius)
@@ -162,7 +171,9 @@ void EnemyTank::Normal(float elapsedTime)
 	TurnHeading(m_velocity);
 
 	// ‰ñ“]Šp‚ðŒvŽZ‚·‚é
-	//m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, atan2(toTarget.z, toTarget.x));
+	float radian = std::atan2f(toTarget.z, toTarget.x);
+	m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, radian);
+	m_turretRotate = XMQuaternionMultiply(m_turretRotate, XMQuaternionInverse(m_bodyRotate));
 
 	// –C’e‚Ì”­ŽËŠÔŠu
 	m_interval += elapsedTime;

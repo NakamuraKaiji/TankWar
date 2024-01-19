@@ -20,7 +20,8 @@ PlayScene::PlayScene()
 	, m_skydomeModel{}
 	, m_stage{}
 	, m_userInterface{}
-	, m_life{}
+	, m_life(0)
+	, m_ratio(0.0f)
 {
 }
 
@@ -33,6 +34,16 @@ void PlayScene::Initialize()
 	// 残機数を設定
 	m_life = PLAYER_CNT;
 	m_userInterface->GetLife()->SetLife(m_life);
+
+	// 敵のHPを設定
+	m_ratio = ENEMY_HP;
+	m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
+
+	// マスクをオープンする
+	auto transitionMask = GetUserResources()->GetTransitionMask();
+	transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::COPY);
+	transitionMask->Open();
+	transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
 }
 
 // 更新
@@ -41,7 +52,7 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	auto kbTracker = GetUserResources()->GetKeyboardStateTracker();
 
 	// タスクの更新
-	m_taskManager.Update(timer.GetElapsedSeconds());
+	m_taskManager.Update((float)timer.GetElapsedSeconds());
 
 	// 全ての敵を動かす
 	m_stage->StopAllEnemy(false);
@@ -58,7 +69,7 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	m_playerCamera.SetPlayer(m_stage->GetPlayer()->GetPosition(), m_stage->GetPlayer()->GetBodyRotate() * m_stage->GetPlayer()->GetTurretRotate());
 
 	// カメラの更新
-	m_playerCamera.Update(timer.GetElapsedSeconds());
+	m_playerCamera.Update((float)timer.GetElapsedSeconds());
 	
 	// 衝突判定の更新
 	m_collisionManager.Update();
@@ -85,12 +96,37 @@ void PlayScene::Update(const DX::StepTimer& timer)
 			ChangeScene<ResultScene>();
 		}
 	}
+
+
+	// 敵が砲弾に当たったらHPを減らす
+	if (m_stage->GetEnemy()->GetState() == EnemyTank::EnemyState::Hit)
+	{
+		m_ratio = m_ratio - ENEMY_REDUCE_HP;
+		m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
+		if (m_ratio <= 0)
+		{
+			// リザルトシーンに切り替え
+			ChangeScene<ResultScene>();
+		}
+	}
+	// デバッグ用
+	if (kbTracker->pressed.X)
+	{
+		m_ratio = m_ratio - ENEMY_REDUCE_HP;
+		m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
+		if (m_ratio <= 0)
+		{
+			// リザルトシーンに切り替え
+			ChangeScene<ResultScene>();
+		}
+	}
+
 }
 
 // 描画
 void PlayScene::Render()
 {
-	auto debugFont = GetUserResources()->GetDebugFont();
+	//auto debugFont = GetUserResources()->GetDebugFont();
 	//debugFont->AddString(L"PlayScene", SimpleMath::Vector2(0.0f, debugFont->GetFontHeight()));
 
 	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();

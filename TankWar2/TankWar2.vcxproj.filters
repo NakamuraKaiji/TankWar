@@ -97,9 +97,6 @@
     <ClInclude Include="ImaseLib\ModelCollision.h">
       <Filter>ImaseLib</Filter>
     </ClInclude>
-    <ClInclude Include="MyLib\Collision.h">
-      <Filter>MyLib</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
@@ -135,6 +132,15 @@
     </ClInclude>
     <ClInclude Include="MyLib\BinaryFile.h">
       <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\TransitionMask.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTexture.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +195,6 @@
     <ClCompile Include="ImaseLib\ModelCollision.cpp">
       <Filter>ImaseLib</Filter>
     </ClCompile>
-    <ClCompile Include="MyLib\Collision.cpp">
-      <Filter>MyLib</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjects\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
@@ -222,6 +225,12 @@
     <ClCompile Include="MyLib\BinaryFile.cpp">
       <Filter>MyLib</Filter>
     </ClCompile>
+    <ClCompile Include="MyLib\TransitionMask.cpp">
+      <Filter>MyLib</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTexture.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -238,14 +247,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Shaders\HP.hlsli">
+    <None Include="Resources\Shaders\HP.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Resources\fbx\Skydome.fbx">
-      <Filter>FBX</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\Tank.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
@@ -264,6 +270,9 @@
     <MeshContentTask Include="Resources\fbx\Bullet.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Skydome.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Resources\Textures\smoke_effect.png">
@@ -272,15 +281,30 @@
     <ImageContentTask Include="Resources\Textures\Life.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\HP.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\FadeMask.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\PushEnter.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\TankWar.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\HP_GS.hlsl">
+    <FxCompile Include="Resources\Shaders\HP_GS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\HP_PS.hlsl">
+    <FxCompile Include="Resources\Shaders\HP_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\HP_VS.hlsl">
+    <FxCompile Include="Resources\Shaders\HP_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -73,7 +73,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         wcex.hIcon = LoadIconW(hInstance, L"IDI_ICON");
         wcex.hCursor = LoadCursorW(nullptr, IDC_ARROW);
         wcex.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
-        wcex.lpszClassName = L"TankWar2WindowClass";
+        wcex.lpszClassName = L"TankWarWindowClass";
         wcex.hIconSm = LoadIconW(wcex.hInstance, L"IDI_ICON");
         if (!RegisterClassExW(&wcex))
             return 1;
@@ -86,7 +86,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         // ウィンドウサイズを固定
         AdjustWindowRect(&rc, WS_MY_WINDOW, FALSE);
-        HWND hwnd = CreateWindowExW(0, L"TankWar2WindowClass", g_szAppName, WS_MY_WINDOW,
+        HWND hwnd = CreateWindowExW(0, L"TankWarWindowClass", g_szAppName, WS_MY_WINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
 

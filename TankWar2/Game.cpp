@@ -22,6 +22,10 @@ Game::Game() noexcept(false)
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
     m_deviceResources->RegisterDeviceNotify(this);
+
+    // レンダリングテクスチャの作成
+    m_transitionTexture = std::make_unique<DX::RenderTexture>(m_deviceResources->GetBackBufferFormat());
+
 }
 
 // Initialize the Direct3D resources required to run.
@@ -39,7 +43,12 @@ void Game::Initialize(HWND window, int width, int height)
     //m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
     // 初期起動シーン
-    m_sceneManager->SetScene<PlayScene>();
+    m_sceneManager->SetScene<TitleScene>();
+
+    // BLANK（黒で塗りつぶす）
+    auto context = m_deviceResources->GetD3DDeviceContext();
+    context->ClearRenderTargetView(m_transitionTexture->GetRenderTargetView(), Colors::Black);
+
 }
 
 #pragma region Frame Update
@@ -67,6 +76,8 @@ void Game::Update(DX::StepTimer const& timer)
     // シーンの更新
     m_sceneManager->Update(timer);
 
+    // 画面遷移マスクの更新
+    m_transitionMask->Update((float)timer.GetElapsedSeconds());
 }
 #pragma endregion
 
@@ -90,6 +101,19 @@ void Game::Render()
 
     // シーンの描画
     m_sceneManager->Render();
+
+    // フレームバッファのコピーリクエストがあるなら
+    if (m_transitionMask->GetCreateMaskRequest() == TransitionMask::CreateMaskRequest::COPY)
+    {
+        // COPY（現在のフレームバッファをマスクに設定する）
+        auto renderTarget = m_deviceResources->GetRenderTarget();
+        context->CopyResource(m_transitionTexture->GetRenderTarget(), renderTarget);
+        m_transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
+    }
+
+    // 画面遷移マスクの描画
+    m_transitionMask->Draw(context, m_states.get(), m_transitionTexture->GetShaderResourceView(), m_deviceResources->GetOutputSize());
+
     // fpsの表示
     //std::wostringstream oss;
     //oss << "fps:" << m_timer.GetFramesPerSecond();
@@ -210,6 +234,8 @@ void Game::CreateDeviceDependentResources()
     // シーンマネージャーの作成
     if (!m_sceneManager) m_sceneManager = std::make_unique<Imase::SceneManager<UserResources>>(m_userResources.get());
 
+    m_transitionMask = std::make_unique<TransitionMask>(device, context);
+
     // シーンへ渡すユーザーリソースの設定（ここで設定してください）
     m_userResources->SetDeviceResources(m_deviceResources.get());
     m_userResources->SetCommonStates(m_states.get());
@@ -217,9 +243,14 @@ void Game::CreateDeviceDependentResources()
     m_userResources->SetDebugFont(m_debugFont.get());
     m_userResources->SetKeyboardStateTracker(&m_keyboardTracker);
     m_userResources->SetMouseStateTracker(&m_mouseTracker);
+    m_userResources->SetTransitionMask(m_transitionMask.get());
 
     // シーンのデバイスに依存する初期化を行う
     m_sceneManager->CreateDeviceDependentResources();
+
+    // レンダリングテクスチャにデバイスを設定する
+    m_transitionTexture->SetDevice(device);
+
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -229,6 +260,11 @@ void Game::CreateWindowSizeDependentResources()
 
     // シーンのウィンドウのサイズが変更された時に呼ばれる処理
     m_sceneManager->CreateWindowSizeDependentResources();
+
+    // レンダリングテクスチャのサイズを変更
+    auto size = m_deviceResources->GetOutputSize();
+    m_transitionTexture->SetWindow(size);
+
 }
 
 void Game::OnDeviceLost()
@@ -237,6 +273,9 @@ void Game::OnDeviceLost()
 
     // シーンのデバイスロスト時の処理
     m_sceneManager->OnDeviceLost();
+
+    // レンダリングテクスチャの解放
+    m_transitionTexture->ReleaseDevice();
 }
 
 void Game::OnDeviceRestored()

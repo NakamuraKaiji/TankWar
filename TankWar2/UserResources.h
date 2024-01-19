@@ -10,6 +10,7 @@
 #include "StepTimer.h"
 #include "DeviceResources.h"
 #include "ImaseLib/DebugFont.h"
+#include "MyLib/TransitionMask.h"
 
 // 各シーンに渡す共通リソースを記述してください
 class UserResources
@@ -34,6 +35,10 @@ private:
 	// 共通ステート
 	DirectX::CommonStates* m_states;
 
+	// 画面遷移マスクへのポインタ
+	TransitionMask* m_transitionMask;
+
+
 public:
 
 	// コンストラクタ
@@ -44,6 +49,7 @@ public:
 		, m_mouseTracker(nullptr)
 		, m_debugFont(nullptr)
 		, m_states(nullptr)
+		, m_transitionMask(nullptr)
 	{
 	}
 
@@ -106,6 +112,17 @@ public:
 
 	// デバッグフォントを取得する関数
 	Imase::DebugFont* GetDebugFont() { return m_debugFont; }
+
+	// ------------------------------------------ //
+	// 画面遷移マスク	
+	// ------------------------------------------ //
+
+	// 画面遷移マスクを設定する関数
+	void SetTransitionMask(TransitionMask* transitionMask) { m_transitionMask = transitionMask; }
+
+	// 画面遷移マスクを取得する関数
+	TransitionMask* GetTransitionMask() { return m_transitionMask; }
+
 
 };
 

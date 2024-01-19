@@ -98,7 +98,7 @@ void Graphics::Initialize()
 	// エフェクトファクトリを生成
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(m_device);
 	// リソースディレクトリを設定
-	m_effectFactory->SetDirectory(L"resources/cmo");
+	m_effectFactory->SetDirectory(L"Resources/cmo");
 }
 
 // 文字列を描画

@@ -90,6 +90,12 @@ public:
 	// 位置設定
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }
 
+	// HPの割合を取得
+	float GetRatio() { return m_ratio; }
+
+	// HPの割合を設定
+	void SetRatio(float ratio) { m_ratio = ratio; }
+
 private:
 	// シェーダ制作部分だけ分離した関数
 	void CreateShader();

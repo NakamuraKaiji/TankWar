@@ -41,8 +41,7 @@ void EnemyHP::LoadTexture(const wchar_t* path)
 	D3D11_TEXTURE2D_DESC desc;
 	tex->GetDesc(&desc);
 	m_textureWidth = desc.Width;
-	m_textureWidth = desc.Height;
-
+	m_textureHeight = desc.Height;
 }
 
 // 生成
@@ -52,25 +51,13 @@ void EnemyHP::Create()
 	CreateShader();
 
 	//画像の読み込み
-	LoadTexture(L"Resources/Textures/frame_base.png");
+	LoadTexture(L"Resources/Textures/HP.png");
 
 }
 
 // 更新
 bool EnemyHP::Update(float elapsedTime)
 {
-	//auto keystate = Keyboard::Get().GetState();
-	//m_tracker.Update(keystate);
-
-	//if (m_tracker.pressed.Right)
-	//{
-	//	m_ratio += 0.1f;
-	//}
-	//if (m_tracker.pressed.Left)
-	//{
-	//	m_ratio -= 0.1f;
-	//}
-
 	return true;
 }
 
@@ -78,9 +65,9 @@ bool EnemyHP::Update(float elapsedTime)
 void EnemyHP::CreateShader()
 {
 	// コンパイルされたシェーダーファイルを読み込む
-	BinaryFile VSData = BinaryFile::LoadFile(L"Shaders/HP_VS.cso");
-	BinaryFile GSData = BinaryFile::LoadFile(L"Shaders/HP_GS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Shaders/HP_PS.cso");
+	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/HP_VS.cso");
+	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/HP_GS.cso");
+	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/HP_PS.cso");
 
 	// インプットレイアウトの作成
 	m_graphics->GetDeviceResources()->GetD3DDevice()->CreateInputLayout(
@@ -140,10 +127,12 @@ void EnemyHP::Render()
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_graphics->GetCommonStates();
 
+	m_position = SimpleMath::Vector3(m_position.x, 1.0f, m_position.z);
+
 	// 頂点情報
 	VertexPositionColorTexture vertex[1] =
 	{
-		VertexPositionColorTexture(SimpleMath::Vector3(1.0f, 1.0f, 0.0f)
+		VertexPositionColorTexture(m_position
 		, SimpleMath::Vector4(0.0f, 0.0f, static_cast<float>(m_textureWidth), static_cast<float>(m_textureHeight))
 		, SimpleMath::Vector2(m_ratio, 0))
 	};

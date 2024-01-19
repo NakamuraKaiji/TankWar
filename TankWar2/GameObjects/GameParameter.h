@@ -31,6 +31,8 @@ static constexpr float HIT_FORCE_MIN = 0.2f;
 // プレイヤーの残機
 static constexpr int PLAYER_CNT = 3;
 
+// 無敵時間
+static constexpr float INVINCIBILITY_TIME = 0.5f;
 
 
 // ---- エフェクト関連 ----- //
@@ -86,6 +88,13 @@ static constexpr float ENEMY_MOVE_FORCE = 0.02f;
 
 // 敵の衝突判定用の球の半径
 static constexpr float ENEMY_RADIUS = 0.6f;
+
+// 敵のHP
+static constexpr float ENEMY_HP = 1.0f;
+
+// １ヒットで減らすHPの量
+static constexpr float ENEMY_REDUCE_HP = 0.01f;
+
 
 // ---- 砲弾関連 ---- //
 

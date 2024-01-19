@@ -25,6 +25,9 @@ void ResultScene::Initialize()
 	// カメラの設定
 	m_playerCamera.SetType(PlayerCamera::Type::TYPE_B);
 
+	// マスクをオープンする
+	auto transitionMask = GetUserResources()->GetTransitionMask();
+	transitionMask->Open();
 }
 
 // 更新
@@ -34,7 +37,7 @@ void ResultScene::Update(const DX::StepTimer& timer)
 	auto keyState = GetUserResources()->GetKeyboardStateTracker();
 
 	// カメラ更新
-	m_playerCamera.Update(timer.GetElapsedSeconds());
+	m_playerCamera.Update((float)timer.GetElapsedSeconds());
 
 	// シーン切り替え
 	if (keyState->pressed.Enter) ChangeScene<TitleScene>();
@@ -50,9 +53,6 @@ void ResultScene::Render()
 {
 	auto debugFont = GetUserResources()->GetDebugFont();
 	debugFont->AddString(L"ResultScene", SimpleMath::Vector2(0.0f, debugFont->GetFontHeight() / 2.0f));
-
-	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = GetUserResources()->GetCommonStates();
 
 	// ビュー行列を設定
 	m_view = SimpleMath::Matrix::CreateLookAt(
@@ -80,7 +80,6 @@ void ResultScene::Finalize()
 void ResultScene::CreateDeviceDependentResources()
 {
 	auto device = GetUserResources()->GetDeviceResources()->GetD3DDevice();
-	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = GetUserResources()->GetCommonStates();
 
 	// グラフィックスの生成
@@ -92,7 +91,7 @@ void ResultScene::CreateDeviceDependentResources()
 	// PushEnterテクスチャの読み込み
 	DX::ThrowIfFailed(
 		DirectX::CreateDDSTextureFromFile(device,
-			L"Resources/Textures/PushEnter.dds",
+			L"Resources/dds/PushEnter.dds",
 			nullptr,
 			m_pushSRV.ReleaseAndGetAddressOf())
 	);
