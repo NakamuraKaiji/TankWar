@@ -252,9 +252,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Resources\fbx\Tank.fbx">
-      <Filter>FBX</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\TankBody.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
@@ -271,6 +268,9 @@
       <Filter>FBX</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\Skydome.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\LoseTank.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
   </ItemGroup>

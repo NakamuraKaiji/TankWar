@@ -16,7 +16,8 @@ public:
 	enum class Type
 	{
 		TYPE_A,
-		TYPE_B
+		TYPE_B,
+		TYPE_C,
 	};
 private:
 	// 現在のカメラタイプ

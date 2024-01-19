@@ -91,4 +91,6 @@ private:
 	// 砲弾回収
 	float m_bulletRecovery;
 
+	// スカイドームの回転
+	float m_skydomeRotate;
 };

@@ -18,6 +18,7 @@ PlayScene::PlayScene()
 	: m_view{}
 	, m_proj{}
 	, m_skydomeModel{}
+	, m_skydomeRotate(0.0f)
 	, m_stage{}
 	, m_userInterface{}
 	, m_life(0)
@@ -121,6 +122,9 @@ void PlayScene::Update(const DX::StepTimer& timer)
 		}
 	}
 
+	// スカイドームの回転
+	m_skydomeRotate += timer.GetElapsedSeconds() * 0.05f;
+
 }
 
 // 描画
@@ -146,7 +150,8 @@ void PlayScene::Render()
 
 	// スカイドームの描画
 	SimpleMath::Matrix skyWorld;
-	skyWorld = SimpleMath::Matrix::CreateTranslation(m_stage->GetPlayer()->GetPosition());
+	skyWorld *= SimpleMath::Matrix::CreateRotationY(m_skydomeRotate);
+	skyWorld *= SimpleMath::Matrix::CreateTranslation(m_stage->GetPlayer()->GetPosition());
 	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
 	// グリッドの床を描画

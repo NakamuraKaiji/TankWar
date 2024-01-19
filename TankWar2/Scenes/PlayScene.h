@@ -83,4 +83,7 @@ private:
 	// 敵のHP
 	float m_ratio;
 
+	// スカイドームの回転
+	float m_skydomeRotate;
+
 };

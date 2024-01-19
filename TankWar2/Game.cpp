@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Scenes/TitleScene.h"
 #include "Scenes/PlayScene.h"
+#include "Scenes/ResultScene.h"
 
 extern void ExitGame() noexcept;
 
@@ -43,7 +44,7 @@ void Game::Initialize(HWND window, int width, int height)
     //m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
     // 初期起動シーン
-    m_sceneManager->SetScene<TitleScene>();
+    m_sceneManager->SetScene<ResultScene>();
 
     // BLANK（黒で塗りつぶす）
     auto context = m_deviceResources->GetD3DDeviceContext();

@@ -18,6 +18,7 @@ TitleScene::TitleScene()
 	, m_angle(-45.0f)
 	, m_bulletRecovery(30.0f)
 	, m_count(0)
+	, m_skydomeRotate(0.0f)
 {
 }
 
@@ -70,6 +71,9 @@ void TitleScene::Update(const DX::StepTimer& timer)
 	{
 		m_bulletPos = SimpleMath::Vector3::Zero;
 	}
+
+	// スカイドームの回転
+	m_skydomeRotate += timer.GetElapsedSeconds() * 0.05f;
 }	
 
 // 描画
@@ -88,7 +92,9 @@ void TitleScene::Render()
 	m_gridFloor->Render(context, m_view, m_proj);
 
 	// スカイドームの描画
-	m_skydomeModel->Draw(context, *states, SimpleMath::Matrix::Identity, m_view, m_proj);
+	SimpleMath::Matrix skyWorld;
+	skyWorld *= SimpleMath::Matrix::CreateRotationY(m_skydomeRotate);
+	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
 	// 戦車の描画
 	SimpleMath::Matrix world;

@@ -27,6 +27,7 @@ void Resources::LoadResource()
 	m_enemyTankTurret = Model::CreateFromCMO(m_device, L"Resources/cmo/EnemyTankTurret.cmo", *m_graphics->GetFX());
 	m_skydome         = Model::CreateFromCMO(m_device, L"Resources/cmo/Skydome.cmo", *m_graphics->GetFX());
 	m_bullet		  = Model::CreateFromCMO(m_device, L"Resources/cmo/Bullet.cmo", *m_graphics->GetFX());
+	m_loseTank		  = Model::CreateFromCMO(m_device, L"Resources/cmo/LoseTank.cmo", *m_graphics->GetFX());
 
 	// テクスチャ
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
