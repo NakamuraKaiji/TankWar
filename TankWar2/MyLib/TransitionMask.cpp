@@ -49,7 +49,7 @@ void TransitionMask::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	float time = 1.0f / 60.0f;
+	float time = 1.0f / 80.0f;
 
 	if (m_open)
 	{
