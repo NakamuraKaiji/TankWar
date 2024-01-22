@@ -71,9 +71,6 @@ public:
 	// テクスチャリソース読み込み
 	void LoadTexture(const wchar_t* path);
 
-	// 生成
-	void Create();
-
 	// 更新
 	bool Update(float elapsedTime) override;
 

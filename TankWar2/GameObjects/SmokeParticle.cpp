@@ -2,6 +2,7 @@
 #include "SmokeParticle.h"
 #include "Utilities/Resources.h"
 #include "MyLib/BinaryFile.h"
+#include "GameParameter.h"
 #include <random>
 
 using namespace DirectX;
@@ -19,30 +20,22 @@ SmokeParticle::SmokeParticle()
 	: m_timer(0.0f)
 {
 	// リソースをロード
-	Resources::GetInstance()->LoadResource();}
+	Resources::GetInstance()->LoadResource();
 
-// テクスチャリソース読み込み
-void SmokeParticle::LoadTexture(const wchar_t* path)
-{
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
-	DirectX::CreateDDSTextureFromFile(
-		m_graphics->GetDeviceResources()->GetD3DDevice(),
-		path, 
-		nullptr, 
-		texture.ReleaseAndGetAddressOf()
-	);
-
-	m_texture.push_back(texture);
-}
-
-// 生成
-void SmokeParticle::Create()
-{
 	//シェーダーの作成
 	CreateShader();
 
 	// テクスチャ読み込み
-	LoadTexture(L"Resources/dds/smoke_effect.dds");
+	LoadTexture();
+}
+
+// テクスチャリソース読み込み
+void SmokeParticle::LoadTexture()
+{
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
+	texture = Resources::GetInstance()->GetSmoke();
+
+	m_texture.push_back(texture);
 }
 
 // シェーダ制作部分だけ分離した関数
@@ -110,12 +103,12 @@ void SmokeParticle::Update(float elapsedTime)
 {
 	// 0.1秒ごとに生成
 	m_timer += elapsedTime;
-	if (m_timer >= 0.1f)
-	{
+	if (m_timer >= BLACK_SMOKE_CREATE_TIME)
+	{	
 		std::random_device seed;
 		std::default_random_engine engine(seed());
 		std::uniform_real_distribution<> dist(0, XM_2PI);
-		float range = 0.2f;
+		float range = BLACK_SMOKE_RANGE;
 		float rand = static_cast<float>(dist(engine));
 		SmokeParticleUtility pU(
 			1.0f,

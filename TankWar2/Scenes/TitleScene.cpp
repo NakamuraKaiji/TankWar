@@ -54,7 +54,7 @@ void TitleScene::Update(const DX::StepTimer& timer)
 	}
 
 	// PushEnterの点滅
-	m_count += timer.GetElapsedSeconds();
+	m_count += (float)timer.GetElapsedSeconds();
 	if (m_count >= 2.0f)	m_count = 0.0f;
 
 	// 砲弾の速度の計算
@@ -74,7 +74,7 @@ void TitleScene::Update(const DX::StepTimer& timer)
 	}
 
 	// スカイドームの回転
-	m_skydomeRotate += timer.GetElapsedSeconds() * 0.05f;
+	m_skydomeRotate += (float)timer.GetElapsedSeconds() * 0.05f;
 }	
 
 // 描画
@@ -133,8 +133,6 @@ void TitleScene::Finalize()
 // デバイスに依存するリソースを作成する関数
 void TitleScene::CreateDeviceDependentResources()
 {
-	auto device  = GetUserResources()->GetDeviceResources()->GetD3DDevice();
-	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states  = GetUserResources()->GetCommonStates();
 
 	// グラフィックスの生成

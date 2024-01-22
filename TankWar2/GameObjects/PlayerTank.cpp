@@ -112,7 +112,7 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 	float force = PLAYER_MOVE_FORCE;
 
 	// 煙の速度ベクトル
-	SimpleMath::Vector3 velocity = SMOKE_EFFECT_SPEED;
+	SimpleMath::Vector3 velocity = WHITE_SMOKE_SPEED;
 
 	// Wキーで前進
 	if (kb.W)

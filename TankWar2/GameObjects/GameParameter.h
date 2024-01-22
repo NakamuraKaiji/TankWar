@@ -37,14 +37,20 @@ static constexpr float INVINCIBILITY_TIME = 0.5f;
 
 // ---- エフェクト関連 ----- //
 
-// 煙のエフェクトの表示時間
-static constexpr float SMOKE_EFFECT_DISPLAY_TIME = 0.5f;
+// 白い煙のエフェクトの表示時間
+static constexpr float WHITE_SMOKE_DISPLAY_TIME = 0.5f;
 
-// 煙の速度ベクトル
-static constexpr DirectX::SimpleMath::Vector3 SMOKE_EFFECT_SPEED = DirectX::SimpleMath::Vector3(0.0f, 0.02f, 0.05f);
+// 白い煙の速度ベクトル
+static constexpr DirectX::SimpleMath::Vector3 WHITE_SMOKE_SPEED = DirectX::SimpleMath::Vector3(0.0f, 0.02f, 0.05f);
 
-// 煙の移動速度の減速率
-static constexpr float SMOKE_EFFECT_FRICTION = 0.4f;
+// 白い煙の移動速度の減速率
+static constexpr float WHITE_SMOKE_FRICTION = 0.4f;
+
+// 黒い煙の発生する範囲
+static constexpr float BLACK_SMOKE_RANGE = 0.2f;
+
+// 黒い煙の生成する時間
+static constexpr float BLACK_SMOKE_CREATE_TIME = 0.1f;
 
 // ---- プレイヤー関連 ----- //
 
@@ -67,7 +73,7 @@ static constexpr float PLAYER_BODY_ROTATE = 1.0f;
 static constexpr float PLAYER_TURRET_ROTATE = 0.8f;
 
 // プレイヤーの衝突判定用の球の半径
-static constexpr float PLAYER_RADIUS = 0.6f;
+static constexpr float PLAYER_RADIUS = 0.5f;
 
 // ---- 敵関連 ---- //
 
@@ -87,7 +93,7 @@ static constexpr float ENEMY_THINK_INTERVAL = 0.4f;
 static constexpr float ENEMY_MOVE_FORCE = 0.02f;
 
 // 敵の衝突判定用の球の半径
-static constexpr float ENEMY_RADIUS = 0.6f;
+static constexpr float ENEMY_RADIUS = 0.5f;
 
 // 敵のHP
 static constexpr float ENEMY_HP = 1.0f;

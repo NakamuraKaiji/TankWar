@@ -100,7 +100,6 @@ void PlayScene::Update(const DX::StepTimer& timer)
 		}
 	}
 
-
 	// 敵が砲弾に当たったらHPを減らす
 	if (m_stage->GetEnemy()->GetState() == EnemyTank::EnemyState::Hit)
 	{
@@ -124,6 +123,12 @@ void PlayScene::Update(const DX::StepTimer& timer)
 			ChangeScene<ResultScene>();
 			GetUserResources()->SetVictoryFlag(true);
 		}
+	}
+	else if (kbTracker->pressed.C)
+	{
+		// リザルトシーンに切り替え
+		ChangeScene<ResultScene>();
+		GetUserResources()->SetVictoryFlag(true);
 	}
 
 	// スカイドームの回転

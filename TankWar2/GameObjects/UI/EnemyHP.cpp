@@ -22,6 +22,11 @@ EnemyHP::EnemyHP()
 	, m_ratio(1.0f)
 	, m_position{}
 {
+	//シェーダーの作成
+	CreateShader();
+
+	//画像の読み込み
+	LoadTexture(L"Resources/dds/HP.dds");
 }
 
 // テクスチャリソース読み込み
@@ -42,16 +47,6 @@ void EnemyHP::LoadTexture(const wchar_t* path)
 	tex->GetDesc(&desc);
 	m_textureWidth = desc.Width;
 	m_textureHeight = desc.Height;
-}
-
-// 生成
-void EnemyHP::Create()
-{
-	//シェーダーの作成
-	CreateShader();
-
-	//画像の読み込み
-	LoadTexture(L"Resources/dds/HP.dds");
 }
 
 // シェーダ制作部分だけ分離した関数

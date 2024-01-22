@@ -21,5 +21,4 @@ void UserInterface::Initialize()
 
 	// “GHPƒ^ƒXƒN“o˜^
 	m_enemyHP = GetTaskManager()->AddTask<EnemyHP>();
-	m_enemyHP->Create();
 }

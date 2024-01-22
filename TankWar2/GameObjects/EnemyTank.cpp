@@ -138,7 +138,7 @@ void EnemyTank::Normal(float elapsedTime)
 	//steeringforce += Seek(m_target->GetPosition());
 
 	// 徘徊行動
-	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f, elapsedTime);
+	steeringforce += Wander(&m_wanderOrientation, 1.0f, 2.0f, 0.2f);
 
 	SimpleMath::Vector3 toTarget = m_target->GetPosition() - GetPosition();
 	//SimpleMath::Vector3 toTarget = SimpleMath::Vector3::Zero - GetPosition();
@@ -192,7 +192,7 @@ void EnemyTank::Normal(float elapsedTime)
 	}
 
 	// 煙の速度ベクトル
-	SimpleMath::Vector3 velocity = SMOKE_EFFECT_SPEED;
+	SimpleMath::Vector3 velocity = WHITE_SMOKE_SPEED;
 	static int num = 0;
 	num++;
 	// 煙のエフェクトを発生させる
@@ -242,14 +242,14 @@ DirectX::SimpleMath::Vector3 EnemyTank::Seek(const DirectX::SimpleMath::Vector3&
 }
 
 // 徘徊行動
-DirectX::SimpleMath::Vector3 EnemyTank::Wander(float* wanderOriantation, float wanderRadius, float wanderDistance, float wanderRotate, float time)
+DirectX::SimpleMath::Vector3 EnemyTank::Wander(float* wanderOriantation, float wanderRadius, float wanderDistance, float wanderRotate)
 {
 	static std::random_device                    seedGenerator;
 	static std::mt19937                          randomGenerator{ seedGenerator() };
 	static std::uniform_real_distribution<float> distribution{ -1.0, 1.0 };
 
 	// ターゲットへの角度を変化
-	*wanderOriantation += (XM_PI * wanderRotate) * distribution(randomGenerator);
+	*wanderOriantation += (XM_PI * wanderRotate) * distribution(randomGenerator) * wanderDistance;
 
 	// 徘徊行動用円の円周上のターゲットの位置の演出
 	SimpleMath::Vector3 targetOriantation = SimpleMath::Vector3{ std::cos(*wanderOriantation), 0.0f, std::sin(*wanderOriantation) };

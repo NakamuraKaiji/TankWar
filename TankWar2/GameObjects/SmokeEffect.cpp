@@ -11,7 +11,7 @@ SmokeEffect::SmokeEffect(DirectX::SimpleMath::Vector3 position,
 )
 	:  m_position(position)
 	, m_velocity(velocity)
-	, m_timer(SMOKE_EFFECT_DISPLAY_TIME)
+	, m_timer(WHITE_SMOKE_DISPLAY_TIME)
 	, m_alpha(0.0f)
 {
 	// テクスチャを取得
@@ -29,13 +29,13 @@ bool SmokeEffect::Update(float elapsedTime)
 	if (m_timer <= 0.0f) return false;
 
 	// 徐々に消えていく
-	m_alpha = m_timer / SMOKE_EFFECT_DISPLAY_TIME;
+	m_alpha = m_timer / WHITE_SMOKE_DISPLAY_TIME;
 
 	m_position += m_velocity;
 
 	// 速度を落としていく
 	float speed = m_velocity.Length();
-	speed *= SMOKE_EFFECT_FRICTION;
+	speed *= WHITE_SMOKE_FRICTION;
 	m_velocity.Normalize();
 	m_velocity *= speed;
 
@@ -63,7 +63,7 @@ void SmokeEffect::Render()
 	context->RSSetState(states->CullCounterClockwise());
 
 	// 設定
-	float scale = 2.0f * (1.0f - m_timer / SMOKE_EFFECT_DISPLAY_TIME);
+	float scale = 2.0f * (1.0f - m_timer / WHITE_SMOKE_DISPLAY_TIME);
 	SimpleMath::Matrix world = SimpleMath::Matrix::CreateScale(scale) * SimpleMath::Matrix::CreateTranslation(m_position);
 	effect->SetWorld(world);
 	effect->SetTexture(m_smokeTexture.Get());

@@ -218,7 +218,6 @@ void ResultScene::CreateDeviceDependentResources()
 
 	// パーティクルの生成
 	m_smokeParticle = std::make_unique<SmokeParticle>();
-	m_smokeParticle->Create();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

@@ -67,10 +67,7 @@ public:
 	SmokeParticle();
 
 	// テクスチャリソース読み込み
-	void LoadTexture(const wchar_t* path);
-
-	// 生成
-	void Create();
+	void LoadTexture();
 
 	// 更新
 	void Update(float elapsedTime);
