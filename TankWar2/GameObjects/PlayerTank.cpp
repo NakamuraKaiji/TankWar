@@ -16,6 +16,8 @@ PlayerTank::PlayerTank(const GameResources& gameResources, DirectX::SimpleMath::
 	, m_bodyRotate{}
 	, m_turretRotate{}
 	, m_playerState(PlayerState::Normal)
+	, m_smokeTime(0.0f)
+	, m_bulletTime(0.0f)
 {
 }
 
@@ -100,7 +102,7 @@ void PlayerTank::Reset()
 }
 
 // 移動関数
-void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
+void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker, float elapsedTime)
 {
 	// 通常時のみ移動する
 	if (m_playerState != PlayerState::Normal) return;
@@ -118,14 +120,13 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 	if (kb.W)
 	{
 		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), -force);
-		static int num = 0;
-		num++;
+		m_smokeTime += elapsedTime;
 		// 煙のエフェクトを発生させる
-		if (num > 30)
+		if (m_smokeTime > 0.5f)
 		{
 			SimpleMath::Vector3 position = SimpleMath::Vector3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z);
 			GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
-			num = 0;
+			m_smokeTime = 0.0f;
 		}
 	}
 	// Sキーで後進
@@ -166,7 +167,9 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 		);
 	}
 
-	// ↑で発射
+	// スペースで発射
+	m_bulletTime += elapsedTime;
+	if (m_bulletTime > 1.0f)
 	if (tracker->pressed.Space)
 	{
 		// 弾を発射する
@@ -175,6 +178,8 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker)
 		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
 
 		SetVelocity(SimpleMath::Vector3::Zero);
+
+		m_bulletTime = 0.0f;
 	}
 
 }

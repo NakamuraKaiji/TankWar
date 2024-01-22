@@ -117,7 +117,7 @@ static constexpr DirectX::SimpleMath::Vector3 BULLET_SPEED = DirectX::SimpleMath
 static constexpr float BULLET_FIRE_INTERVAL = 2.0f;
 
 // 砲弾の衝突判定用の球の半径
-static constexpr float BULLET_RADIUS = 0.2f;
+static constexpr float BULLET_RADIUS = 0.1f;
 
 // 砲弾の回収座標
 static constexpr float BULLET_COLLECT = 100.0f;

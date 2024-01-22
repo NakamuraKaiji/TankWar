@@ -67,13 +67,18 @@ public:
 public:
 	// 操舵行動
 	// 探索
-	DirectX::SimpleMath::Vector3 Seek(const DirectX::SimpleMath::Vector3& targetPos);
+	DirectX::SimpleMath::Vector3 Seek(const DirectX::SimpleMath::Vector3& targetPosition);
+
+	// 逃走行動		
+	DirectX::SimpleMath::Vector3 Flee(const DirectX::SimpleMath::Vector3& targetPosition);
 
 	// 徘徊
 	DirectX::SimpleMath::Vector3 Wander(float* wanderOriantation, float wanderRadius, float wanderDistance, float wanderRotate);
 
+
 	// ベクトルの長さの切り捨て
 	static DirectX::SimpleMath::Vector3 Truncate(const DirectX::SimpleMath::Vector3& v, float maxLength);
+
 private:
 	// グラフィックス
 	Graphics* m_graphics = Graphics::GetInstance();

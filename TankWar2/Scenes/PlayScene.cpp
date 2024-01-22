@@ -59,7 +59,7 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	m_stage->StopAllEnemy(false);
 
 	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®ˆ—
-	m_stage->GetPlayer()->Move(kbTracker);
+	m_stage->GetPlayer()->Move(kbTracker, (float)timer.GetElapsedSeconds());
 
 	// “G‚ÌˆÊ’uî•ñ‚ð“n‚·
 	m_userInterface->GetEnemyHP()->SetPosition(m_stage->GetEnemy()->GetPosition());

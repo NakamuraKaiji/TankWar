@@ -70,7 +70,7 @@ public:
 	void OnHit(GameObject* object) override;
 
 	// ˆÚ“®ŠÖ”
-	void Move(DirectX::Keyboard::KeyboardStateTracker* tracker);
+	void Move(DirectX::Keyboard::KeyboardStateTracker* tracker, float elapsedTime);
 
 	//	ƒŠƒZƒbƒg
 	void Reset();
@@ -99,4 +99,10 @@ private:
 
 	// –Cg‚Ì‰ñ“]
 	DirectX::SimpleMath::Quaternion m_turretRotate;
+
+	// ‰Œ‚Ìo‚éŠÔŠu
+	float m_smokeTime;
+
+	// –C’e‚Ì”­ËŠÔŠu
+	float m_bulletTime;
 };

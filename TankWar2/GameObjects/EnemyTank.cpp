@@ -90,13 +90,12 @@ void EnemyTank::Render()
 	view = m_graphics->GetViewMatrix();
 	proj = m_graphics->GetProjectionMatrix();
 
-	// íÔ‚Ì‰ñ“]
-	m_parts[BODY]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate));
 	// –Cg‚Ì‰ñ“]
 	m_parts[TURRET]->SetTransformMatrix(SimpleMath::Matrix::CreateFromQuaternion(m_turretRotate));
-	// íÔ‚ÌˆÚ“®
+	// íÔ‚ÌˆÚ“®‚Æ‰ñ“]
 	SimpleMath::Matrix mat = SimpleMath::Matrix::CreateFromQuaternion(m_bodyRotate) 
 						   * SimpleMath::Matrix::CreateTranslation(GetPosition());
+
 	m_parts[BODY]->SetTransformMatrix(mat);
 
 	// íÔ‚Ì•`‰æ
@@ -143,10 +142,17 @@ void EnemyTank::Normal(float elapsedTime)
 	SimpleMath::Vector3 toTarget = m_target->GetPosition() - GetPosition();
 	//SimpleMath::Vector3 toTarget = SimpleMath::Vector3::Zero - GetPosition();
 
+	// ”ÍˆÍŠO‚Éo‚½‚ç–ß‚·
 	float radius = 5.0f;
 	if (toTarget.Length() > radius)
 	{
 		steeringforce -= Seek(m_target->GetPosition());
+	}
+	// ‹ß•t‚«‚·‚¬‚½‚ç—£‚ê‚é
+	radius = 1.0f;
+	if (toTarget.Length() <= radius)
+	{
+		steeringforce -= Flee(m_target->GetPosition());
 	}
 
 	// •¨‘Ì‚É—^‚¦‚ç‚ê‚½—Í[m/s2]
@@ -172,7 +178,7 @@ void EnemyTank::Normal(float elapsedTime)
 	TurnHeading(m_velocity);
 
 	// ‰ñ“]Šp‚ğŒvZ‚·‚é
-	float radian = std::atan2f(toTarget.z, toTarget.x);
+	float radian = std::atan2f(toTarget.x, toTarget.z);
 	m_turretRotate = SimpleMath::Quaternion::CreateFromAxisAngle(SimpleMath::Vector3::UnitY, radian);
 	m_turretRotate = XMQuaternionMultiply(m_turretRotate, XMQuaternionInverse(m_bodyRotate));
 
@@ -226,10 +232,10 @@ void EnemyTank::TurnHeading(const DirectX::SimpleMath::Vector3& direction)
 }
 
 // ’Tõs“®
-DirectX::SimpleMath::Vector3 EnemyTank::Seek(const DirectX::SimpleMath::Vector3& targetPos)
+DirectX::SimpleMath::Vector3 EnemyTank::Seek(const DirectX::SimpleMath::Vector3& targetPosition)
 {
 	// –Ú•WˆÊ’u‚Ö‚Ì•ûŒüƒxƒNƒgƒ‹‚ÌZo
-	SimpleMath::Vector3 toTarget = targetPos - GetPosition();
+	SimpleMath::Vector3 toTarget = targetPosition - GetPosition();
 
 	// Šú‘Ò‘¬“x‚ÌZo
 	toTarget.Normalize();
@@ -238,6 +244,23 @@ DirectX::SimpleMath::Vector3 EnemyTank::Seek(const DirectX::SimpleMath::Vector3&
 	// ‘€‘Ç—Í‚ÌZo
 	SimpleMath::Vector3 steeringForce = desiredVelocity - m_velocity;
 
+	return steeringForce;
+}
+
+// “¦‘–s“®
+DirectX::SimpleMath::Vector3 EnemyTank::Flee(const DirectX::SimpleMath::Vector3& targetPosition)
+{
+	// –Ú•WˆÊ’u‚Ö‚Ì•ûŒüƒxƒNƒgƒ‹‚ÌZo
+	SimpleMath::Vector3 toTarget = targetPosition - GetPosition();
+
+	// Šú‘Ò‘¬“x‚ÌZo
+	toTarget.Normalize();
+	SimpleMath::Vector3 desiredVelocity = -toTarget * ENEMY_MAX_SPEED;
+
+	// ‘€‘Ç—Í‚ÌZo
+	SimpleMath::Vector3 steeringForce = desiredVelocity - m_velocity;
+
+	// ‘€‘Ç—Í‚Ì•Ô‹p
 	return steeringForce;
 }
 
