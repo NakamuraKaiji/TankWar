@@ -193,6 +193,8 @@
     <ClInclude Include="GameObjects\GameParameter.h" />
     <ClInclude Include="GameObjects\PlayerCamera.h" />
     <ClInclude Include="GameObjects\SmokeEffect.h" />
+    <ClInclude Include="GameObjects\SmokeParticle.h" />
+    <ClInclude Include="GameObjects\SmokeParticleUtility.h" />
     <ClInclude Include="GameObjects\Stage.h" />
     <ClInclude Include="GameObjects\PlayerTank.h" />
     <ClInclude Include="GameObjects\UI\EnemyHP.h" />
@@ -230,6 +232,8 @@
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\PlayerCamera.cpp" />
     <ClCompile Include="GameObjects\SmokeEffect.cpp" />
+    <ClCompile Include="GameObjects\SmokeParticle.cpp" />
+    <ClCompile Include="GameObjects\SmokeParticleUtility.cpp" />
     <ClCompile Include="GameObjects\Stage.cpp" />
     <ClCompile Include="GameObjects\PlayerTank.cpp" />
     <ClCompile Include="GameObjects\UI\EnemyHP.cpp" />
@@ -262,6 +266,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico" />
+    <ImageContentTask Include="Resources\Textures\Defeat.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Victory.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\FadeMask.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
@@ -292,7 +302,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\Shaders\HP.hlsli" />
+    <None Include="Resources\Shaders\Common.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Resources\fbx\Bullet.fbx">
@@ -338,6 +348,19 @@
     <FxCompile Include="Resources\Shaders\HP_VS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

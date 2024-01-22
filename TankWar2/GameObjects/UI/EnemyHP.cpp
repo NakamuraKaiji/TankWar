@@ -27,7 +27,7 @@ EnemyHP::EnemyHP()
 // テクスチャリソース読み込み
 void EnemyHP::LoadTexture(const wchar_t* path)
 {
-	DirectX::CreateWICTextureFromFile(
+	DirectX::CreateDDSTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		path, 
 		m_res.ReleaseAndGetAddressOf(), 
@@ -51,14 +51,7 @@ void EnemyHP::Create()
 	CreateShader();
 
 	//画像の読み込み
-	LoadTexture(L"Resources/Textures/HP.png");
-
-}
-
-// 更新
-bool EnemyHP::Update(float elapsedTime)
-{
-	return true;
+	LoadTexture(L"Resources/dds/HP.dds");
 }
 
 // シェーダ制作部分だけ分離した関数
@@ -81,8 +74,8 @@ void EnemyHP::CreateShader()
 	// 頂点シェーダ作成
 	if (FAILED(m_graphics->GetDeviceResources()->GetD3DDevice()->CreateVertexShader(
 		VSData.GetData(),
-		VSData.GetSize(), 
-		NULL, 
+		VSData.GetSize(),
+		NULL,
 		m_vertexShader.ReleaseAndGetAddressOf())))
 	{// エラー
 		MessageBox(0, L"CreateVertexShader Failed.", NULL, MB_OK);
@@ -92,8 +85,8 @@ void EnemyHP::CreateShader()
 	// ジオメトリシェーダ作成
 	if (FAILED(m_graphics->GetDeviceResources()->GetD3DDevice()->CreateGeometryShader(
 		GSData.GetData(),
-		GSData.GetSize(), 
-		NULL, 
+		GSData.GetSize(),
+		NULL,
 		m_geometryShader.ReleaseAndGetAddressOf())))
 	{// エラー
 		MessageBox(0, L"CreateGeometryShader Failed.", NULL, MB_OK);
@@ -102,8 +95,8 @@ void EnemyHP::CreateShader()
 	// ピクセルシェーダ作成
 	if (FAILED(m_graphics->GetDeviceResources()->GetD3DDevice()->CreatePixelShader(
 		PSData.GetData(),
-		PSData.GetSize(), 
-		NULL, 
+		PSData.GetSize(),
+		NULL,
 		m_pixelShader.ReleaseAndGetAddressOf())))
 	{// エラー
 		MessageBox(0, L"CreatePixelShader Failed.", NULL, MB_OK);
@@ -118,7 +111,12 @@ void EnemyHP::CreateShader()
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	m_graphics->GetDeviceResources()->GetD3DDevice()->CreateBuffer(&bd, nullptr, &m_CBuffer);
+}
 
+// 更新
+bool EnemyHP::Update(float elapsedTime)
+{
+	return true;
 }
 
 // 描画

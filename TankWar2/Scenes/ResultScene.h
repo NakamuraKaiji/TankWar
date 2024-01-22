@@ -11,6 +11,7 @@
 #include "ImaseLib/TaskManager.h"
 #include "GameObjects/PlayerCamera.h"
 #include "GameObjects/GameParameter.h"
+#include "GameObjects/SmokeParticle.h"
 
 class ResultScene : public Imase::Scene<UserResources>
 {
@@ -44,8 +45,14 @@ private:
 	// グラフィックス
 	Graphics* m_graphics = Graphics::GetInstance();
 
-	// PushEnterテクスチャハンドル
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pushSRV;
+	// PushEnterテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pushTexture;
+
+	// 勝利テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_victoryTexture;
+
+	// 敗北テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_defeatTexture;
 
 	// カメラ
 	PlayerCamera m_playerCamera;
@@ -55,18 +62,17 @@ private:
 
 	// スカイドームモデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_skydomeModel;
-
 	// 車体モデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_tankBodyModel;
-
 	// 砲身モデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_tankTurretModel;
-
 	// 負けた体勢の戦車モデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_loseTankModel;
-
 	// 地面モデルへのポインタ
 	std::shared_ptr<DirectX::Model> m_groundModel;
+
+	// 煙のパーティクル
+	std::unique_ptr<SmokeParticle> m_smokeParticle;
 
 private:
 
@@ -77,7 +83,10 @@ private:
 	DirectX::SimpleMath::Matrix m_proj;
 
 	// カウント
-	int m_count;
+	float m_count;
+
+	// 砲身の回転
+	float m_turretRotate;
 
 	// スカイドームの回転
 	float m_skydomeRotate;
@@ -85,10 +94,7 @@ private:
 	// 車体の位置
 	DirectX::SimpleMath::Vector3 m_tankPosition;
 
-	// 煙の出る間隔
-	float m_smokeTime;
-
-	// 勝ったか負けたか
-	bool m_vectoryFlag;
+	// 勝利判定
+	bool m_victoryFlag;
 
 };

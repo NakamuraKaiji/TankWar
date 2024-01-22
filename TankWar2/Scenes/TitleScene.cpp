@@ -18,7 +18,7 @@ TitleScene::TitleScene()
 	, m_bulletPos{}
 	, m_angle(-45.0f)
 	, m_bulletRecovery(30.0f)
-	, m_count(0)
+	, m_count(0.0f)
 	, m_skydomeRotate(0.0f)
 {
 }
@@ -54,8 +54,8 @@ void TitleScene::Update(const DX::StepTimer& timer)
 	}
 
 	// PushEnterの点滅
-	m_count++;
-	if (m_count >= 120)	m_count -= 120;
+	m_count += timer.GetElapsedSeconds();
+	if (m_count >= 2.0f)	m_count = 0.0f;
 
 	// 砲弾の速度の計算
 	SimpleMath::Vector3 velocity = SimpleMath::Vector3::TransformNormal(BULLET_SPEED, 
@@ -115,10 +115,10 @@ void TitleScene::Render()
 
 	// テクスチャの描画
 	m_graphics->GetSpriteBatch()->Begin();
-	m_graphics->GetSpriteBatch()->Draw(m_titleSRV.Get(), SimpleMath::Vector2(173.0f, 25.0f));
-	if (m_count <= 60)
+	m_graphics->GetSpriteBatch()->Draw(m_titleTexture.Get(), SimpleMath::Vector2(173.0f, 25.0f));
+	if (m_count <= 1.0f)
 	{
-		m_graphics->GetSpriteBatch()->Draw(m_pushSRV.Get(), SimpleMath::Vector2(0.0, 550.0f));
+		m_graphics->GetSpriteBatch()->Draw(m_pushTexture.Get(), SimpleMath::Vector2(0.0, 550.0f));
 	}
 	m_graphics->GetSpriteBatch()->End();
 }
@@ -126,8 +126,8 @@ void TitleScene::Render()
 // 終了
 void TitleScene::Finalize()
 {
-	m_titleSRV.Reset();
-	m_pushSRV.Reset();
+	m_titleTexture.Reset();
+	m_pushTexture.Reset();
 }
 
 // デバイスに依存するリソースを作成する関数
@@ -145,21 +145,10 @@ void TitleScene::CreateDeviceDependentResources()
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
 
-	// タイトルテクスチャの読み込み
-	DX::ThrowIfFailed(
-		DirectX::CreateDDSTextureFromFile(device,
-			L"Resources/dds/TankWar.dds",
-			nullptr,
-			m_titleSRV.ReleaseAndGetAddressOf())
-	);
-
-	// PushEnterテクスチャの読み込み
-	DX::ThrowIfFailed(
-		DirectX::CreateDDSTextureFromFile(device,
-			L"Resources/dds/PushEnter.dds",
-			nullptr,
-			m_pushSRV.ReleaseAndGetAddressOf())
-	);
+	// タイトルテクスチャを取得する
+	m_titleTexture = Resources::GetInstance()->GetTitle();
+	// PushEnterテクスチャを取得する
+	m_pushTexture  = Resources::GetInstance()->GetPush();
 
 	// スカイドームモデルの作成
 	m_skydomeModel = Resources::GetInstance()->GetSkydome();
@@ -188,7 +177,7 @@ void TitleScene::CreateDeviceDependentResources()
 	// 砲弾モデルの作成
 	m_bulletModel     = Resources::GetInstance()->GetBullet();
 	// 地面モデルの作成
-	m_groundModel = Resources::GetInstance()->GetGround();
+	m_groundModel     = Resources::GetInstance()->GetGround();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

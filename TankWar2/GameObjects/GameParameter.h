@@ -93,7 +93,7 @@ static constexpr float ENEMY_RADIUS = 0.6f;
 static constexpr float ENEMY_HP = 1.0f;
 
 // １ヒットで減らすHPの量
-static constexpr float ENEMY_REDUCE_HP = 0.01f;
+static constexpr float ENEMY_REDUCE_HP = 0.03f;
 
 
 // ---- 砲弾関連 ---- //

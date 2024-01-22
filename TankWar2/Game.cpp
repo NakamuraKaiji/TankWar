@@ -44,7 +44,7 @@ void Game::Initialize(HWND window, int width, int height)
     //m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
     // 初期起動シーン
-    m_sceneManager->SetScene<ResultScene>();
+    m_sceneManager->SetScene<TitleScene>();
 
     // BLANK（黒で塗りつぶす）
     auto context = m_deviceResources->GetD3DDeviceContext();

@@ -142,6 +142,12 @@
     <ClInclude Include="ReadData.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\SmokeParticle.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\SmokeParticleUtility.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -231,6 +237,12 @@
     <ClCompile Include="RenderTexture.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\SmokeParticle.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\SmokeParticleUtility.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -247,7 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\Shaders\HP.hlsli">
+    <None Include="Resources\Shaders\Common.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
@@ -296,6 +308,12 @@
     <ImageContentTask Include="Resources\Textures\TankWar.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Defeat.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Victory.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\HP_GS.hlsl">
@@ -308,6 +326,15 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

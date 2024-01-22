@@ -31,8 +31,16 @@ public:
 
 	// 煙のテクスチャを取得する
 	ID3D11ShaderResourceView* GetSmoke() { return m_smokeTexture.Get(); }
-	// 残機のテクスチャの取得する
+	// 残機のテクスチャを取得する
 	ID3D11ShaderResourceView* GetLife() { return m_life.Get(); }
+	// PushEnterテクスチャを取得する
+	ID3D11ShaderResourceView* GetPush() { return m_push.Get(); }
+	// タイトルテクスチャを取得する
+	ID3D11ShaderResourceView* GetTitle() { return m_title.Get(); }
+	// 勝利テクスチャを取得する
+	ID3D11ShaderResourceView* GetVictory() { return m_victory.Get(); }
+	// 敗北テクスチャを取得する
+	ID3D11ShaderResourceView* GetDefeat() { return m_defeat.Get(); }
 
 public:
 	// Resoucesクラスのインスタンスを取得する
@@ -47,9 +55,13 @@ private:
 		, m_enemyTankTurret{}
 		, m_skydome{}
 		, m_bullet{}
+		, m_ground{}
 		, m_smokeTexture{}
 		, m_loseTank{}
-		, m_ground{}
+		, m_push{}
+		, m_title{}
+		, m_victory{}
+		, m_defeat{}
 	{}
 	// 代入は許容しない
 	void operator=(const Resources& object) = delete;
@@ -85,6 +97,14 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_smokeTexture;
 	// 残機のテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_life;
+	// PushEnterテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_push;
+	// タイトルテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_title;
+	// 勝利テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_victory;
+	// 敗北テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_defeat;
 
 };
 

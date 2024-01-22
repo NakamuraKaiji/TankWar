@@ -43,6 +43,10 @@ private:
 	// ジオメトリシェーダ
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> m_geometryShader;
 
+
+private:
+
+	// ビルボード
 	DirectX::SimpleMath::Matrix m_billboard;
 
 	// 表示位置

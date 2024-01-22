@@ -84,6 +84,7 @@ void PlayScene::Update(const DX::StepTimer& timer)
 		{
 			// リザルトシーンに切り替え
 			ChangeScene<ResultScene>();
+			GetUserResources()->SetVictoryFlag(false);
 		}
 	}
 	// デバッグ用
@@ -95,6 +96,7 @@ void PlayScene::Update(const DX::StepTimer& timer)
 		{
 			// リザルトシーンに切り替え
 			ChangeScene<ResultScene>();
+			GetUserResources()->SetVictoryFlag(false);
 		}
 	}
 
@@ -104,10 +106,11 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	{
 		m_ratio = m_ratio - ENEMY_REDUCE_HP;
 		m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
-		if (m_ratio <= 0)
+		if (m_ratio < -0.3f)
 		{
 			// リザルトシーンに切り替え
 			ChangeScene<ResultScene>();
+			GetUserResources()->SetVictoryFlag(true);
 		}
 	}
 	// デバッグ用
@@ -115,10 +118,11 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	{
 		m_ratio = m_ratio - ENEMY_REDUCE_HP;
 		m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
-		if (m_ratio <= 0)
+		if (m_ratio < -0.3f)
 		{
 			// リザルトシーンに切り替え
 			ChangeScene<ResultScene>();
+			GetUserResources()->SetVictoryFlag(true);
 		}
 	}
 
@@ -158,7 +162,6 @@ void PlayScene::Render()
 	skyWorld *= SimpleMath::Matrix::CreateRotationY(m_skydomeRotate);
 	skyWorld *= SimpleMath::Matrix::CreateTranslation(m_stage->GetPlayer()->GetPosition());
 	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
-
 
 	if (m_graphics->GetSpriteBatch()) m_graphics->GetSpriteBatch()->Begin();
 

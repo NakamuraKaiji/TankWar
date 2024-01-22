@@ -1,4 +1,4 @@
-#include "HP.hlsli"
+#include "Common.hlsli"
 
 Texture2D tex : register(t0);
 SamplerState samLinear : register(s0);

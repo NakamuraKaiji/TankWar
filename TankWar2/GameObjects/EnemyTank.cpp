@@ -2,6 +2,7 @@
 #include "EnemyTank.h"
 #include "Utilities/Resources.h"
 #include "Bullet.h"
+#include "SmokeEffect.h"
 #include <random>
 
 using namespace DirectX;
@@ -189,6 +190,19 @@ void EnemyTank::Normal(float elapsedTime)
 
 		m_interval = 0.0f;
 	}
+
+	// 煙の速度ベクトル
+	SimpleMath::Vector3 velocity = SMOKE_EFFECT_SPEED;
+	static int num = 0;
+	num++;
+	// 煙のエフェクトを発生させる
+	if (num > 60)
+	{
+		SimpleMath::Vector3 position = SimpleMath::Vector3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z);
+		GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
+		num = 0;
+	}
+
 }
 
 // 衝突中関数

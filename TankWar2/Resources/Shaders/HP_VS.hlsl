@@ -1,4 +1,4 @@
-#include "HP.hlsli"
+#include "Common.hlsli"
 
 PS_INPUT main(VS_INPUT input)
 {

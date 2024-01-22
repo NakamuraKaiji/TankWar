@@ -37,5 +37,20 @@ void Resources::LoadResource()
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources/dds/Life.dds", nullptr, m_life.ReleaseAndGetAddressOf())
 	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/PushEnter.dds", nullptr, m_push.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/TankWar.dds", nullptr, m_title.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/Victory.dds", nullptr, m_victory.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/Defeat.dds", nullptr, m_defeat.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/Defeat.dds", nullptr, m_defeat.ReleaseAndGetAddressOf())
+	);
 
 }

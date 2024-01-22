@@ -10,7 +10,7 @@ using namespace DirectX;
 ResultScene::ResultScene()
 	: m_view{}
 	, m_proj{}
-	, m_count(0)
+	, m_count(0.0f)
 	, m_skydomeModel{}
 	, m_skydomeRotate(0.0f)
 	, m_tankBodyModel{}
@@ -18,8 +18,8 @@ ResultScene::ResultScene()
 	, m_loseTankModel{}
 	, m_groundModel{}
 	, m_tankPosition{}
-	, m_smokeTime(0.0f)
-	, m_vectoryFlag(false)
+	, m_victoryFlag(false)
+	, m_turretRotate(0.0f)
 {
 }
 
@@ -54,12 +54,19 @@ void ResultScene::Update(const DX::StepTimer& timer)
 	// タスクの更新
 	m_taskManager.Update((float)timer.GetElapsedSeconds());
 
+	// 煙のパーティクルの更新
+	m_smokeParticle->SetPosition(m_tankPosition);
+	m_smokeParticle->Update((float)timer.GetElapsedSeconds());
+
 	// シーン切り替え
 	if (keyState->pressed.Enter) ChangeScene<TitleScene>();
 
 	// PushEnterの点滅
-	m_count++;
-	if (m_count >= 120)	m_count -= 120;
+	m_count += timer.GetElapsedSeconds();
+	if (m_count >= 2.0f)	m_count = 0.0f;
+
+	// 砲身の回転
+	m_turretRotate += timer.GetElapsedSeconds();
 
 	// スカイドームの回転
 	m_skydomeRotate += timer.GetElapsedSeconds() * 0.05f;
@@ -67,8 +74,8 @@ void ResultScene::Update(const DX::StepTimer& timer)
 	// デバッグ用
 	if (keyState->pressed.Z)
 	{
-		if (m_vectoryFlag == false) m_vectoryFlag = true;
-		else m_vectoryFlag = false;
+		if (m_victoryFlag == false) m_victoryFlag = true;
+		else m_victoryFlag = false;
 	}
 
 }
@@ -91,6 +98,9 @@ void ResultScene::Render()
 	// ビュー行列を設定
 	m_graphics->SetViewMatrix(m_view);
 
+	// インプットレイアウトを登録
+	m_graphics->GetDeviceResources()->GetD3DDeviceContext()->IASetInputLayout(m_graphics->GetInputLayout());
+
 	// タスクの描画
 	m_taskManager.Render();
 
@@ -104,28 +114,44 @@ void ResultScene::Render()
 	skyWorld *= SimpleMath::Matrix::CreateRotationY(m_skydomeRotate);
 	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
+	m_graphics->GetSpriteBatch()->Begin();
+
 	// 戦車の描画
-	SimpleMath::Matrix world;
-	world *= SimpleMath::Matrix::CreateRotationY(-90.0f);
-	world *= SimpleMath::Matrix::CreateTranslation(m_tankPosition);
-	if (m_vectoryFlag == true)
+	SimpleMath::Matrix bodyWorld, turretWorld;
+	bodyWorld	*= SimpleMath::Matrix::CreateRotationY(-90.0f);
+	bodyWorld	*= SimpleMath::Matrix::CreateTranslation(m_tankPosition);
+	turretWorld *= SimpleMath::Matrix::CreateRotationY(m_turretRotate);
+	turretWorld *= bodyWorld;
+	if (m_victoryFlag == true)
 	{
-		m_tankBodyModel->Draw(context, *states, world, m_view, m_proj);
-		m_tankTurretModel->Draw(context, *states, world, m_view, m_proj);
+		m_tankBodyModel->Draw(context, *states, bodyWorld, m_view, m_proj);
+		m_tankTurretModel->Draw(context, *states, turretWorld, m_view, m_proj);
+
+		// 勝利テクスチャを描画する
+		m_graphics->GetSpriteBatch()->Draw(m_victoryTexture.Get(), SimpleMath::Vector2(-50.0f, 75.0f));
 	}
 
 	// 負けた戦車の描画
-	if (m_vectoryFlag == false)
+	if (m_victoryFlag == false)
 	{
-		m_loseTankModel->Draw(context, *states, world, m_view, m_proj);
+		m_loseTankModel->Draw(context, *states, bodyWorld, m_view, m_proj);
+
+		// 敗北テクスチャを描画する
+		m_graphics->GetSpriteBatch()->Draw(m_defeatTexture.Get(), SimpleMath::Vector2(-50.0f, 75.0f));
+
+		// 煙のパーティクルの描画
+		m_smokeParticle->CreateBillboard(m_playerCamera.GetTargetPosition(), m_playerCamera.GetEyePosition(), SimpleMath::Vector3::Up);
+		m_smokeParticle->Render();
 	}
 
-	// テクスチャの描画
-	m_graphics->GetSpriteBatch()->Begin();
-	if (m_count <= 60)
+
+
+	// Pushテクスチャの描画
+	if (m_count <= 1.0f)
 	{
-		m_graphics->GetSpriteBatch()->Draw(m_pushSRV.Get(), SimpleMath::Vector2(0.0, 550.0f));
+		m_graphics->GetSpriteBatch()->Draw(m_pushTexture.Get(), SimpleMath::Vector2(0.0, 550.0f));
 	}
+
 	m_graphics->GetSpriteBatch()->End();
 
 }
@@ -133,15 +159,18 @@ void ResultScene::Render()
 // 終了
 void ResultScene::Finalize()
 {
-	m_pushSRV.Reset();
+	m_pushTexture.Reset();
 }
 
 // デバイスに依存するリソースを作成する関数
 void ResultScene::CreateDeviceDependentResources()
 {
-	auto device = GetUserResources()->GetDeviceResources()->GetD3DDevice();
+	auto device  = GetUserResources()->GetDeviceResources()->GetD3DDevice();
 	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = GetUserResources()->GetCommonStates();
+	auto states  = GetUserResources()->GetCommonStates();
+
+	// 勝利判定を取得する
+	m_victoryFlag = GetUserResources()->GetVictoryFlag();
 
 	// グラフィックスの生成
 	m_graphics->SetDeviceResources(GetUserResources()->GetDeviceResources());
@@ -151,14 +180,13 @@ void ResultScene::CreateDeviceDependentResources()
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
 
-	// PushEnterテクスチャの読み込み
-	DX::ThrowIfFailed(
-		DirectX::CreateDDSTextureFromFile(device,
-			L"Resources/dds/PushEnter.dds",
-			nullptr,
-			m_pushSRV.ReleaseAndGetAddressOf())
-	);
-
+	// PushEnterテクスチャを取得する
+	m_pushTexture    = Resources::GetInstance()->GetPush();
+	// 勝利テクスチャを取得する
+	m_victoryTexture = Resources::GetInstance()->GetVictory();
+	// 敗北テクスチャを取得する
+	m_defeatTexture  = Resources::GetInstance()->GetDefeat();
+	
 	// スカイドームモデルの作成
 	m_skydomeModel = Resources::GetInstance()->GetSkydome();
 	m_skydomeModel->UpdateEffects([](IEffect* effect)
@@ -187,6 +215,10 @@ void ResultScene::CreateDeviceDependentResources()
 	m_loseTankModel   = Resources::GetInstance()->GetLoseTank();
 	// 地面モデルの作成
 	m_groundModel     = Resources::GetInstance()->GetGround();
+
+	// パーティクルの生成
+	m_smokeParticle = std::make_unique<SmokeParticle>();
+	m_smokeParticle->Create();
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

@@ -41,11 +41,11 @@ public:
 
 private:
 
-	// タイトルテクスチャハンドル
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleSRV;
+	// タイトルテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleTexture;
 
-	// PushEnterテクスチャハンドル
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pushSRV;
+	// PushEnterテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pushTexture;
 
 	// グラフィックス
 	Graphics* m_graphics = Graphics::GetInstance();
@@ -80,7 +80,7 @@ private:
 	DirectX::SimpleMath::Quaternion m_rotate;
 
 	// カウント
-	int m_count;
+	float m_count;
 
 	// 砲弾の位置
 	DirectX::SimpleMath::Vector3 m_bulletPos;

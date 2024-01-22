@@ -38,6 +38,8 @@ private:
 	// 画面遷移マスクへのポインタ
 	TransitionMask* m_transitionMask;
 
+	// 勝利判定
+	bool m_victoryFlag;
 
 public:
 
@@ -50,6 +52,7 @@ public:
 		, m_debugFont(nullptr)
 		, m_states(nullptr)
 		, m_transitionMask(nullptr)
+		, m_victoryFlag(false)
 	{
 	}
 
@@ -123,6 +126,15 @@ public:
 	// 画面遷移マスクを取得する関数
 	TransitionMask* GetTransitionMask() { return m_transitionMask; }
 
+	// ------------------------------------------ //
+	// 勝利判定	
+	// ------------------------------------------ //
+
+	// 勝利判定を設定する関数
+	void SetVictoryFlag(bool victoryFlag) { m_victoryFlag = victoryFlag; }
+
+	// 勝利判定を取得する
+	bool GetVictoryFlag() { return m_victoryFlag; }
 
 };
 

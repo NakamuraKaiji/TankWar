@@ -1,4 +1,4 @@
-#include "HP.hlsli"
+#include "Common.hlsli"
 
 static const int vnum = 4;
 
