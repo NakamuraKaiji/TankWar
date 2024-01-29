@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceResources.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTexture.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\UI\EnemyHP.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\UI\Life.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\UI\UserInterface.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Bullet.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Camera.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\CollisionManager.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\EnemyTank.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\GameObject.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PlayerCamera.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PlayerTank.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\SmokeEffect.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\SmokeParticle.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\SmokeParticleUtility.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Stage.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaseLib\DebugCamera.cpp">
+      <Filter>ImaseLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaseLib\DebugFont.cpp">
+      <Filter>ImaseLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaseLib\DisplayCollision.cpp">
+      <Filter>ImaseLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaseLib\GridFloor.cpp">
+      <Filter>ImaseLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaseLib\ModelCollision.cpp">
+      <Filter>ImaseLib</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLib\BinaryFile.cpp">
+      <Filter>MyLib</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLib\TransitionMask.cpp">
+      <Filter>MyLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Graphics.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Resources.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\PlayScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ResultScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\TitleScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLib\TaskManager.cpp">
+      <Filter>MyLib</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLib\SoundManager.cpp">
+      <Filter>MyLib</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLib\SoundCreate.cpp">
+      <Filter>MyLib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="UserResources.h" />
+    <ClInclude Include="DebugDraw.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceResources.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTexture.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\UI\EnemyHP.h">
+      <Filter>GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\UI\Life.h">
+      <Filter>GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\UI\UserInterface.h">
+      <Filter>GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Bullet.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Camera.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\CollisionManager.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\EnemyTank.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameParameter.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameResources.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\PlayerCamera.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\PlayerTank.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\SmokeEffect.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\SmokeParticle.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\SmokeParticleUtility.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Stage.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaseLib\DebugCamera.h">
+      <Filter>ImaseLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaseLib\DebugFont.h">
+      <Filter>ImaseLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaseLib\DisplayCollision.h">
+      <Filter>ImaseLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaseLib\GridFloor.h">
+      <Filter>ImaseLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ImaseLib\ModelCollision.h">
+      <Filter>ImaseLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\BinaryFile.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\TransitionMask.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Graphics.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Resources.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\PlayScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ResultScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\TitleScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\ModelPart.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\SceneManager.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\TaskManager.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\SoundManager.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLib\SoundCreate.h">
+      <Filter>MyLib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\Shaders\Common.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{98882417-eae7-4c98-a0b9-2f04250d9cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX">
+      <UniqueIdentifier>{b532d2e6-0362-4c9c-b592-f79a2ac45811}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{23d0cccc-0422-43e1-aa61-53694ae373f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\UI">
+      <UniqueIdentifier>{9781f77d-523e-49c5-a649-895eb696e261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImaseLib">
+      <UniqueIdentifier>{32575e1e-2bd2-49e0-9a25-2f5e44ba6401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyLib">
+      <UniqueIdentifier>{09244a91-79a9-4073-9bea-9dc96c397971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{8516b41c-0f0b-46f3-9c55-fbe879d6483c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{dfaf8c8c-a57f-4b56-b815-68959709e837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{25269ade-8091-41ed-8961-6af5b72e6cf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{edc51068-8981-4c14-8a77-dd70e75beb6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{4c6b683c-2f52-4b99-8379-c5946726be94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sounds">
+      <UniqueIdentifier>{16c83479-b617-4877-901a-131c26153e55}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Resources\fbx\EnemyTankBody.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\EnemyTankTurret.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Ground.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\LoseTank.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Skydome.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Tank.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\TankBody.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\TankTurret.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Bullet.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HP_GS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HP_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HP_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resources\Textures\Defeat.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\FadeMask.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\HP.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Life.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\smoke_effect.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\TankWar.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Victory.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\PushEnter.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\Sounds\bgm.wav">
+      <Filter>Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\defeat.wav">
+      <Filter>Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\victroy.wav">
+      <Filter>Sounds</Filter>
+    </Media>
+  </ItemGroup>
+</Project>
