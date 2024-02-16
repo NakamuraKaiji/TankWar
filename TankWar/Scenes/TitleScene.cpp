@@ -34,13 +34,6 @@ void TitleScene::Initialize()
 	m_playerCamera.SetPlayer(SimpleMath::Vector3::Zero, m_rotate);
 	// カメラの設定
 	m_playerCamera.SetType(PlayerCamera::Type::TYPE_B);
-
-	// BGMの作成
-	m_bgm = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
-		L"Resources/Sounds/bgm.wav",
-		GetUserResources()->GetAudioEngine())->CreateInstance();
-	m_bgm->Play(true);
-	m_bgm->SetVolume(1.0f);
 }
 
 // 更新
@@ -56,7 +49,9 @@ void TitleScene::Update(const DX::StepTimer& timer)
 	auto transitionMask = GetUserResources()->GetTransitionMask();
 	if (keyState->pressed.Enter)
 	{
+		// 切り替え
 		transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
+		transitionMask->Open();
 		ChangeScene<PlayScene>();
 	}
 
@@ -82,11 +77,6 @@ void TitleScene::Update(const DX::StepTimer& timer)
 
 	// スカイドームの回転
 	m_skydomeRotate += (float)timer.GetElapsedSeconds() * 0.05f;
-
-	// BGMの音量を画面の開き具合に合わせる
-	//GetUserResources()->GetBgm()->SetVolume(transitionMask->GetRate());
-
-	// BGMを鳴らす
 }	
 
 // 描画

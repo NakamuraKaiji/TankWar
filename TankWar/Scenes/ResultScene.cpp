@@ -3,6 +3,7 @@
 #include "Utilities/Resources.h"
 #include "TitleScene.h"
 #include "GameObjects/SmokeEffect.h"
+#include "MyLib/SoundCreate.h"
 
 using namespace DirectX;
 
@@ -37,10 +38,12 @@ void ResultScene::Initialize()
 	// 戦車の初期位置
 	m_tankPosition = SimpleMath::Vector3(0.5f, 0.0f, -0.5f);
 
-	// マスクをオープンする
-	auto transitionMask = GetUserResources()->GetTransitionMask();
-	transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
-	transitionMask->Open();
+	//	勝敗に合わせた音を再生
+	if (m_victoryFlag == true) m_victorySound->Play(false);
+	else m_defeatSound->Play(false);
+
+	// BGM再生
+	m_bgm->Play(true);
 }
 
 // 更新
@@ -60,7 +63,15 @@ void ResultScene::Update(const DX::StepTimer& timer)
 	m_smokeParticle->Update((float)timer.GetElapsedSeconds());
 
 	// シーン切り替え
-	if (keyState->pressed.Enter) ChangeScene<TitleScene>();
+	if (keyState->pressed.Enter)
+	{
+		// マスクをオープンする
+		auto transitionMask = GetUserResources()->GetTransitionMask();
+		transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
+		transitionMask->Open();
+
+		ChangeScene<TitleScene>();
+	}
 
 	// PushEnterの点滅
 	m_count += (float)timer.GetElapsedSeconds();
@@ -209,6 +220,25 @@ void ResultScene::CreateDeviceDependentResources()
 
 	// パーティクルの生成
 	m_smokeParticle = std::make_unique<SmokeParticle>();
+
+	// BGMの作成
+	m_bgm = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
+		L"Resources/Sounds/bgm.wav",
+		GetUserResources()->GetAudioEngine())->CreateInstance();
+	m_bgm->SetVolume(0.2f);
+
+	// 勝利の音作成
+	m_victorySound = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
+		L"Resources/Sounds/victory.wav",
+		GetUserResources()->GetAudioEngine())->CreateInstance();
+	m_victorySound->SetVolume(0.5f);
+
+	// 敗北の音作成
+	m_defeatSound = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
+		L"Resources/Sounds/defeat.wav",
+		GetUserResources()->GetAudioEngine())->CreateInstance();
+	m_defeatSound->SetVolume(0.5f);
+
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

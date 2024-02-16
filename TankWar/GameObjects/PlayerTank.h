@@ -52,6 +52,9 @@ public:
 	// プレイヤーの状態を取得する関数
 	PlayerState GetState() { return m_playerState; }
 
+	// 弾を発射したどうかを取得する関数
+	bool GetShotFlag() { return m_shotFlag; }
+
 public:
 
 	// コンストラクタ
@@ -74,6 +77,7 @@ public:
 
 	//	リセット
 	void Reset();
+
 private:
 
 	// グラフィックス
@@ -105,4 +109,7 @@ private:
 
 	// 砲弾の発射間隔
 	float m_bulletTime;
+
+	// 発射したかどうか
+	bool m_shotFlag;
 };

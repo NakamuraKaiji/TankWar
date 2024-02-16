@@ -30,6 +30,10 @@ public:
 
 	// ó‘Ô‚ğæ“¾‚·‚éŠÖ”
 	EnemyState GetState() { return m_enemyState; }
+
+	// ’e‚ğ”­Ë‚µ‚½‚Ç‚¤‚©‚ğæ“¾‚·‚éŠÖ”
+	bool GetShotFlag() { return m_shotFlag; }
+
 private:
 
 	// ’Êí‚ÌŠÖ”
@@ -40,6 +44,9 @@ private:
 
 	// –C’e‚Æ‚ÌÕ“ËŠÖ”
 	void OnHit_Bullet(GameObject* object);
+
+	// ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
+	void OnHit_Player(GameObject* object);
 
 public:
 
@@ -120,4 +127,8 @@ private:
 
 	// ‰Œ‚Ìo‚éŠÔŠu
 	float m_smokeTime;
+
+	// ”­Ë‚µ‚½‚©‚Ç‚¤‚©
+	bool m_shotFlag;
+
 };

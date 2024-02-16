@@ -18,6 +18,7 @@ PlayerTank::PlayerTank(const GameResources& gameResources, DirectX::SimpleMath::
 	, m_playerState(PlayerState::Normal)
 	, m_smokeTime(0.0f)
 	, m_bulletTime(0.0f)
+	, m_shotFlag(false)
 {
 }
 
@@ -178,6 +179,7 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker, float el
 
 	// スペースで発射
 	m_bulletTime += elapsedTime;
+	m_shotFlag = false;
 	if (m_bulletTime > 1.0f)
 	if (tracker->pressed.Space)
 	{
@@ -185,12 +187,11 @@ void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker, float el
 		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
 		// 親を変更する
 		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
-
 		SetVelocity(SimpleMath::Vector3::Zero);
-
 		m_bulletTime = 0.0f;
+		// 発射した
+		m_shotFlag = true;
 	}
-
 }
 
 // 衝突中関数

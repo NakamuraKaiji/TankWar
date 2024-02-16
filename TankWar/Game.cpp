@@ -5,8 +5,6 @@
 #include "pch.h"
 #include "Game.h"
 #include "Scenes/TitleScene.h"
-#include "Scenes/PlayScene.h"
-#include "Scenes/ResultScene.h"
 
 extern void ExitGame() noexcept;
 
@@ -123,11 +121,6 @@ void Game::Render()
     // 画面遷移マスクの描画
     m_transitionMask->Draw(context, m_states.get(), m_transitionTexture->GetShaderResourceView(), m_deviceResources->GetOutputSize());
 
-    // fpsの表示
-    //std::wostringstream oss;
-    //oss << "fps:" << m_timer.GetFramesPerSecond();
-    //m_debugFont->AddString(oss.str().c_str(), SimpleMath::Vector2(0.0f, 0.0f));
-
     // デバッグ用文字列の描画
     m_debugFont->Render(m_states.get());
 
@@ -187,18 +180,6 @@ void Game::OnWindowMoved()
 {
     auto const r = m_deviceResources->GetOutputSize();
     m_deviceResources->WindowSizeChanged(r.right, r.bottom);
-
-    // フルスクリーンか調べる
-    BOOL fullscreen = FALSE;
-    m_deviceResources->GetSwapChain()->GetFullscreenState(&fullscreen, nullptr);
-    // フルスクリーンが解除されてしまった時の処理
-    if (m_fullscreen != fullscreen)
-    {
-        m_fullscreen = fullscreen;
-        // ResizeBuffers関数を呼び出す
-        m_deviceResources->CreateWindowSizeDependentResources();
-    }
-
 }
 
 void Game::OnDisplayChange()

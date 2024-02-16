@@ -23,6 +23,7 @@ EnemyTank::EnemyTank(const GameResources& gameResources, DirectX::SimpleMath::Ve
 	, m_enemyState(EnemyState::Normal)
 	, m_invincibleTime(0.0f)
 	, m_smokeTime(0.0f)
+	, m_shotFlag(false)
 {
 }
 
@@ -44,6 +45,7 @@ void EnemyTank::Initialize()
 	// Ô‘Ì‚©‚ç–Cg‚ÌeqŠÖŒW
 	m_parts[BODY]->SetChild(m_parts[TURRET].get());
 
+	// ‰Šú‰»
 	m_wanderOrientation = 0.0f;
 
 	// •`‰æ‡‚Ìİ’è
@@ -102,25 +104,21 @@ void EnemyTank::Render()
 	// íÔ‚Ì•`‰æ
 	m_parts[ROOT]->UpdateMatrix();
 	m_parts[ROOT]->Draw(context, *states, view, proj);
-
 }
 
 // Õ“Ë‚µ‚½‚çŒÄ‚Î‚ê‚éŠÖ”
 void EnemyTank::OnHit(GameObject* object)
 {
-	// ’â~‚³‚¹‚é
-	SetVelocity(SimpleMath::Vector3::Zero);
-	// ˆÚ“®‚³‚¹‚é
-	SimpleMath::Vector3 dir = GetPosition() - object->GetPosition();
-	dir.y = 0.0f;
-	dir.Normalize();
-	AddForce(dir, object->GetHitForce());
-	// –³“GŠÔ‚ğ‰ß‚¬‚½‚çÕ“Ëó‘Ô‚Ö
-	if (m_invincibleTime > INVINCIBILITY_TIME)
+	// Õ“Ë‚µ‚½‘Šè‚É‚æ‚Á‚Äˆ—‚ğ•Ï‚¦‚é
+	switch (static_cast<ObjectID>(object->GetID()))
 	{
-		m_enemyState = EnemyState::Hit;
-		// ŠÔ‚ğƒŠƒZƒbƒg
-		m_invincibleTime = 0.0f;
+	case ObjectID::Bullet:			// –C’e
+		OnHit_Bullet(object);
+		break;
+	case ObjectID::Player:
+		OnHit_Player(object);
+	default:
+		break;
 	}
 }
 
@@ -181,17 +179,18 @@ void EnemyTank::Normal(float elapsedTime)
 
 	// –C’e‚Ì”­ËŠÔŠu
 	m_bulletTime += elapsedTime;
+	m_shotFlag = false;
 	// 2•bŠÔŠu‚Å”­Ë
-	if (m_bulletTime >= 2.0f)
+	if (m_bulletTime >= 3.0f)
 	{
 		// ’e‚ğ”­Ë‚·‚é
 		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
 		// e‚ğ•ÏX‚·‚é
 		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
-
 		SetVelocity(SimpleMath::Vector3::Zero);
-
 		m_bulletTime = 0.0f;
+
+		m_shotFlag = true;
 	}
 
 	// ‰Œ‚Ì‘¬“xƒxƒNƒgƒ‹
@@ -216,6 +215,25 @@ void EnemyTank::Hit()
 		m_enemyState = EnemyState::Normal;
 	}
 }
+
+void EnemyTank::OnHit_Bullet(GameObject* object)
+{
+	// ’â~‚³‚¹‚é
+	SetVelocity(SimpleMath::Vector3::Zero);
+	// –³“GŠÔ‚ğ‰ß‚¬‚½‚çÕ“Ëó‘Ô‚Ö
+	if (m_invincibleTime > INVINCIBILITY_TIME)
+	{
+		m_enemyState = EnemyState::Hit;
+		// ŠÔ‚ğƒŠƒZƒbƒg
+		m_invincibleTime = 0.0f;
+	}
+}
+
+void EnemyTank::OnHit_Player(GameObject* object)
+{
+	SetVelocity(SimpleMath::Vector3::Zero);
+}
+
 
 // w’è‚Ì•ûŒü‚ÉŒü‚­
 void EnemyTank::TurnHeading(const DirectX::SimpleMath::Vector3& direction)

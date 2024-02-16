@@ -74,6 +74,14 @@ private:
 	// 煙のパーティクル
 	std::unique_ptr<SmokeParticle> m_smokeParticle;
 
+	// BGM
+	std::unique_ptr<DirectX::SoundEffectInstance> m_bgm;
+	// 勝利の音
+	std::unique_ptr<DirectX::SoundEffectInstance> m_victorySound;
+	// 敗北の音
+	std::unique_ptr<DirectX::SoundEffectInstance> m_defeatSound;
+
+
 private:
 
 	// ビュー行列

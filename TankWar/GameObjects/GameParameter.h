@@ -102,13 +102,13 @@ static constexpr float ENEMY_RADIUS = 0.5f;
 static constexpr float ENEMY_HP = 1.0f;
 
 // １ヒットで減らすHPの量
-static constexpr float ENEMY_REDUCE_HP = 0.03f;
+static constexpr float ENEMY_REDUCE_HP = 0.2f;
 
 // 探索行動をする範囲
-static constexpr float ENEMY_SEEK_RANGE = 5.0f;
+static constexpr float ENEMY_SEEK_RANGE = 6.0f;
 
 // 逃走行動をする範囲 
-static constexpr float ENEMY_FLEE_RANGE = 1.0f;
+static constexpr float ENEMY_FLEE_RANGE = 2.0f;
 
 
 // ---- 砲弾関連 ---- //

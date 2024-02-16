@@ -9,6 +9,7 @@
 #include "PlayScene.h"
 #include "Utilities/Resources.h"
 #include "GameObjects/GameResources.h"
+#include "MyLib/SoundCreate.h"
 #include "ResultScene.h"
 
 using namespace DirectX;
@@ -40,10 +41,8 @@ void PlayScene::Initialize()
 	m_ratio = ENEMY_HP;
 	m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
 
-	// マスクをオープンする
-	auto transitionMask = GetUserResources()->GetTransitionMask();
-	transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
-	transitionMask->Open();
+	// BGM再生
+	m_bgm->Play(true);
 }
 
 // 更新
@@ -74,25 +73,30 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	// 衝突判定の更新
 	m_collisionManager.Update();
 
+	// 砲弾を発射したら音を鳴らす
+	if (m_stage->GetPlayer()->GetShotFlag() || m_stage->GetEnemy()->GetShotFlag())
+	{
+		m_shotSound->Stop();
+		m_shotSound->Play();
+	}
+
 	// 当たったら残機を減らす
 	if (m_stage->GetPlayer()->GetState() == PlayerTank::PlayerState::Hit)
 	{
 		m_life--;
 		m_userInterface->GetLife()->SetLife(m_life);
+
+		// 爆発音を鳴らす
+		m_explosionSound->Stop();
+		m_explosionSound->Play();
+
 		if (m_life == 0)
 		{
-			// リザルトシーンに切り替え
-			ChangeScene<ResultScene>();
-			GetUserResources()->SetVictoryFlag(false);
-		}
-	}
-	// デバッグ用
-	if (kbTracker->pressed.Z)
-	{
-		m_life--;
-		m_userInterface->GetLife()->SetLife(m_life);
-		if (m_life == 0)
-		{
+			// マスクをオープンする
+			auto transitionMask = GetUserResources()->GetTransitionMask();
+			transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
+			transitionMask->Open();
+
 			// リザルトシーンに切り替え
 			ChangeScene<ResultScene>();
 			GetUserResources()->SetVictoryFlag(false);
@@ -104,32 +108,23 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	{
 		m_ratio = m_ratio - ENEMY_REDUCE_HP;
 		m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
-		if (m_ratio < -0.3f)
-		{
-			// リザルトシーンに切り替え
-			ChangeScene<ResultScene>();
-			GetUserResources()->SetVictoryFlag(true);
-		}
-	}
-	// デバッグ用
-	if (kbTracker->pressed.X)
-	{
-		m_ratio = m_ratio - ENEMY_REDUCE_HP;
-		m_userInterface->GetEnemyHP()->SetRatio(m_ratio);
-		if (m_ratio < -0.3f)
-		{
-			// リザルトシーンに切り替え
-			ChangeScene<ResultScene>();
-			GetUserResources()->SetVictoryFlag(true);
-		}
-	}
-	else if (kbTracker->pressed.C)
-	{
-		// リザルトシーンに切り替え
-		ChangeScene<ResultScene>();
-		GetUserResources()->SetVictoryFlag(true);
-	}
 
+		// 爆発音を鳴らす
+		m_explosionSound->Stop();
+		m_explosionSound->Play();
+
+		if (m_ratio < 0.0f)
+		{	
+			// マスクをオープンする
+			auto transitionMask = GetUserResources()->GetTransitionMask();
+			transitionMask->SetCreateMaskRequest(TransitionMask::CreateMaskRequest::NONE);
+			transitionMask->Open();
+
+			// リザルトシーンに切り替え
+			ChangeScene<ResultScene>();
+			GetUserResources()->SetVictoryFlag(true);
+		}
+	}
 	// スカイドームの回転
 	m_skydomeRotate += (float)timer.GetElapsedSeconds() * 0.05f;
 
@@ -210,6 +205,25 @@ void PlayScene::CreateDeviceDependentResources()
 	// UIの作成
 	if (m_userInterface) m_userInterface->Kill();
 	m_userInterface = m_taskManager.AddTask<UserInterface>();
+
+	// BGMの作成
+	m_bgm = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
+		L"Resources/Sounds/bgm.wav",
+		GetUserResources()->GetAudioEngine())->CreateInstance();
+	m_bgm->SetVolume(0.3f);
+
+	// 爆発音の作成
+	m_explosionSound = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
+		L"Resources/Sounds/explosion.wav",
+		GetUserResources()->GetAudioEngine())->CreateInstance();
+	m_explosionSound->SetVolume(0.6f);
+
+	// 発射音の作成
+	m_shotSound = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(
+		L"Resources/Sounds/shot.wav",
+		GetUserResources()->GetAudioEngine())->CreateInstance();
+	m_shotSound->SetVolume(0.8f);
+
 }
 
 // ウインドウサイズに依存するリソースを作成する関数

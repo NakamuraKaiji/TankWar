@@ -66,7 +66,14 @@ private:
 	CollisionManager m_collisionManager;
 
 	// UI
-	UserInterface* m_userInterface;;
+	UserInterface* m_userInterface;
+
+	// BGM
+	std::unique_ptr<DirectX::SoundEffectInstance> m_bgm;
+	// ”š”­‰¹
+	std::unique_ptr<DirectX::SoundEffectInstance> m_explosionSound;
+	// ”­ŽË‰¹
+	std::unique_ptr<DirectX::SoundEffectInstance> m_shotSound;
 
 private:
 

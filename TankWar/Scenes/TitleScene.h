@@ -68,9 +68,6 @@ private:
 	// カメラ
 	PlayerCamera m_playerCamera;
 
-	// BGM
-	std::unique_ptr<DirectX::SoundEffectInstance> m_bgm;
-
 private:
 
 	// ビュー行列

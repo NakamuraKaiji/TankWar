@@ -77,8 +77,8 @@ public:
 	void Close();
 
 	// 状態を確認する関数
-	bool IsOpen() const { return m_open; }
-	bool IsClose() const { return !m_open; }
+	bool IsOpen();
+	bool IsClose();
 
 	// 割合（0～1）を取得する関数
 	float GetRate() const

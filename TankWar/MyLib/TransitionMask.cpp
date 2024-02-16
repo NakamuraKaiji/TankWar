@@ -123,3 +123,16 @@ void TransitionMask::Close()
 	m_rate = 0.0f;
 }
 
+// オープンしているかチェックする関数
+bool TransitionMask::IsOpen()
+{
+	if (m_open && m_rate == 1.0f) return true;
+	return false;
+}
+
+// クローズしているかチェックする関数
+bool TransitionMask::IsClose()
+{
+	if (!m_open && m_rate == 0.0f) return true;
+	return false;
+}
