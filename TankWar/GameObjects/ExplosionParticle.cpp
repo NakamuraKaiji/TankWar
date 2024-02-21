@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SmokeParticle.h"
+#include "ExplosionParticle.h"
 #include "Utilities/Resources.h"
 #include "MyLib/BinaryFile.h"
 #include "GameParameter.h"
@@ -8,7 +8,7 @@
 using namespace DirectX;
 
 // インプットレイアウト	
-const std::vector<D3D11_INPUT_ELEMENT_DESC>	SmokeParticle::INPUT_LAYOUT =
+const std::vector<D3D11_INPUT_ELEMENT_DESC>	ExplosionParticle::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0,							 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "COLOR",	0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,	sizeof(SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -16,13 +16,14 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC>	SmokeParticle::INPUT_LAYOUT =
 };
 
 // コンストラクタ
-SmokeParticle::SmokeParticle()
+ExplosionParticle::ExplosionParticle()
 	: m_timer(0.0f)
+	, m_scale(SimpleMath::Vector3::Zero)
 {
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
 
-	//シェーダーの作成
+	// シェーダーの作成
 	CreateShader();
 
 	// テクスチャ読み込み
@@ -30,7 +31,7 @@ SmokeParticle::SmokeParticle()
 }
 
 // テクスチャリソース読み込み
-void SmokeParticle::LoadTexture()
+void ExplosionParticle::LoadTexture()
 {
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
 	texture = Resources::GetInstance()->GetParticle();
@@ -39,7 +40,7 @@ void SmokeParticle::LoadTexture()
 }
 
 // シェーダ制作部分だけ分離した関数
-void SmokeParticle::CreateShader()
+void ExplosionParticle::CreateShader()
 {
 	// コンパイルされたシェーダファイルを読み込み
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/ParticleVS.cso");
@@ -97,14 +98,13 @@ void SmokeParticle::CreateShader()
 	m_graphics->GetDeviceResources()->GetD3DDevice()->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
 
-
 // 更新
-void SmokeParticle::Update(float elapsedTime)
+void ExplosionParticle::Update(float elapsedTime)
 {
-	// 0.1秒ごとに生成
+	// 0.01秒ごとに生成
 	m_timer += elapsedTime;
-	if (m_timer >= BLACK_SMOKE_CREATE_TIME)
-	{	
+	if (m_timer >= 0.01f)
+	{
 		std::random_device seed;
 		std::default_random_engine engine(seed());
 		std::uniform_real_distribution<> dist(0, XM_2PI);
@@ -113,15 +113,16 @@ void SmokeParticle::Update(float elapsedTime)
 		ParticleUtility pU(
 			1.0f,
 			SimpleMath::Vector3(m_position.x + range * cosf(rand), 0.5f, m_position.z + range * sinf(rand)),            // 基準座標
-			SimpleMath::Vector3(0.0f, 2.0f, 0.0f),			                                                            // 速度
-			SimpleMath::Vector3(0.0f, 2.f, 0.0f), 					                                                    // 加速度
-			SimpleMath::Vector3::One, SimpleMath::Vector3::Zero,	                                                    // 初期スケール、最終スケール
-			SimpleMath::Color(0.41f, 0.41f, 0.41f, 1.0f), SimpleMath::Color(0.41f, 0.41f, 0.41f, 1.0f)	                // 初期カラー、  最終カラー
+			SimpleMath::Vector3(0.0f, 0.5f, 0.0f),			                                                            // 速度
+			SimpleMath::Vector3(0.0f, 0.5f, 0.0f), 					                                                    // 加速度
+			m_scale, SimpleMath::Vector3::Zero,	                                                                        // 初期スケール、最終スケール
+			SimpleMath::Color(0.8f, 0.0f, 0.0f, 1.0f), SimpleMath::Color(0.0f, 0.0f, 0.0f, 1.0f)	                    // 初期カラー、  最終カラー
 		);
 
 		m_particleUtility.push_back(pU);
 		m_timer = 0.0f;
 	}
+
 
 	//timerを渡してm_effectの更新処理を行う
 	for (std::list<ParticleUtility>::iterator ite = m_particleUtility.begin(); ite != m_particleUtility.end(); ite++)
@@ -136,10 +137,10 @@ void SmokeParticle::Update(float elapsedTime)
 }
 
 // 描画
-void SmokeParticle::Render()
+void ExplosionParticle::Render()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto states  = m_graphics->GetCommonStates();
+	auto states = m_graphics->GetCommonStates();
 
 	DirectX::SimpleMath::Vector3 cameraDir = m_cameraTarget - m_cameraPosition;
 	cameraDir.Normalize();
@@ -230,7 +231,7 @@ void SmokeParticle::Render()
 }
 
 // ビルボード
-void SmokeParticle::CreateBillboard(DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 up)
+void ExplosionParticle::CreateBillboard(DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 up)
 {
 	m_billboard =
 		SimpleMath::Matrix::CreateBillboard(SimpleMath::Vector3::Zero, eye - target, up);

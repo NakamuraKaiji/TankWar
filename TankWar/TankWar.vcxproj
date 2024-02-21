@@ -188,6 +188,7 @@
     <ClInclude Include="GameObjects\Camera.h" />
     <ClInclude Include="GameObjects\CollisionManager.h" />
     <ClInclude Include="GameObjects\EnemyTank.h" />
+    <ClInclude Include="GameObjects\ExplosionParticle.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\GameParameter.h" />
     <ClInclude Include="GameObjects\GameResources.h" />
@@ -195,16 +196,11 @@
     <ClInclude Include="GameObjects\PlayerTank.h" />
     <ClInclude Include="GameObjects\SmokeEffect.h" />
     <ClInclude Include="GameObjects\SmokeParticle.h" />
-    <ClInclude Include="GameObjects\SmokeParticleUtility.h" />
+    <ClInclude Include="GameObjects\ParticleUtility.h" />
     <ClInclude Include="GameObjects\Stage.h" />
     <ClInclude Include="GameObjects\UI\EnemyHP.h" />
     <ClInclude Include="GameObjects\UI\Life.h" />
     <ClInclude Include="GameObjects\UI\UserInterface.h" />
-    <ClInclude Include="ImaseLib\DebugCamera.h" />
-    <ClInclude Include="ImaseLib\DebugFont.h" />
-    <ClInclude Include="ImaseLib\DisplayCollision.h" />
-    <ClInclude Include="ImaseLib\GridFloor.h" />
-    <ClInclude Include="ImaseLib\ModelCollision.h" />
     <ClInclude Include="MyLib\BinaryFile.h" />
     <ClInclude Include="MyLib\ModelPart.h" />
     <ClInclude Include="MyLib\SceneManager.h" />
@@ -231,21 +227,17 @@
     <ClCompile Include="GameObjects\Camera.cpp" />
     <ClCompile Include="GameObjects\CollisionManager.cpp" />
     <ClCompile Include="GameObjects\EnemyTank.cpp" />
+    <ClCompile Include="GameObjects\ExplosionParticle.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\PlayerCamera.cpp" />
     <ClCompile Include="GameObjects\PlayerTank.cpp" />
     <ClCompile Include="GameObjects\SmokeEffect.cpp" />
     <ClCompile Include="GameObjects\SmokeParticle.cpp" />
-    <ClCompile Include="GameObjects\SmokeParticleUtility.cpp" />
+    <ClCompile Include="GameObjects\ParticleUtility.cpp" />
     <ClCompile Include="GameObjects\Stage.cpp" />
     <ClCompile Include="GameObjects\UI\EnemyHP.cpp" />
     <ClCompile Include="GameObjects\UI\Life.cpp" />
     <ClCompile Include="GameObjects\UI\UserInterface.cpp" />
-    <ClCompile Include="ImaseLib\DebugCamera.cpp" />
-    <ClCompile Include="ImaseLib\DebugFont.cpp" />
-    <ClCompile Include="ImaseLib\DisplayCollision.cpp" />
-    <ClCompile Include="ImaseLib\GridFloor.cpp" />
-    <ClCompile Include="ImaseLib\ModelCollision.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MyLib\BinaryFile.cpp" />
     <ClCompile Include="MyLib\SoundCreate.cpp" />
@@ -276,27 +268,35 @@
     <Image Include="directx.ico" />
     <ImageContentTask Include="Resources\Textures\PushEnter.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\Defeat.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\FadeMask.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\HP.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\Life.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\smoke_effect.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\TankWar.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\Victory.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
@@ -305,70 +305,95 @@
   <ItemGroup>
     <MeshContentTask Include="Resources\fbx\Bullet.fbx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\EnemyTankBody.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\EnemyTankTurret.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\Ground.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\LoseTank.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\Skydome.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\Tank.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\TankBody.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Resources\fbx\TankTurret.fbx">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cmo</ContentOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\HP_GS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\HP_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\HP_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@
 #include "CollisionManager.h"
 #include "GameResources.h"
 
+
 class PlayerTank : public GameObject
 {
 public:
@@ -30,10 +31,10 @@ private:
 	void Hit();
 
 	// 砲弾との衝突関数
-	void OnHit_Bullet(GameObject* object);
+	void OnHit_Bullet();
 
 	// 敵との当たり判定
-	void OnHit_Player(GameObject* object);
+	void OnHit_Player();
 
 public:
 
@@ -48,6 +49,10 @@ public:
 
 	// 砲身回転を取得する関数
 	DirectX::SimpleMath::Quaternion GetTurretRotate() { return m_turretRotate; }
+
+	// ターゲットを設定
+	void SetTarget(GameObject* target) { m_target = target; }
+
 
 	// プレイヤーの状態を取得する関数
 	PlayerState GetState() { return m_playerState; }
@@ -96,6 +101,9 @@ private:
 
 	// Collisionで作成したリソース
 	GameResources m_gameResources;
+
+	// ターゲット
+	GameObject* m_target;
 
 private:	
 	// 車体の回転

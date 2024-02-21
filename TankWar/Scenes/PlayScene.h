@@ -13,6 +13,7 @@
 #include "GameObjects/Stage.h"
 #include "GameObjects/CollisionManager.h"
 #include "GameObjects/UI/UserInterface.h"
+#include "GameObjects/ExplosionParticle.h"
 
 class PlayScene :public Scene<UserResources>
 {
@@ -64,9 +65,12 @@ private:
 
 	// 衝突判定用オブジェクト
 	CollisionManager m_collisionManager;
-
+	
 	// UI
 	UserInterface* m_userInterface;
+
+	// 爆発のパーティクル
+	std::unique_ptr<ExplosionParticle> m_explosionParticle[2];
 
 	// BGM
 	std::unique_ptr<DirectX::SoundEffectInstance> m_bgm;
@@ -92,4 +96,9 @@ private:
 	// スカイドームの回転
 	float m_skydomeRotate;
 
+	// 爆発フラグ
+	bool m_explosionPlayerFlag, m_explosionEnemyFlag;
+
+	// 爆発表示時間
+	float m_explosionPlayerTime, m_explosionEnemyTime;
 };

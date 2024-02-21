@@ -15,7 +15,7 @@ SmokeEffect::SmokeEffect(DirectX::SimpleMath::Vector3 position,
 	, m_alpha(0.0f)
 {
 	// テクスチャを取得
-	m_smokeTexture = Resources::GetInstance()->GetSmoke();
+	m_smokeTexture = Resources::GetInstance()->GetParticle();
 
 	// 描画順の設定
 	SetOt(static_cast<int>(OT_Priority::OT_Top));

@@ -113,10 +113,10 @@ void EnemyTank::OnHit(GameObject* object)
 	switch (static_cast<ObjectID>(object->GetID()))
 	{
 	case ObjectID::Bullet:			// –C’e
-		OnHit_Bullet(object);
+		OnHit_Bullet();
 		break;
 	case ObjectID::Player:
-		OnHit_Player(object);
+		OnHit_Player();
 	default:
 		break;
 	}
@@ -201,7 +201,7 @@ void EnemyTank::Normal(float elapsedTime)
 	{
 		SimpleMath::Vector3 position = SimpleMath::Vector3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z);
 		GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
-		m_smokeTime = 0;
+		m_smokeTime = 0.0f;
 	}
 
 }
@@ -212,14 +212,25 @@ void EnemyTank::Hit()
 	// –€ŽC‚É‚æ‚è’âŽ~‚µ‚½‚ç
 	if (GetVelocity() == SimpleMath::Vector3::Zero)
 	{
+		// •ûŒü‚Ö‚ÌƒxƒNƒgƒ‹‚ð‹‚ß‚é
+		SimpleMath::Vector3 v = GetPosition() - m_target->GetPosition();
+		v.Normalize();
+		// Œü‚«ƒxƒNƒgƒ‹‚ðì¬
+		SimpleMath::Vector3 dir;
+		dir = SimpleMath::Vector3::Transform(-v, m_bodyRotate);
+		// ƒmƒbƒNƒoƒbƒN‚·‚é
+		AddForce(dir, m_target->GetHitForce());
+
+		// ’Êí
 		m_enemyState = EnemyState::Normal;
 	}
 }
 
-void EnemyTank::OnHit_Bullet(GameObject* object)
+void EnemyTank::OnHit_Bullet()
 {
 	// ’âŽ~‚³‚¹‚é
 	SetVelocity(SimpleMath::Vector3::Zero);
+
 	// –³“GŽžŠÔ‚ð‰ß‚¬‚½‚çÕ“Ëó‘Ô‚Ö
 	if (m_invincibleTime > INVINCIBILITY_TIME)
 	{
@@ -229,7 +240,7 @@ void EnemyTank::OnHit_Bullet(GameObject* object)
 	}
 }
 
-void EnemyTank::OnHit_Player(GameObject* object)
+void EnemyTank::OnHit_Player()
 {
 	SetVelocity(SimpleMath::Vector3::Zero);
 }

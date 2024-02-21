@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "SmokeParticleUtility.h"
+#include "ParticleUtility.h"
 
 using namespace DirectX;
 
 // コンストラクタ
-SmokeParticleUtility::SmokeParticleUtility(
+ParticleUtility::ParticleUtility(
 	float life, 
 	DirectX::SimpleMath::Vector3 pos, 
 	DirectX::SimpleMath::Vector3 velocity, 
@@ -34,7 +34,7 @@ SmokeParticleUtility::SmokeParticleUtility(
 }
 
 // 更新
-bool SmokeParticleUtility::Update(float elapsedTime)
+bool ParticleUtility::Update(float elapsedTime)
 {
 	// スケール
 	m_nowScale = SimpleMath::Vector3::Lerp(m_startScale, m_endScale, 1.0f - m_life / m_startLife);

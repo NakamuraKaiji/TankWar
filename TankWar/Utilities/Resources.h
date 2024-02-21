@@ -31,8 +31,8 @@ public:
 	// 地面モデルを取得する
 	std::shared_ptr<DirectX::Model> GetGround() { return m_ground; }
 
-	// 煙のテクスチャを取得する
-	ID3D11ShaderResourceView* GetSmoke() { return m_smokeTexture.Get(); }
+	// パーティクルのテクスチャを取得する
+	ID3D11ShaderResourceView* GetParticle() { return m_particleTexture.Get(); }
 	// 残機のテクスチャを取得する
 	ID3D11ShaderResourceView* GetLife() { return m_life.Get(); }
 	// PushEnterテクスチャを取得する
@@ -60,7 +60,7 @@ private:
 		, m_skydome{}
 		, m_bullet{}
 		, m_ground{}
-		, m_smokeTexture{}
+		, m_particleTexture{}
 		, m_loseTank{}
 		, m_push{}
 		, m_title{}
@@ -97,8 +97,8 @@ private:
 	// 地面モデル
 	std::shared_ptr<DirectX::Model> m_ground;
 
-	// 煙のテクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_smokeTexture;
+	// パーティクルのテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_particleTexture;
 	// 残機のテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_life;
 	// PushEnterテクスチャ

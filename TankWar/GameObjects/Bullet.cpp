@@ -77,6 +77,8 @@ void Bullet::Reset()
 // Õ“Ë‚µ‚½‚çŒÄ‚Î‚ê‚éŠÖ”
 void Bullet::OnHit(GameObject* object)
 {
+	UNREFERENCED_PARAMETER(object);
+
 	this->Kill();
 }
 

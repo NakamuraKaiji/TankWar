@@ -1,10 +1,3 @@
-//*********************************************************************
-//			概要	：プレイシーンクラス
-// 
-//			制作日	：10月3日
-// 
-//			製作者	：Kaiji Nakamura
-//*********************************************************************
 #include "pch.h"
 #include "PlayScene.h"
 #include "Utilities/Resources.h"
@@ -23,7 +16,11 @@ PlayScene::PlayScene()
 	, m_stage{}
 	, m_userInterface{}
 	, m_life(0)
-	, m_ratio(0.0f)
+	, m_ratio(0.0)
+	, m_explosionPlayerFlag(false)
+	, m_explosionEnemyFlag(false)
+	, m_explosionPlayerTime(0.0f)
+	, m_explosionEnemyTime(0.0f)
 {
 }
 
@@ -52,9 +49,6 @@ void PlayScene::Update(const DX::StepTimer& timer)
 
 	// タスクの更新
 	m_taskManager.Update((float)timer.GetElapsedSeconds());
-
-	// 全ての敵を動かす
-	m_stage->StopAllEnemy(false);
 
 	// プレイヤーの移動処理
 	m_stage->GetPlayer()->Move(kbTracker, (float)timer.GetElapsedSeconds());
@@ -90,6 +84,10 @@ void PlayScene::Update(const DX::StepTimer& timer)
 		m_explosionSound->Stop();
 		m_explosionSound->Play();
 
+		// 爆発のパーティクルの位置の設定
+		m_explosionParticle[0]->SetPosition(m_stage->GetPlayer()->GetPosition());
+		m_explosionPlayerFlag = true;
+
 		if (m_life == 0)
 		{
 			// マスクをオープンする
@@ -113,6 +111,10 @@ void PlayScene::Update(const DX::StepTimer& timer)
 		m_explosionSound->Stop();
 		m_explosionSound->Play();
 
+		// 爆発のパーティクルの位置を設定
+		m_explosionParticle[1]->SetPosition(m_stage->GetEnemy()->GetPosition());
+		m_explosionEnemyFlag = true;
+
 		if (m_ratio < 0.0f)
 		{	
 			// マスクをオープンする
@@ -125,17 +127,43 @@ void PlayScene::Update(const DX::StepTimer& timer)
 			GetUserResources()->SetVictoryFlag(true);
 		}
 	}
+
+	// 0.4秒経過したら消す
+	if (m_explosionPlayerFlag == true)
+	{
+		m_explosionPlayerTime += (float)timer.GetElapsedSeconds();
+		m_explosionParticle[0]->SetScale(SimpleMath::Vector3::One);
+		if (m_explosionPlayerTime >= EXPLOSION_DISPLAY_TIME)
+		{
+			m_explosionPlayerFlag = false;
+			m_explosionPlayerTime = 0.0f;
+		}
+	}
+	if (m_explosionEnemyFlag == true)
+	{
+		m_explosionEnemyTime += (float)timer.GetElapsedSeconds();
+		m_explosionParticle[1]->SetScale(SimpleMath::Vector3::One);
+		if (m_explosionEnemyTime >= EXPLOSION_DISPLAY_TIME)
+		{
+			m_explosionEnemyFlag = false;
+			m_explosionEnemyTime = 0.0f;
+		}
+	}
+	// スケールの設定
+	if (m_explosionPlayerFlag == false) m_explosionParticle[0]->SetScale(SimpleMath::Vector3::Zero);
+	if (m_explosionEnemyFlag  == false) m_explosionParticle[1]->SetScale(SimpleMath::Vector3::Zero);
+
+	// 爆発の更新
+	m_explosionParticle[0]->Update((float)timer.GetElapsedSeconds());
+	m_explosionParticle[1]->Update((float)timer.GetElapsedSeconds());
+
 	// スカイドームの回転
 	m_skydomeRotate += (float)timer.GetElapsedSeconds() * 0.05f;
-
 }
 
 // 描画
 void PlayScene::Render()
 {
-	//auto debugFont = GetUserResources()->GetDebugFont();
-	//debugFont->AddString(L"PlayScene", SimpleMath::Vector2(0.0f, debugFont->GetFontHeight()));
-
 	auto context = GetUserResources()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = GetUserResources()->GetCommonStates();
 
@@ -169,6 +197,17 @@ void PlayScene::Render()
 
 	if (m_graphics->GetSpriteBatch()) m_graphics->GetSpriteBatch()->End();
 
+	// 爆発のパーティクルの描画
+	if (m_explosionPlayerFlag == true)
+	{
+		m_explosionParticle[0]->CreateBillboard(m_playerCamera.GetTargetPosition(), m_playerCamera.GetEyePosition(), SimpleMath::Vector3::Up);
+		m_explosionParticle[0]->Render();
+	}
+	if (m_explosionEnemyFlag == true)
+	{
+		m_explosionParticle[1]->CreateBillboard(m_playerCamera.GetTargetPosition(), m_playerCamera.GetEyePosition(), SimpleMath::Vector3::Up);
+		m_explosionParticle[1]->Render();
+	}
 }
 
 // 終了
@@ -205,6 +244,12 @@ void PlayScene::CreateDeviceDependentResources()
 	// UIの作成
 	if (m_userInterface) m_userInterface->Kill();
 	m_userInterface = m_taskManager.AddTask<UserInterface>();
+
+	// 爆発のパーティクル生成
+	for (int i = 0; i < 2; i++)
+	{
+		m_explosionParticle[i] = std::make_unique<ExplosionParticle>();
+	}
 
 	// BGMの作成
 	m_bgm = SoundCreate::GetInstance()->GetSoundManager()->CreateSoundEffectInstance(

@@ -49,26 +49,11 @@
     <ClCompile Include="GameObjects\SmokeParticle.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\SmokeParticleUtility.cpp">
+    <ClCompile Include="GameObjects\ParticleUtility.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Stage.cpp">
       <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\DebugCamera.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\DebugFont.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\DisplayCollision.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\GridFloor.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\ModelCollision.cpp">
-      <Filter>ImaseLib</Filter>
     </ClCompile>
     <ClCompile Include="MyLib\BinaryFile.cpp">
       <Filter>MyLib</Filter>
@@ -99,6 +84,9 @@
     </ClCompile>
     <ClCompile Include="MyLib\SoundCreate.cpp">
       <Filter>MyLib</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\ExplosionParticle.cpp">
+      <Filter>GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,26 +150,11 @@
     <ClInclude Include="GameObjects\SmokeParticle.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\SmokeParticleUtility.h">
+    <ClInclude Include="GameObjects\ParticleUtility.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Stage.h">
       <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\DebugCamera.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\DebugFont.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\DisplayCollision.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\GridFloor.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\ModelCollision.h">
-      <Filter>ImaseLib</Filter>
     </ClInclude>
     <ClInclude Include="MyLib\BinaryFile.h">
       <Filter>MyLib</Filter>
@@ -219,6 +192,9 @@
     <ClInclude Include="MyLib\SoundCreate.h">
       <Filter>MyLib</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\ExplosionParticle.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -241,9 +217,6 @@
     </Filter>
     <Filter Include="GameObjects\UI">
       <UniqueIdentifier>{9781f77d-523e-49c5-a649-895eb696e261}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImaseLib">
-      <UniqueIdentifier>{32575e1e-2bd2-49e0-9a25-2f5e44ba6401}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyLib">
       <UniqueIdentifier>{09244a91-79a9-4073-9bea-9dc96c397971}</UniqueIdentifier>

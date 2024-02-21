@@ -55,9 +55,6 @@ public:
 	// 敵を取得
 	EnemyTank* GetEnemy() { return m_enemyTask; }
 
-	// 全ての敵を停止
-	void StopAllEnemy(bool isStop);
-
 	// 全ての敵が死んでいるかチェック
 	bool IsDeadAllEnemy();
 

@@ -32,7 +32,7 @@ void Resources::LoadResource()
 
 	// テクスチャ
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
-		L"Resources/dds/smoke_effect.dds",	nullptr, m_smokeTexture.ReleaseAndGetAddressOf())
+		L"Resources/dds/smoke_effect.dds",	nullptr, m_particleTexture.ReleaseAndGetAddressOf())
 	);
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources/dds/Life.dds", nullptr, m_life.ReleaseAndGetAddressOf())

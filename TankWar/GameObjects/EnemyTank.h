@@ -43,10 +43,10 @@ private:
 	void Hit();
 
 	// –C’e‚Æ‚ÌÕ“ËŠÖ”
-	void OnHit_Bullet(GameObject* object);
+	void OnHit_Bullet();
 
 	// ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
-	void OnHit_Player(GameObject* object);
+	void OnHit_Player();
 
 public:
 

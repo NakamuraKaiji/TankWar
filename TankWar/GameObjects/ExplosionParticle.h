@@ -1,7 +1,7 @@
 //*********************************************************************
-//			概要	：煙のパーティクルクラス
+//			概要	：爆発のエフェクトクラス
 // 
-//			制作日	：1月21日
+//			制作日	：2月21日
 // 
 //			製作者	：Kaiji Nakamura
 //*********************************************************************
@@ -11,7 +11,7 @@
 #include <vector>
 
 
-class SmokeParticle
+class ExplosionParticle
 {
 public:
 	//データ受け渡し用コンスタントバッファ(送信側)
@@ -52,19 +52,21 @@ private:
 	// 表示位置
 	DirectX::SimpleMath::Vector3 m_position;
 
+	// スケール
+	DirectX::SimpleMath::Vector3 m_scale;
+
 	DirectX::SimpleMath::Vector3 m_cameraPosition;
 	DirectX::SimpleMath::Vector3 m_cameraTarget;
-	
+
 	// タイマー
 	float m_timer;
-
 
 public:
 
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 
 	// コンストラクタ
-	SmokeParticle();
+	ExplosionParticle();
 
 	// テクスチャリソース読み込み
 	void LoadTexture();
@@ -88,6 +90,8 @@ public:
 
 	// 位置設定
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_position = position; }
+
+	void SetScale(DirectX::SimpleMath::Vector3 scale) { m_scale = scale; }
 
 private:
 

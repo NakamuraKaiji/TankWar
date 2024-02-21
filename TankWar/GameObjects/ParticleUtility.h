@@ -1,5 +1,5 @@
 //*********************************************************************
-//			概要	：煙のパーティクルユーティリティクラス
+//			概要	：パーティクルユーティリティクラス
 // 
 //			制作日	：1月21日
 // 
@@ -9,7 +9,7 @@
 #include "StepTimer.h"
 #include <vector>
 
-class SmokeParticleUtility
+class ParticleUtility
 {
 private:
 	//座標
@@ -37,7 +37,7 @@ private:
 public:
 
 	//コンストラクタ
-	SmokeParticleUtility(
+	ParticleUtility(
 		float life,
 		DirectX::SimpleMath::Vector3 pos,
 		DirectX::SimpleMath::Vector3 velocity,

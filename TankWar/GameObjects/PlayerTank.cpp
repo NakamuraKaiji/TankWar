@@ -19,6 +19,8 @@ PlayerTank::PlayerTank(const GameResources& gameResources, DirectX::SimpleMath::
 	, m_smokeTime(0.0f)
 	, m_bulletTime(0.0f)
 	, m_shotFlag(false)
+	, m_target(nullptr)
+
 {
 }
 
@@ -200,6 +202,16 @@ void PlayerTank::Hit()
 	// –€C‚É‚æ‚è’â~‚µ‚½‚ç
 	if (GetVelocity() == SimpleMath::Vector3::Zero)
 	{
+		// •ûŒü‚Ö‚ÌƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		SimpleMath::Vector3 v = m_target->GetPosition() - GetPosition();
+		v.Normalize();
+		// Œü‚«ƒxƒNƒgƒ‹‚ğì¬
+		SimpleMath::Vector3 dir;
+		dir = SimpleMath::Vector3::Transform(-v, m_bodyRotate);
+		// ƒmƒbƒNƒoƒbƒN‚·‚é
+		AddForce(dir, m_target->GetHitForce());
+
+		// ’Êí
 		m_playerState = PlayerState::Normal;
 	}
 }
@@ -211,17 +223,17 @@ void PlayerTank::OnHit(GameObject* object)
 	switch (static_cast<ObjectID>(object->GetID()))
 	{
 	case ObjectID::Bullet:			// –C’e
-		OnHit_Bullet(object);
+		OnHit_Bullet();
 		break;
 	case ObjectID::Enemy:			// “G
-		OnHit_Player(object);
+		OnHit_Player();
 	default:
 		break;
 	}
 }
 
 // –C’e‚Æ‚ÌÕ“ËŠÖ”
-void PlayerTank::OnHit_Bullet(GameObject* object)
+void PlayerTank::OnHit_Bullet()
 {
 	SetVelocity(SimpleMath::Vector3::Zero);
 
@@ -229,7 +241,7 @@ void PlayerTank::OnHit_Bullet(GameObject* object)
 }
 
 // “G‚Æ‚Ì“–‚½‚è”»’è
-void PlayerTank::OnHit_Player(GameObject* object)
+void PlayerTank::OnHit_Player()
 {
 	SetVelocity(SimpleMath::Vector3::Zero);
 }

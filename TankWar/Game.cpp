@@ -121,9 +121,6 @@ void Game::Render()
     // 画面遷移マスクの描画
     m_transitionMask->Draw(context, m_states.get(), m_transitionTexture->GetShaderResourceView(), m_deviceResources->GetOutputSize());
 
-    // デバッグ用文字列の描画
-    m_debugFont->Render(m_states.get());
-
     m_deviceResources->PIXEndEvent();
 
     // Show the new frame.
@@ -212,12 +209,9 @@ void Game::GetDefaultSize(int& width, int& height) const noexcept
 void Game::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
-    auto context = m_deviceResources->GetD3DDeviceContext();
 
     // 共通ステートオブジェクトの作成
     m_states = std::make_unique<CommonStates>(device);
-    // デバッグ用文字列表示オブジェクトの作成
-    m_debugFont = std::make_unique<Imase::DebugFont>(device, context, L"Resources/Font/SegoeUI_18.spritefont");
 
     // オーディオエンジンの作成
     AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
@@ -238,7 +232,6 @@ void Game::CreateDeviceDependentResources()
     m_userResources->SetDeviceResources(m_deviceResources.get());
     m_userResources->SetCommonStates(m_states.get());
     m_userResources->SetStepTimerStates(&m_timer);
-    m_userResources->SetDebugFont(m_debugFont.get());
     m_userResources->SetKeyboardStateTracker(&m_keyboardTracker);
     m_userResources->SetMouseStateTracker(&m_mouseTracker);
     m_userResources->SetAudioEngine(m_audioEngine.get());

@@ -37,16 +37,15 @@ void Stage::SetStageData()
 	// 敵を生成
 	m_enemyTask = GetTaskManager()->AddTask<EnemyTank>(m_gameResources, SimpleMath::Vector3(0.0f, 0.0f, 5.0f), SimpleMath::Quaternion::Identity);
 
+	// プレイヤーに敵を渡す
+	m_playerTask->SetTarget(m_enemyTask);
+
 	// 敵にプレイヤーを渡す
 	m_enemyTask->SetTarget(m_playerTask);
 }
 
 // ステージデータのリセット
 void Stage::Reset()
-{
-}
-
-void Stage::StopAllEnemy(bool isStop)
 {
 }
 

@@ -6,7 +6,6 @@
 
 #include "DeviceResources.h"
 #include "StepTimer.h"
-#include "ImaseLib/DebugFont.h"
 #include "MyLib/SceneManager.h"
 #include "UserResources.h"
 #include "RenderTexture.h"
@@ -80,9 +79,6 @@ private:
 
     // 共通ステートへのポインタ
     std::unique_ptr<DirectX::CommonStates> m_states;
-
-    // デバッグ用文字列表示オブジェクトへのポインタ
-    std::unique_ptr<Imase::DebugFont> m_debugFont;
 
     // ユーザーリソースへのポインタ
     std::unique_ptr<UserResources> m_userResources;

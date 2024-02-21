@@ -52,6 +52,9 @@ static constexpr float BLACK_SMOKE_RANGE = 0.2f;
 // 黒い煙の生成する時間
 static constexpr float BLACK_SMOKE_CREATE_TIME = 0.1f;
 
+// 爆発の表示時間
+static constexpr float EXPLOSION_DISPLAY_TIME = 0.4f;
+
 // ---- プレイヤー関連 ----- //
 
 // プレイヤーが移動する時に加える力（1フレーム辺りに加える力）
@@ -102,7 +105,7 @@ static constexpr float ENEMY_RADIUS = 0.5f;
 static constexpr float ENEMY_HP = 1.0f;
 
 // １ヒットで減らすHPの量
-static constexpr float ENEMY_REDUCE_HP = 0.2f;
+static constexpr float ENEMY_REDUCE_HP = 0.15f;
 
 // 探索行動をする範囲
 static constexpr float ENEMY_SEEK_RANGE = 6.0f;

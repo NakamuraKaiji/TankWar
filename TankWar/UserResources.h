@@ -1,18 +1,8 @@
-//--------------------------------------------------------------------------------------
-// File: UserResources.h
-//
-// シーンへ渡すユーザーリソースクラス（サンプル）
-//
-// Date: 2023.4.13
-// Author: Hideyasu Imase
-//--------------------------------------------------------------------------------------
 #pragma once
 #include "StepTimer.h"
 #include "DeviceResources.h"
-#include "ImaseLib/DebugFont.h"
 #include "MyLib/TransitionMask.h"
 
-// 各シーンに渡す共通リソースを記述してください
 class UserResources
 {
 private:
@@ -28,9 +18,6 @@ private:
 
 	// マウスステートトラッカー
 	DirectX::Mouse::ButtonStateTracker* m_mouseTracker;
-
-	// デバッグ用文字列表示へのポインタ
-	Imase::DebugFont* m_debugFont;
 
 	// 共通ステート
 	DirectX::CommonStates* m_states;
@@ -52,7 +39,6 @@ public:
 		, m_deviceResources(nullptr)
 		, m_keyboardTracker(nullptr)
 		, m_mouseTracker(nullptr)
-		, m_debugFont(nullptr)
 		, m_states(nullptr)
 		, m_transitionMask(nullptr)
 		, m_audioEngine(nullptr)
@@ -109,16 +95,6 @@ public:
 
 	// 共通ステートを取得する関数
 	DirectX::CommonStates* GetCommonStates() { return m_states; }
-
-	// ------------------------------------------ //
-	// デバッグフォント	
-	// ------------------------------------------ //
-
-	// デバッグフォントを設定する関数
-	void SetDebugFont(Imase::DebugFont* debugFont) { m_debugFont = debugFont; }
-
-	// デバッグフォントを取得する関数
-	Imase::DebugFont* GetDebugFont() { return m_debugFont; }
 
 	// ------------------------------------------ //
 	// 画面遷移マスク	
