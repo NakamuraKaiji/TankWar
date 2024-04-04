@@ -278,6 +278,9 @@
     <MeshContentTask Include="Resources\fbx\Bullet.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Mountain.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">

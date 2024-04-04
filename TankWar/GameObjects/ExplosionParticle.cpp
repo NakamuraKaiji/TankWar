@@ -116,7 +116,7 @@ void ExplosionParticle::Update(float elapsedTime)
 			SimpleMath::Vector3(0.0f, 0.5f, 0.0f),			                                                            // 速度
 			SimpleMath::Vector3(0.0f, 0.5f, 0.0f), 					                                                    // 加速度
 			m_scale, SimpleMath::Vector3::Zero,	                                                                        // 初期スケール、最終スケール
-			SimpleMath::Color(0.8f, 0.0f, 0.0f, 1.0f), SimpleMath::Color(0.0f, 0.0f, 0.0f, 1.0f)	                    // 初期カラー、  最終カラー
+			SimpleMath::Color(0.41f, 0.41f, 0.41, 0.8f), SimpleMath::Color(0.0f, 0.0f, 0.0f, 1.0f)	                    // 初期カラー、  最終カラー
 		);
 
 		m_particleUtility.push_back(pU);

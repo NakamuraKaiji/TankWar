@@ -53,7 +53,7 @@ static constexpr float BLACK_SMOKE_RANGE = 0.2f;
 static constexpr float BLACK_SMOKE_CREATE_TIME = 0.1f;
 
 // 爆発の表示時間
-static constexpr float EXPLOSION_DISPLAY_TIME = 0.4f;
+static constexpr float EXPLOSION_DISPLAY_TIME = 0.5f;
 
 // ---- プレイヤー関連 ----- //
 
@@ -79,7 +79,7 @@ static constexpr float PLAYER_TURRET_ROTATE = 0.8f;
 static constexpr float PLAYER_RADIUS = 0.5f;
 
 // プレイヤーの行動範囲
-static constexpr float PLAYER_ACTION_RANGE = 100.0f;
+static constexpr float PLAYER_ACTION_RANGE = 40.0f;
 
 // ---- 敵関連 ---- //
 

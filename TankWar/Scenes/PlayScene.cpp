@@ -13,6 +13,7 @@ PlayScene::PlayScene()
 	, m_proj{}
 	, m_skydomeModel{}
 	, m_skydomeRotate(0.0f)
+	, m_mountainModel{}
 	, m_stage{}
 	, m_userInterface{}
 	, m_life(0)
@@ -190,6 +191,25 @@ void PlayScene::Render()
 	skyWorld *= SimpleMath::Matrix::CreateTranslation(m_stage->GetPlayer()->GetPosition());
 	m_skydomeModel->Draw(context, *states, skyWorld, m_view, m_proj);
 
+	// 山の描画
+	SimpleMath::Matrix mountainWorld;
+	mountainWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(60.0f, -0.6f, 0.0f));
+	m_mountainModel[0]->Draw(context, *states, mountainWorld, m_view, m_proj);
+	mountainWorld = SimpleMath::Matrix::Identity;
+	mountainWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(-60.0f, -1.5f, 10.0f));
+	m_mountainModel[1]->Draw(context, *states, mountainWorld, m_view, m_proj);
+	mountainWorld = SimpleMath::Matrix::Identity;
+	mountainWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(40.0f, -1.5f, 60.0f));
+	m_mountainModel[2]->Draw(context, *states, mountainWorld, m_view, m_proj);
+	mountainWorld = SimpleMath::Matrix::Identity;
+	mountainWorld *= SimpleMath::Matrix::CreateRotationY(90.0f);
+	mountainWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(-20.0f, -0.6f, 80.0f));
+	m_mountainModel[3]->Draw(context, *states, mountainWorld, m_view, m_proj);
+	mountainWorld = SimpleMath::Matrix::Identity;
+	mountainWorld *= SimpleMath::Matrix::CreateRotationY(90.0f);
+	mountainWorld *= SimpleMath::Matrix::CreateTranslation(SimpleMath::Vector3(0.0f, -0.6f, -60.0f));
+	m_mountainModel[4]->Draw(context, *states, mountainWorld, m_view, m_proj);
+
 	if (m_graphics->GetSpriteBatch()) m_graphics->GetSpriteBatch()->Begin();
 
 	// タスクの描画
@@ -228,10 +248,15 @@ void PlayScene::CreateDeviceDependentResources()
 	// リソースをロード
 	Resources::GetInstance()->LoadResource();
 
-	// 地面モデルの作成
-	m_groundModel = Resources::GetInstance()->GetGround();
+	// 地面モデルを作成
+	m_groundModel   = Resources::GetInstance()->GetGround();
 	// スカイドームを作成
-	m_skydomeModel = Resources::GetInstance()->GetSkydome();
+	m_skydomeModel  = Resources::GetInstance()->GetSkydome();
+	// 山モデルを作成
+	for (int i = 0; i < 5; i++)
+	{
+		m_mountainModel[i] = Resources::GetInstance()->GetMountain();
+	}
 
 	// ステージを作成 
 	GameResources gameResources = {&m_collisionManager};

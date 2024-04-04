@@ -30,6 +30,8 @@ public:
 	std::shared_ptr<DirectX::Model> GetLoseTank() { return m_loseTank; }
 	// 地面モデルを取得する
 	std::shared_ptr<DirectX::Model> GetGround() { return m_ground; }
+	// 山モデルを取得する
+	std::shared_ptr<DirectX::Model> GetMountain() { return m_mountain; }
 
 	// パーティクルのテクスチャを取得する
 	ID3D11ShaderResourceView* GetParticle() { return m_particleTexture.Get(); }
@@ -66,6 +68,7 @@ private:
 		, m_title{}
 		, m_victory{}
 		, m_defeat{}
+		, m_mountain{}
 	{}
 	// 代入は許容しない
 	void operator=(const Resources& object) = delete;
@@ -96,6 +99,8 @@ private:
 	std::shared_ptr<DirectX::Model> m_loseTank;
 	// 地面モデル
 	std::shared_ptr<DirectX::Model> m_ground;
+	// 山モデル
+	std::shared_ptr<DirectX::Model> m_mountain;
 
 	// パーティクルのテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_particleTexture;

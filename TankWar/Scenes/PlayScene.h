@@ -51,11 +51,14 @@ private:
 	// プレイヤーカメラ
 	PlayerCamera m_playerCamera;
 
-	// スカイドームモデルへのポインタ
+	// スカイドームモデル
 	std::shared_ptr<DirectX::Model> m_skydomeModel;
 
-	// 地面モデルへのポインタ
+	// 地面モデル
 	std::shared_ptr<DirectX::Model> m_groundModel;
+
+	// 山モデル
+	std::shared_ptr<DirectX::Model> m_mountainModel[5];
 
 	// タスクマネージャー
 	TaskManager m_taskManager;
