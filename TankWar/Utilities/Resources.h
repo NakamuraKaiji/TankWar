@@ -32,6 +32,8 @@ public:
 	std::shared_ptr<DirectX::Model> GetGround() { return m_ground; }
 	// 山モデルを取得する
 	std::shared_ptr<DirectX::Model> GetMountain() { return m_mountain; }
+	// 木モデルを取得する
+	std::shared_ptr<DirectX::Model> GetTree() { return m_tree; }
 
 	// パーティクルのテクスチャを取得する
 	ID3D11ShaderResourceView* GetParticle() { return m_particleTexture.Get(); }
@@ -45,6 +47,16 @@ public:
 	ID3D11ShaderResourceView* GetVictory() { return m_victory.Get(); }
 	// 敗北テクスチャを取得する
 	ID3D11ShaderResourceView* GetDefeat() { return m_defeat.Get(); }
+	// HPテクスチャAを取得する
+	ID3D11ShaderResourceView* GetHP_A() { return m_hp_a.Get(); }
+	// HPテクスチャBを取得する
+	ID3D11ShaderResourceView* GetHP_B() { return m_hp_b.Get(); }
+	// 数字テクスチャ1を取得する
+	ID3D11ShaderResourceView* GetNumber1() { return m_number1.Get(); }
+	// 数字テクスチャ2を取得する
+	ID3D11ShaderResourceView* GetNumber2() { return m_number2.Get(); }
+	// 数字テクスチャ3を取得する
+	ID3D11ShaderResourceView* GetNumber3() { return m_number3.Get(); }
 
 public:
 	// Resoucesクラスのインスタンスを取得する
@@ -69,6 +81,12 @@ private:
 		, m_victory{}
 		, m_defeat{}
 		, m_mountain{}
+		, m_tree{}
+		, m_hp_a{}
+		, m_hp_b{}
+		, m_number1{}
+		, m_number2{}
+		, m_number3{}
 	{}
 	// 代入は許容しない
 	void operator=(const Resources& object) = delete;
@@ -101,6 +119,8 @@ private:
 	std::shared_ptr<DirectX::Model> m_ground;
 	// 山モデル
 	std::shared_ptr<DirectX::Model> m_mountain;
+	// 木モデル
+	std::shared_ptr<DirectX::Model> m_tree;
 
 	// パーティクルのテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_particleTexture;
@@ -114,6 +134,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_victory;
 	// 敗北テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_defeat;
+	// 体力テクスチャA
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_hp_a;
+	// 体力テクスチャB
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_hp_b;
+	//	数字テクスチャ1
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_number1;
+	//	数字テクスチャ2
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_number2;
+	//	数字テクスチャ3
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_number3;
+
 };
 
 #endif // RESOURCES_DEFINED

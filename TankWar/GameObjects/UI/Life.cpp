@@ -4,8 +4,8 @@
 using namespace DirectX;
 
 // コストラクタ
-Life::Life(ID3D11ShaderResourceView* pTexture, int x, int y)
-	: m_pTexture(pTexture)
+Life::Life(int x, int y)
+	: m_pTexture{}
 	, m_x(x)
 	, m_y(y)
 	, m_life(3)
@@ -21,4 +21,10 @@ void Life::Render()
 			SimpleMath::Vector2((float)m_x + (i * 110), (float)m_y)
 		);
 	}
+}
+
+//	画像を設定する
+void Life::SetTexture(ID3D11ShaderResourceView* texture)
+{
+	m_pTexture = texture;
 }

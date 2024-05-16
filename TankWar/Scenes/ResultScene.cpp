@@ -61,6 +61,8 @@ void ResultScene::Update(const DX::StepTimer& timer)
 	// 煙のパーティクルの更新
 	m_smokeParticle->SetPosition(m_tankPosition);
 	m_smokeParticle->Update((float)timer.GetElapsedSeconds());
+	// 煙のビルボードを更新
+	m_smokeParticle->CreateBillboard(m_playerCamera.GetTargetPosition(), m_playerCamera.GetEyePosition(), SimpleMath::Vector3::Up);
 
 	// シーン切り替え
 	if (keyState->pressed.Enter)
@@ -144,7 +146,6 @@ void ResultScene::Render()
 		m_graphics->GetSpriteBatch()->Draw(m_defeatTexture.Get(), SimpleMath::Vector2(-50.0f, 75.0f));
 
 		// 煙のパーティクルの描画
-		m_smokeParticle->CreateBillboard(m_playerCamera.GetTargetPosition(), m_playerCamera.GetEyePosition(), SimpleMath::Vector3::Up);
 		m_smokeParticle->Render();
 	}
 

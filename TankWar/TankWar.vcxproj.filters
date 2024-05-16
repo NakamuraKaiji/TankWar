@@ -13,9 +13,6 @@
     <ClCompile Include="RenderTexture.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\UI\EnemyHP.cpp">
-      <Filter>GameObjects\UI</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjects\UI\Life.cpp">
       <Filter>GameObjects\UI</Filter>
     </ClCompile>
@@ -88,6 +85,18 @@
     <ClCompile Include="GameObjects\ExplosionParticle.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\MountainRender.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\TreeRender.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\EnemyHitPoint.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\UI\StartCount.cpp">
+      <Filter>GameObjects\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -107,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="StepTimer.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\UI\EnemyHP.h">
-      <Filter>GameObjects\UI</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\UI\Life.h">
       <Filter>GameObjects\UI</Filter>
@@ -194,6 +200,18 @@
     </ClInclude>
     <ClInclude Include="GameObjects\ExplosionParticle.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\MountainRender.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\TreeRender.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\EnemyHitPoint.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\UI\StartCount.h">
+      <Filter>GameObjects\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +299,9 @@
     <MeshContentTask Include="Resources\fbx\Mountain.fbx">
       <Filter>FBX</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Tree.fbx">
+      <Filter>FBX</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
@@ -312,9 +333,6 @@
     <ImageContentTask Include="Resources\Textures\FadeMask.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resources\Textures\HP.png">
-      <Filter>Textures</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\Life.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
@@ -330,6 +348,21 @@
     <ImageContentTask Include="Resources\Textures\PushEnter.png">
       <Filter>Textures</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\HP_a.bmp">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\HP_b.bmp">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Number_1.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Number_2.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Number_3.png">
+      <Filter>Textures</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Sounds\bgm.wav">
@@ -339,6 +372,15 @@
       <Filter>Sounds</Filter>
     </Media>
     <Media Include="Resources\Sounds\victroy.wav">
+      <Filter>Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\explosion.WAV">
+      <Filter>Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\shot.wav">
+      <Filter>Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\count.wav">
       <Filter>Sounds</Filter>
     </Media>
   </ItemGroup>

@@ -20,6 +20,7 @@ PlayerTank::PlayerTank(const GameResources& gameResources, DirectX::SimpleMath::
 	, m_bulletTime(0.0f)
 	, m_shotFlag(false)
 	, m_target(nullptr)
+	, m_start(false)
 
 {
 }
@@ -49,33 +50,37 @@ void PlayerTank::Initialize()
 // 更新
 bool PlayerTank::Update(float elapsedTime)
 {
-	// 状態によって処理を決める
-	switch (m_playerState)
+	// スタートしたら更新
+	if (m_start)
 	{
-	case PlayerState::Hit:
-		Hit();
-		break;
-	default:
-		break;
+		// 状態によって処理を決める
+		switch (m_playerState)
+		{
+		case PlayerState::Hit:
+			Hit();
+			break;
+		default:
+			break;
+		}
+
+		// 行動範囲
+		// 範囲外に出たら止める
+		SimpleMath::Vector3 distance = GetPosition() - SimpleMath::Vector3::Zero;
+		if (distance.Length() > PLAYER_ACTION_RANGE)
+		{
+			SetVelocity(SimpleMath::Vector3::Zero);
+			SetPosition(distance - SimpleMath::Vector3(0.0f, 0.0f, 0.001f));
+		}
+
+		// 基底クラスの更新関数を呼び出して移動する
+		GameObject::Update(elapsedTime);
+
+		// 速さを制限する
+		LimitSpeed(PLAYER_MAX_SPEED);
+
+		// 衝突判定マネージャーに登録
+		m_gameResources.pCollisionManager->AddObject(this);
 	}
-
-	// 行動範囲
-	// 範囲外に出たら止める
-	SimpleMath::Vector3 distance = GetPosition() - SimpleMath::Vector3::Zero;
-	if (distance.Length() > PLAYER_ACTION_RANGE)
-	{
-		SetVelocity(SimpleMath::Vector3::Zero);
-		SetPosition(distance - SimpleMath::Vector3(0.0f, 0.0f, 0.001f));
-	}
-
-	// 基底クラスの更新関数を呼び出して移動する
-	GameObject::Update(elapsedTime);
-
-	// 速さを制限する
-	 LimitSpeed(PLAYER_MAX_SPEED);
-
-	// 衝突判定マネージャーに登録
-	 m_gameResources.pCollisionManager->AddObject(this);
 
 	return true;
 }
@@ -116,83 +121,86 @@ void PlayerTank::Reset()
 // 移動関数
 void PlayerTank::Move(DirectX::Keyboard::KeyboardStateTracker* tracker, float elapsedTime)
 {
-	// 通常時のみ移動する
-	if (m_playerState != PlayerState::Normal) return;
-
-	// キー入力を取得
-	auto kb = Keyboard::Get().GetState();
-
-	// 向いている方向に力を加えて移動する
-	float force = PLAYER_MOVE_FORCE;
-
-	// 煙の速度ベクトル
-	SimpleMath::Vector3 velocity = WHITE_SMOKE_SPEED;
-
-	// Wキーで前進
-	if (kb.W)
+	if (m_start)
 	{
-		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), -force);
-		m_smokeTime += elapsedTime;
-		// 煙のエフェクトを発生させる
-		if (m_smokeTime > 0.5f)
+		// 通常時のみ移動する
+		if (m_playerState != PlayerState::Normal) return;
+
+		// キー入力を取得
+		auto kb = Keyboard::Get().GetState();
+
+		// 向いている方向に力を加えて移動する
+		float force = PLAYER_MOVE_FORCE;
+
+		// 煙の速度ベクトル
+		SimpleMath::Vector3 velocity = WHITE_SMOKE_SPEED;
+
+		// Wキーで前進
+		if (kb.W)
 		{
-			SimpleMath::Vector3 position = SimpleMath::Vector3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z);
-			GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
-			m_smokeTime = 0.0f;
+			AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), -force);
+			m_smokeTime += elapsedTime;
+			// 煙のエフェクトを発生させる
+			if (m_smokeTime > 0.5f)
+			{
+				SimpleMath::Vector3 position = SimpleMath::Vector3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z);
+				GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
+				m_smokeTime = 0.0f;
+			}
 		}
-	}
-	// Sキーで後進
-	if (kb.S)
-	{
-		AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), force);
-	}
-	// Dキーで右回転
-	if (kb.D)
-	{
-		// 回転角を計算
-		m_bodyRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
-			SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(-PLAYER_BODY_ROTATE)
-		);
-	}
-	// Aキーで左回転
-	if (kb.A)
-	{
-		// 回転角を計算
-		m_bodyRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
-			SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(PLAYER_BODY_ROTATE)
-		);
-	}
-	// →で砲身を右回転
-	if (kb.Right)
-	{
-		// 回転角を計算
-		m_turretRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
-			SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(-PLAYER_TURRET_ROTATE)
-		);
-	}
-	// ←で砲身を右回転
-	if (kb.Left)
-	{
-		// 回転角を計算
-		m_turretRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
-			SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(PLAYER_TURRET_ROTATE)
-		);
-	}
+		// Sキーで後進
+		if (kb.S)
+		{
+			AddForce(SimpleMath::Vector3::Transform(OBJECT_FORWARD, m_bodyRotate), force);
+		}
+		// Dキーで右回転
+		if (kb.D)
+		{
+			// 回転角を計算
+			m_bodyRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
+				SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(-PLAYER_BODY_ROTATE)
+			);
+		}
+		// Aキーで左回転
+		if (kb.A)
+		{
+			// 回転角を計算
+			m_bodyRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
+				SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(PLAYER_BODY_ROTATE)
+			);
+		}
+		// →で砲身を右回転
+		if (kb.Right)
+		{
+			// 回転角を計算
+			m_turretRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
+				SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(-PLAYER_TURRET_ROTATE)
+			);
+		}
+		// ←で砲身を右回転
+		if (kb.Left)
+		{
+			// 回転角を計算
+			m_turretRotate *= SimpleMath::Quaternion::CreateFromAxisAngle(
+				SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(PLAYER_TURRET_ROTATE)
+			);
+		}
 
-	// スペースで発射
-	m_bulletTime += elapsedTime;
-	m_shotFlag = false;
-	if (m_bulletTime > 1.0f)
-	if (tracker->pressed.Space)
-	{
-		// 弾を発射する
-		Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
-		// 親を変更する
-		bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
-		SetVelocity(SimpleMath::Vector3::Zero);
-		m_bulletTime = 0.0f;
-		// 発射した
-		m_shotFlag = true;
+		// スペースで発射
+		m_bulletTime += elapsedTime;
+		m_shotFlag = false;
+		if (m_bulletTime > 1.0f)
+			if (tracker->pressed.Space)
+			{
+				// 弾を発射する
+				Bullet* bulletTask = this->GetTaskManager()->AddTask<Bullet>(m_gameResources, GetPosition(), m_bodyRotate * m_turretRotate);
+				// 親を変更する
+				bulletTask->ChangeParent(this->GetTaskManager()->GetRootTask());
+				SetVelocity(SimpleMath::Vector3::Zero);
+				m_bulletTime = 0.0f;
+				// 発射した
+				m_shotFlag = true;
+			}
 	}
 }
 
@@ -246,3 +254,8 @@ void PlayerTank::OnHit_Player()
 	SetVelocity(SimpleMath::Vector3::Zero);
 }
 
+// スタートしたかどうかを設定する関数
+void PlayerTank::SetStartFlag(bool start)
+{
+	m_start = start;
+}

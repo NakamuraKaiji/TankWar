@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EnemyTank.h"
+#include "GameParameter.h"
 #include "Utilities/Resources.h"
 #include "Bullet.h"
 #include "SmokeEffect.h"
@@ -24,6 +25,8 @@ EnemyTank::EnemyTank(const GameResources& gameResources, DirectX::SimpleMath::Ve
 	, m_invincibleTime(0.0f)
 	, m_smokeTime(0.0f)
 	, m_shotFlag(false)
+	, m_start(false)
+	, m_enemyHP{}
 {
 }
 
@@ -48,6 +51,11 @@ void EnemyTank::Initialize()
 	// 初期化
 	m_wanderOrientation = 0.0f;
 
+	// 敵の体力を作成、初期化	
+	m_enemyHP = this->GetTaskManager()->AddTask<EnemyHitPoint>();
+	m_enemyHP->Initialize();
+	m_enemyHP->SetHP(ENEMY_HP);
+
 	// 描画順の設定
 	SetOt(static_cast<int>(OT_Priority::OT_Object));
 }
@@ -55,29 +63,36 @@ void EnemyTank::Initialize()
 // 更新
 bool EnemyTank::Update(float elapsedTime)
 {
-	// 状態によって処理を分岐させる
-	switch (m_enemyState)
+	// スタートしたら更新
+	if (m_start)
 	{
-	case EnemyState::Normal:
-		Normal(elapsedTime);
-		break;
-	case EnemyState::Hit:
-		Hit();
-		break;
-	default:
-		break;
+		// 状態によって処理を分岐させる
+		switch (m_enemyState)
+		{
+		case EnemyState::Normal:
+			Normal(elapsedTime);
+			break;
+		case EnemyState::Hit:
+			Hit();
+			break;
+		default:
+			break;
+		}
+
+		m_invincibleTime += elapsedTime;
+
+		// 基底クラスの更新関数を呼び出して移動する
+		GameObject::Update(elapsedTime);
+
+		// 速さを制限する
+		LimitSpeed(ENEMY_MAX_SPEED);
+
+		// 衝突判定マネージャーに登録
+		m_gameResources.pCollisionManager->AddObject(this);
 	}
 
-	m_invincibleTime += elapsedTime;
-
-	// 基底クラスの更新関数を呼び出して移動する
-	GameObject::Update(elapsedTime);
-
-	// 速さを制限する
-	LimitSpeed(ENEMY_MAX_SPEED);
-
-	// 衝突判定マネージャーに登録
-	m_gameResources.pCollisionManager->AddObject(this);
+	// 位置情報を渡す
+	m_enemyHP->SetEnemyPosition(GetPosition());
 
 	return true;
 }
@@ -203,7 +218,6 @@ void EnemyTank::Normal(float elapsedTime)
 		GetTaskManager()->AddTask<SmokeEffect>(position, velocity);
 		m_smokeTime = 0.0f;
 	}
-
 }
 
 // 衝突中関数
@@ -326,4 +340,8 @@ inline DirectX::SimpleMath::Vector3 EnemyTank::Truncate(const DirectX::SimpleMat
 		return v * (maxLength / v.Length());
 }
 
-
+// スタートしたかどうかを設定する関数
+void EnemyTank::SetStartFlag(bool start)
+{
+	m_start = start;
+}

@@ -74,13 +74,6 @@ void Graphics::Initialize()
 	size_t byteCodeLength;
 
 	m_basicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
-	//// 入力レイアウトを生成
-	//m_device->CreateInputLayout(
-	//	DirectX::VertexPositionColor::InputElements,
-	//	DirectX::VertexPositionColor::InputElementCount,
-	//	shaderByteCode, byteCodeLength,
-	//	m_inputLayout.ReleaseAndGetAddressOf()
-	//);
 	// 入力レイアウトを生成
 	m_device->CreateInputLayout(
 		DirectX::VertexPositionColorTexture::InputElements,

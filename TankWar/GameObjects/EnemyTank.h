@@ -7,10 +7,10 @@
 //*********************************************************************
 #pragma once
 #include "GameObject.h"
-#include "GameParameter.h"
 #include "MyLib/ModelPart.h"
 #include "CollisionManager.h"
 #include "GameResources.h"
+#include "EnemyHitPoint.h"
 
 class EnemyTank : public GameObject
 {
@@ -33,6 +33,12 @@ public:
 
 	// 弾を発射したどうかを取得する関数
 	bool GetShotFlag() { return m_shotFlag; }
+
+	// スタートしたかどうかを設定する関数
+	void SetStartFlag(bool start);
+
+	// 敵の体力にアクセスする関数
+	EnemyHitPoint* GetEnemyHitPoint() { return m_enemyHP; }
 
 private:
 
@@ -106,16 +112,22 @@ private:
 	// Collisionで作成したリソース
 	GameResources m_gameResources;
 
+	// 敵のHP
+	EnemyHitPoint* m_enemyHP;
+
 private:
 	// 車体の角度
 	DirectX::SimpleMath::Quaternion m_bodyRotate;
+
 	// 砲身の角度
 	DirectX::SimpleMath::Quaternion m_turretRotate;
 
 	// 速度[m/s]
 	DirectX::SimpleMath::Vector3 m_velocity;
+
 	// 質量[kg]
 	float m_mass;    
+
 	// 徘徊行動で使用する方向
 	float m_wanderOrientation;   
 
@@ -131,4 +143,6 @@ private:
 	// 発射したかどうか
 	bool m_shotFlag;
 
+	// スタートしたかどうか
+	bool m_start;
 };

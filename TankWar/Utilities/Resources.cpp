@@ -30,6 +30,7 @@ void Resources::LoadResource()
 	m_loseTank		  = Model::CreateFromCMO(m_device, L"Resources/cmo/LoseTank.cmo", *m_graphics->GetFX());
 	m_ground          = Model::CreateFromCMO(m_device, L"Resources/cmo/Ground.cmo", *m_graphics->GetFX());
 	m_mountain        = Model::CreateFromCMO(m_device, L"Resources/cmo/Mountain.cmo", *m_graphics->GetFX());
+	m_tree            = Model::CreateFromCMO(m_device, L"Resources/cmo/Tree.cmo", *m_graphics->GetFX());
 
 	// テクスチャ
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
@@ -53,4 +54,20 @@ void Resources::LoadResource()
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources/dds/Defeat.dds", nullptr, m_defeat.ReleaseAndGetAddressOf())
 	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/HP_a.dds", nullptr, m_hp_a.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/HP_b.dds", nullptr, m_hp_b.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/Number_1.dds", nullptr, m_number1.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/Number_2.dds", nullptr, m_number2.ReleaseAndGetAddressOf())
+	);
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources/dds/Number_3.dds", nullptr, m_number3.ReleaseAndGetAddressOf())
+	);
+
 }

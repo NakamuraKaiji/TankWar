@@ -24,6 +24,8 @@ enum class OT_Priority
 	OT_BG,				// 背景
 };
 
+// スタートまでの時間
+static constexpr int START_COUNT = 3;
 
 // 衝突した時に絶対に加わる最小の力
 static constexpr float HIT_FORCE_MIN = 0.2f;
@@ -102,10 +104,10 @@ static constexpr float ENEMY_MOVE_FORCE = 0.02f;
 static constexpr float ENEMY_RADIUS = 0.5f;
 
 // 敵のHP
-static constexpr float ENEMY_HP = 1.0f;
+static constexpr float ENEMY_HP = 100.0f;
 
 // １ヒットで減らすHPの量
-static constexpr float ENEMY_REDUCE_HP = 0.15f;
+static constexpr float ENEMY_REDUCE_HP = 15.0f;
 
 // 探索行動をする範囲
 static constexpr float ENEMY_SEEK_RANGE = 6.0f;

@@ -14,6 +14,9 @@
 #include "GameObjects/CollisionManager.h"
 #include "GameObjects/UI/UserInterface.h"
 #include "GameObjects/ExplosionParticle.h"
+#include "GameObjects/MountainRender.h"
+#include "GameObjects/TreeRender.h"
+#include "GameObjects/EnemyHitPoint.h"
 
 class PlayScene :public Scene<UserResources>
 {
@@ -58,7 +61,10 @@ private:
 	std::shared_ptr<DirectX::Model> m_groundModel;
 
 	// 山モデル
-	std::shared_ptr<DirectX::Model> m_mountainModel[5];
+	MountainRender* m_moutainRender;
+
+	// 木モデル
+	TreeRender* m_treeRender;
 
 	// タスクマネージャー
 	TaskManager m_taskManager;
@@ -81,6 +87,8 @@ private:
 	std::unique_ptr<DirectX::SoundEffectInstance> m_explosionSound;
 	// 発射音
 	std::unique_ptr<DirectX::SoundEffectInstance> m_shotSound;
+	// カウント音
+	std::unique_ptr<DirectX::SoundEffectInstance> m_countSound;
 
 private:
 
@@ -104,4 +112,7 @@ private:
 
 	// 爆発表示時間
 	float m_explosionPlayerTime, m_explosionEnemyTime;
+
+	// カウント音の発生フラグ
+	bool m_countSoundFlag;
 };

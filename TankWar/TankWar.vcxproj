@@ -187,19 +187,22 @@
     <ClInclude Include="GameObjects\Bullet.h" />
     <ClInclude Include="GameObjects\Camera.h" />
     <ClInclude Include="GameObjects\CollisionManager.h" />
+    <ClInclude Include="GameObjects\EnemyHitPoint.h" />
     <ClInclude Include="GameObjects\EnemyTank.h" />
     <ClInclude Include="GameObjects\ExplosionParticle.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\GameParameter.h" />
     <ClInclude Include="GameObjects\GameResources.h" />
+    <ClInclude Include="GameObjects\MountainRender.h" />
     <ClInclude Include="GameObjects\PlayerCamera.h" />
     <ClInclude Include="GameObjects\PlayerTank.h" />
     <ClInclude Include="GameObjects\SmokeEffect.h" />
     <ClInclude Include="GameObjects\SmokeParticle.h" />
     <ClInclude Include="GameObjects\ParticleUtility.h" />
     <ClInclude Include="GameObjects\Stage.h" />
-    <ClInclude Include="GameObjects\UI\EnemyHP.h" />
+    <ClInclude Include="GameObjects\TreeRender.h" />
     <ClInclude Include="GameObjects\UI\Life.h" />
+    <ClInclude Include="GameObjects\UI\StartCount.h" />
     <ClInclude Include="GameObjects\UI\UserInterface.h" />
     <ClInclude Include="MyLib\BinaryFile.h" />
     <ClInclude Include="MyLib\ModelPart.h" />
@@ -226,17 +229,20 @@
     <ClCompile Include="GameObjects\Bullet.cpp" />
     <ClCompile Include="GameObjects\Camera.cpp" />
     <ClCompile Include="GameObjects\CollisionManager.cpp" />
+    <ClCompile Include="GameObjects\EnemyHitPoint.cpp" />
     <ClCompile Include="GameObjects\EnemyTank.cpp" />
     <ClCompile Include="GameObjects\ExplosionParticle.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
+    <ClCompile Include="GameObjects\MountainRender.cpp" />
     <ClCompile Include="GameObjects\PlayerCamera.cpp" />
     <ClCompile Include="GameObjects\PlayerTank.cpp" />
     <ClCompile Include="GameObjects\SmokeEffect.cpp" />
     <ClCompile Include="GameObjects\SmokeParticle.cpp" />
     <ClCompile Include="GameObjects\ParticleUtility.cpp" />
     <ClCompile Include="GameObjects\Stage.cpp" />
-    <ClCompile Include="GameObjects\UI\EnemyHP.cpp" />
+    <ClCompile Include="GameObjects\TreeRender.cpp" />
     <ClCompile Include="GameObjects\UI\Life.cpp" />
+    <ClCompile Include="GameObjects\UI\StartCount.cpp" />
     <ClCompile Include="GameObjects\UI\UserInterface.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MyLib\BinaryFile.cpp" />
@@ -266,6 +272,21 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico" />
+    <ImageContentTask Include="Resources\Textures\Number_1.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Number_2.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\Number_3.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\HP_a.bmp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
+    <ImageContentTask Include="Resources\Textures\HP_b.bmp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\PushEnter.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -275,10 +296,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
     <ImageContentTask Include="Resources\Textures\FadeMask.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ImageContentTask>
-    <ImageContentTask Include="Resources\Textures\HP.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ImageContentTask>
@@ -351,6 +368,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MeshContentTask>
+    <MeshContentTask Include="Resources\fbx\Tree.fbx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
@@ -402,7 +422,10 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\Sounds\bgm.wav" />
+    <Media Include="Resources\Sounds\count.wav" />
     <Media Include="Resources\Sounds\defeat.wav" />
+    <Media Include="Resources\Sounds\explosion.WAV" />
+    <Media Include="Resources\Sounds\shot.wav" />
     <Media Include="Resources\Sounds\victroy.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -75,7 +75,7 @@ public:
 	// 描画
 	void Render();
 
-	// ビルボード
+	// ビルボード関数
 	void CreateBillboard(
 		DirectX::SimpleMath::Vector3 target,
 		DirectX::SimpleMath::Vector3 eye,

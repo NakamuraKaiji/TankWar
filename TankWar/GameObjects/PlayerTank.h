@@ -60,6 +60,9 @@ public:
 	// 弾を発射したどうかを取得する関数
 	bool GetShotFlag() { return m_shotFlag; }
 
+	// スタートしたかどうかを設定する関数
+	void SetStartFlag(bool start);
+
 public:
 
 	// コンストラクタ
@@ -120,4 +123,7 @@ private:
 
 	// 発射したかどうか
 	bool m_shotFlag;
+
+	// スタートしたかどうか
+	bool m_start;
 };

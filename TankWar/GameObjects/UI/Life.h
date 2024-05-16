@@ -26,15 +26,21 @@ private:
 
 public:
 	// コンストラクタ
-	Life(ID3D11ShaderResourceView* pTexture, int x, int y);
+	Life(int x, int y);
 
 	// 描画
 	void Render() override;
+
+public:
 
 	// 残機数の取得
 	int GetLife() { return m_life; }
 
 	// 残機数の設定
 	void SetLife(int life) { m_life = life; }
+
+	//	画像を設定する
+	void SetTexture(ID3D11ShaderResourceView* texture);
+
 
 };
