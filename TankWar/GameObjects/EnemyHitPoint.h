@@ -47,9 +47,6 @@ public:
 	// ‰Šú‰»
 	void Initialize();
 
-	// XV
-	bool Update(float elapsedTime) override;
-
 	// •`‰æ
 	void Render() override;
 

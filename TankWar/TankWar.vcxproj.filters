@@ -307,15 +307,6 @@
     <FxCompile Include="Resources\Shaders\Fade_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\HP_GS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\HP_PS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\HP_VS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>

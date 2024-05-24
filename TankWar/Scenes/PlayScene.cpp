@@ -79,8 +79,8 @@ void PlayScene::Update(const DX::StepTimer& timer)
 	{
 		float count = m_userInterface->GetStartCount()->GetCount();
 		if (count <= 3.0f && count > 2.9f) m_countSoundFlag = true;
-		if (count <= 2.0f && count > 1.9f) m_countSoundFlag = true;
-		if (count <= 1.0f && count > 0.9f) m_countSoundFlag = true;
+		if (count <= 2.1f && count > 2.0f) m_countSoundFlag = true;
+		if (count <= 1.1f && count > 1.0f) m_countSoundFlag = true;
 		if (m_countSoundFlag)
 		{
 			m_countSound->Stop();

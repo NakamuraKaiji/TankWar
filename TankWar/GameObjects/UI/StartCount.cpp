@@ -37,17 +37,17 @@ void StartCount::Render()
 	if (m_count <= 3.0f && m_count > 2.0f)
 	{
 		m_graphics->GetSpriteBatch()->Draw(m_texture3,
-			SimpleMath::Vector2((m_windowWidth / 2) - (m_x / 2), (m_windowHeight / 2) - (m_y / 2)));
+			SimpleMath::Vector2(float((m_windowWidth / 2) - (m_x / 2)), float((m_windowHeight / 2) - (m_y / 2))));
 	}
 	else if (m_count <= 2.0f && m_count > 1.0f)
 	{
 		m_graphics->GetSpriteBatch()->Draw(m_texture2,
-			SimpleMath::Vector2((m_windowWidth / 2) - (m_x / 2), (m_windowHeight / 2) - (m_y / 2)));
+			SimpleMath::Vector2(float((m_windowWidth / 2) - (m_x / 2)), float((m_windowHeight / 2) - (m_y / 2))));
 	}
 	else if (m_count <= 1.0f && m_count > 0.0f)
 	{
 		m_graphics->GetSpriteBatch()->Draw(m_texture1,
-			SimpleMath::Vector2((m_windowWidth / 2) - (m_x / 2), (m_windowHeight / 2) - (m_y / 2)));
+			SimpleMath::Vector2(float((m_windowWidth / 2) - (m_x / 2)), float((m_windowHeight / 2) - (m_y / 2))));
 	}
 	else if (m_count <= 0.0f)
 	{

@@ -38,12 +38,6 @@ void EnemyHitPoint::Initialize()
 	m_hpTexture_b = Resources::GetInstance()->GetHP_B();
 }
 
-// XV
-bool EnemyHitPoint::Update(float elapsedTime)
-{
-	return true;
-}
-
 // •`‰æ
 void EnemyHitPoint::Render()
 {
